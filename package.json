@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "tsc --noEmit && eslint . --fix"
+    "lint": "tsc --noEmit && eslint . --fix",
+    "postinstall": "husky install"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

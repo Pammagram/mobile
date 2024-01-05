@@ -23,7 +23,7 @@
     "forceConsistentCasingInFileNames": false,
     "baseUrl": "./src",
     "paths": {
-      "$app": ["app/*"],
+      "$app": ["app"],
       "$processes": ["processes"],
       "$configs": ["configs"],
       "$pages": ["pages"],

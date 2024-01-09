@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, TypePolicies } from '@apollo/client';
 
+import { customTypePolicies } from './config';
 import { createLink } from './link';
-import { customTypePolicies } from './typePolicies';
 
 import { mergeObjects } from '$shared';
 

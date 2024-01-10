@@ -12,6 +12,7 @@ const config = {
   watch: true,
   generates: {
     [CODEGEN_PATH]: {
+      watchPattern: "src/**/*.ts",
       plugins: ['typescript'],
     },
   },

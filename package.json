@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "start": "concurrently -r \"npm run codegen\" \"expo start\"",
+    "android": "concurrently -r \"npm run codegen\" \"expo start --android\"",
+    "ios": "concurrently -r \"npm run codegen\" \"expo start --ios\"",
+    "web": "concurrently -r \"npm run codegen\" \"expo start --web\"",
     "lint": "tsc --noEmit && eslint . --fix",
     "postinstall": "husky install",
     "codegen": "graphql-codegen --config src/app/codegen/config.js"
@@ -40,6 +40,7 @@
     "@types/lodash": "^4.14.202",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.48.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
@@ -55,6 +56,7 @@
     "eslint-plugin-typescript-sort-keys": "^3.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
     "typescript": "^5.3.3"
   },

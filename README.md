@@ -3,7 +3,7 @@ To automatically generate types for GraphQL resolvers, you don't need to do anyt
 
 If you need to generate types manually, use the following command:
 ```
-  npm run codegen
+npm run codegen
 ```
 
 **Note:** You need to have a running server at the address specified in `API_URL` for the package to work correctly.

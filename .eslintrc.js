@@ -1,3 +1,5 @@
+const { CODEGEN_PATH } = require('./src/app/codegen/constants');
+
 const EXCLUDE_NAMES_NAMING_CONVENTION_WORDS = [
   'reCaptcha',
 ];
@@ -443,6 +445,8 @@ module.exports = {
     'rn-cli.config.js',
     'android',
     'ios',
+    '**/codegen/*.js',
+    CODEGEN_PATH,
   ],
   rules: {
     ...initialRules,

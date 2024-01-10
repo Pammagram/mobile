@@ -30,7 +30,8 @@
       "$widgets": ["widgets"],
       "$features": ["features"],
       "$entities": ["entities"],
-      "$shared": ["shared"]
+      "$shared": ["shared"],
+      "$shared/*": ["shared/*"]
     }
   },
   "extends": "expo/tsconfig.base",

@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "start": "concurrently -r \"npm run codegen\" \"expo start\"",
+    "android": "concurrently -r \"npm run codegen\" \"expo start --android\"",
+    "ios": "concurrently -r \"npm run codegen\" \"expo start --ios\"",
+    "web": "concurrently -r \"npm run codegen\" \"expo start --web\"",
     "lint": "tsc --noEmit && eslint . --fix",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "codegen": "graphql-codegen --config src/app/codegen/config.js"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -16,17 +17,30 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "^3.8.8",
+    "@types/react": "~18.2.14",
+    "dotenv": "^16.3.1",
     "expo": "~49.0.15",
     "expo-status-bar": "~1.6.0",
+    "graphql": "16.8.1",
+    "graphql-ws": "^5.14.3",
+    "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-native": "0.72.6",
-    "@types/react": "~18.2.14"
+    "react-native-dotenv": "^3.4.9",
+    "utility-types": "^3.10.0",
+    "yup": "^1.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@cspell/eslint-plugin": "^7.3.6",
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
+    "@parcel/watcher": "^2.3.0",
+    "@types/lodash": "^4.14.202",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.48.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
@@ -40,10 +54,11 @@
     "eslint-plugin-react-native": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-typescript-sort-keys": "^3.0.0",
-    "prettier": "^3.0.3",
-    "typescript": "^5.3.3",
     "husky": "^8.0.3",
-    "lint-staged": "^14.0.1"
+    "lint-staged": "^14.0.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.0.3",
+    "typescript": "^5.3.3"
   },
   "private": true
 }

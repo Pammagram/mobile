@@ -1,7 +1,7 @@
 {
   "name": "mobile",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "concurrently -r \"npm run codegen\" \"expo start\"",
     "android": "concurrently -r \"npm run codegen\" \"expo start --android\"",
@@ -9,7 +9,7 @@
     "web": "concurrently -r \"npm run codegen\" \"expo start --web\"",
     "lint": "tsc --noEmit && eslint . --fix",
     "postinstall": "husky install",
-    "codegen": "graphql-codegen --config src/app/codegen/config.js"
+    "codegen": "graphql-codegen --config src/core/codegen/config.js"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -21,11 +21,13 @@
     "@types/react": "~18.2.14",
     "dotenv": "^16.3.1",
     "expo": "~49.0.15",
+    "expo-router": "2.0.10",
     "expo-status-bar": "~1.6.0",
     "graphql": "16.8.1",
     "graphql-ws": "^5.14.3",
     "lodash": "^4.17.21",
     "react": "18.2.0",
+    "react-combine-providers": "^0.9.6",
     "react-native": "0.72.6",
     "react-native-dotenv": "^3.4.9",
     "utility-types": "^3.10.0",

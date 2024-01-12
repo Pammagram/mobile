@@ -24,6 +24,7 @@
     "baseUrl": "./src",
     "paths": {
       "$core": ["core"],
+      "$core/*": ["core/*"],
       "$processes": ["processes"],
       "$configs": ["configs"],
       "$pages": ["pages"],
@@ -31,7 +32,8 @@
       "$features": ["features"],
       "$entities": ["entities"],
       "$shared": ["shared"],
-      "$shared/*": ["shared/*"]
+      "$shared/*": ["shared/*"],
+      "$screens": ["screens"],
     }
   },
   "extends": "expo/tsconfig.base",

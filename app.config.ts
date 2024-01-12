@@ -21,4 +21,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: '#ffffff',
     },
   },
+  scheme: 'pammagram-mobile',
+  experiments: {
+    tsconfigPaths: true,
+  },
+  plugins: ['expo-router'],
 });

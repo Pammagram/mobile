@@ -1,4 +1,4 @@
-const { CODEGEN_PATH } = require('./src/app/codegen/constants');
+const { CODEGEN_PATH } = require('./src/core/codegen/constants');
 
 const EXCLUDE_NAMES_NAMING_CONVENTION_WORDS = [
   'reCaptcha',

@@ -14,6 +14,13 @@ module.exports = function(api) {
           safe: true,
         },
       ],
+      [
+        '@tamagui/babel-plugin',
+        {
+          components: ['tamagui'],
+          config: './src/core/theme/config.ts',
+        },
+      ]
     ],
   };
 };

@@ -1,5 +1,5 @@
 import { Slot, SplashScreen } from 'expo-router';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { usePreloadedAssets } from '$core/assets';
 import { combineProviders } from '$core/providers';
@@ -10,9 +10,15 @@ const manager = combineProviders();
 const MasterProvider = manager.master();
 
 const PreProviderApp: FC = () => {
-  const { isAssetsLoaded } = usePreloadedAssets();
+  const { areAssetsLoaded } = usePreloadedAssets();
 
-  if (!isAssetsLoaded) {
+  useEffect(() => {
+    if (areAssetsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [areAssetsLoaded]);
+
+  if (!areAssetsLoaded) {
     return null;
   }
 

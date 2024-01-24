@@ -1,9 +1,7 @@
 import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
-import { useEffect } from 'react';
 
 type ReturnType = {
-  isAssetsLoaded: boolean;
+  areAssetsLoaded: boolean;
 };
 
 export const usePreloadedAssets = (): ReturnType => {
@@ -14,17 +12,11 @@ export const usePreloadedAssets = (): ReturnType => {
 
   const assetsLoadStatus = [isFontsLoaded];
 
-  const isAssetsLoaded = assetsLoadStatus.every(
+  const areAssetsLoaded = assetsLoadStatus.every(
     (isAssetLoaded) => isAssetLoaded,
   );
 
-  useEffect(() => {
-    if (isAssetsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [isAssetsLoaded]);
-
   return {
-    isAssetsLoaded,
+    areAssetsLoaded,
   };
 };

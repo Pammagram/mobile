@@ -17,7 +17,7 @@ export type Scalars = {
 
 export type CreateUserInput = {
   phoneNumber: Scalars['String']['input'];
-  username: Scalars['String']['input'];
+  username?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateUserOutput = {
@@ -28,14 +28,25 @@ export type CreateUserOutput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: CreateUserOutput;
-  resendSms: Scalars['Boolean']['output'];
-  sendSms: Scalars['Boolean']['output'];
+  logout: Scalars['Boolean']['output'];
+  sendSms: SendSmsOutput;
+  updateMe: UpdateUserOutput;
   verifySms: VerifySmsOutput;
 };
 
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+
+export type MutationSendSmsArgs = {
+  input: SendSmsInput;
+};
+
+
+export type MutationUpdateMeArgs = {
+  input: UpdateUserInput;
 };
 
 
@@ -50,14 +61,32 @@ export type Query = {
   users: Array<UserDto>;
 };
 
+export type SendSmsInput = {
+  phoneNumber: Scalars['String']['input'];
+};
+
+export type SendSmsOutput = {
+  __typename?: 'SendSmsOutput';
+  data: Scalars['Boolean']['output'];
+};
+
 export type SessionDto = {
   __typename?: 'SessionDto';
-  active: Scalars['Boolean']['output'];
+  id: Scalars['Int']['output'];
   ip: Scalars['String']['output'];
-  lastVisitInMs: Scalars['Int']['output'];
-  sessionId: Scalars['String']['output'];
-  user: Array<UserDto>;
+  lastVisitInMs: Scalars['DateTime']['output'];
+  user: UserDto;
   userAgent: Scalars['String']['output'];
+};
+
+export type UpdateUserInput = {
+  lastActiveInMs?: InputMaybe<Scalars['DateTime']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateUserOutput = {
+  __typename?: 'UpdateUserOutput';
+  data: UserDto;
 };
 
 export type UserDto = {
@@ -65,16 +94,17 @@ export type UserDto = {
   id: Scalars['Int']['output'];
   lastActiveInMs: Scalars['DateTime']['output'];
   phoneNumber: Scalars['String']['output'];
-  sessions?: Maybe<Array<SessionDto>>;
-  username: Scalars['String']['output'];
+  sessions: Array<SessionDto>;
+  username?: Maybe<Scalars['String']['output']>;
 };
 
 export type VerifySmsInput = {
   code: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
   rememberMe?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type VerifySmsOutput = {
   __typename?: 'VerifySmsOutput';
-  sessionId: Scalars['String']['output'];
+  data: UserDto;
 };

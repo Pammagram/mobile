@@ -35,6 +35,10 @@ export const useLogic = () => {
     if (isUserWithoutUserName) {
       router.push('/update-me');
     }
+
+    if (response?.data.username) {
+      router.push('/');
+    }
   });
 
   return {

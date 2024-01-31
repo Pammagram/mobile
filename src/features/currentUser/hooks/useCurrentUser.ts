@@ -15,7 +15,6 @@ export const useCurrentUser = (): ReturnType => {
     getMe: { data, loading: isLoading },
   } = useMe({
     fetchPolicy: 'network-only',
-    onError: () => null,
   });
 
   useEffect(() => {

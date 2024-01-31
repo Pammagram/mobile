@@ -1,3 +1,4 @@
+import { whiteA } from '@tamagui/colors';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { Input as TamaguiInput, InputProps, Text, View } from 'tamagui';
 
@@ -21,7 +22,7 @@ export const InputController = <Values extends FieldValues>(
             {...restRenderProps}
             {...restProps}
           />
-          {errorMessage && <Text color="#fff">{errorMessage}</Text>}
+          {errorMessage && <Text color={whiteA.whiteA12}>{errorMessage}</Text>}
         </View>
       )}
       control={control}

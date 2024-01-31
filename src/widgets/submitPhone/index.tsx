@@ -46,7 +46,9 @@ export const SubmitPhone: FC<Props> = (props) => {
               {...restProps}
             />
 
-            {errorMessage && <Text color="#fff">{errorMessage}</Text>}
+            {errorMessage && (
+              <Text color={whiteA.whiteA12}>{errorMessage}</Text>
+            )}
           </View>
         )}
         name="phone"
@@ -58,7 +60,7 @@ export const SubmitPhone: FC<Props> = (props) => {
         isLoading={isLoading}
         isDisabled={!isValid}
       >
-        <Text color="#fff">Continue</Text>
+        <Text color={whiteA.whiteA12}>Continue</Text>
       </Button>
     </>
   );

@@ -1,3 +1,4 @@
+import { whiteA } from '@tamagui/colors';
 import { FC } from 'react';
 import { Text } from 'tamagui';
 
@@ -27,7 +28,7 @@ export const EnterCode: FC = () => {
         onPress={onVerifySmsHandler}
         backgroundColor="$red8"
       >
-        <Text color="#fff">Submit</Text>
+        <Text color={whiteA.whiteA12}>Submit</Text>
       </Button>
     </>
   );

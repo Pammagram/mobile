@@ -16,6 +16,7 @@ const config = {
       plugins: ['typescript'],
       config: {
         scalars: {
+          // * We need this to define DateTime as string type, not any.
           DateTime: 'string',
         }
       }

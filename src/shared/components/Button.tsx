@@ -1,3 +1,4 @@
+import { whiteA } from '@tamagui/colors';
 import { FC, ReactNode } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { Button as TamaguiButton, ButtonProps } from 'tamagui';
@@ -15,7 +16,7 @@ export const Button: FC<Props> = (props) => {
 
   return (
     <TamaguiButton disabled={isButtonDisabled} {...restProps}>
-      {isLoading && <ActivityIndicator size="small" />}
+      {isLoading && <ActivityIndicator size="small" color={whiteA.whiteA12} />}
 
       {!isLoading && children}
     </TamaguiButton>

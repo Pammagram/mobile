@@ -13,5 +13,6 @@ export const createHttpLink = (): ApolloLink => {
     uri,
     batchMax, // No more than N operations per batch
     batchInterval, // Wait no more than N ms after first batched operation
+    credentials: 'include',
   });
 };

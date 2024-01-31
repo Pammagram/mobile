@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 
 import { defaultValues, schema, UpdateMeForm } from '../form';
 
-import { userVar } from '$entities';
 import { useUpdateMe } from '$features';
 
 export const useLogic = () => {
@@ -25,9 +24,8 @@ export const useLogic = () => {
   });
 
   const onUpdateMeHandler = handleSubmit(async (data: UpdateMeForm) => {
-    const response = await request({ input: { username: data.username } });
+    await request({ input: { username: data.username } });
 
-    userVar(response?.data ?? null);
     router.push('/');
   });
 

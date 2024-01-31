@@ -8,13 +8,11 @@ import { Button, InputController } from '$shared';
 export const UpdateMe: FC = () => {
   const { control, errors, isLoading, isValid, onUpdateMeHandler } = useLogic();
 
-  const errorMessage = errors.username?.message;
-
   return (
     <View gap={20}>
       <InputController
         control={control}
-        errorMessage={errorMessage}
+        errorMessage={errors.username?.message}
         placeholder="Enter your user name..."
         name="username"
       />

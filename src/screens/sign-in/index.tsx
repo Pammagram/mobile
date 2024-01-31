@@ -48,6 +48,8 @@ const useStyles = (screenWidth: number) => {
       justifyContent: 'center',
       gap: 50,
       backgroundColor: redDark.red2,
+
+      // * We need here negative margin to shift content higher.
       marginTop: '-25%',
     },
     imageContainer: {

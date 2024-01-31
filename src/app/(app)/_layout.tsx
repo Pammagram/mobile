@@ -1,11 +1,10 @@
-import { useReactiveVar } from '@apollo/client';
 import { Redirect, Slot } from 'expo-router';
 import { FC } from 'react';
 
-import { userVar } from '$entities';
+import { useCurrentUser } from '$features';
 
 const MainLayout: FC = () => {
-  const user = useReactiveVar(userVar);
+  const { user } = useCurrentUser('cache-only');
 
   if (!user) {
     return <Redirect href="/" />;

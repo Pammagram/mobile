@@ -1,18 +1,23 @@
-import { useReactiveVar } from '@apollo/client';
 import { Redirect } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { FC } from 'react';
 
-import { userVar } from '$entities';
+import { useCurrentUser } from '$features';
 import { HeadlessStack } from '$shared';
 
 const AuthLayout: FC = () => {
-  const user = useReactiveVar(userVar);
+  const { user } = useCurrentUser('cache-only');
 
-  if (!user) {
+  if (user) {
     return <Redirect href="/" />;
   }
 
-  return <HeadlessStack />;
+  return (
+    <>
+      <StatusBar style="light" />
+      <HeadlessStack />
+    </>
+  );
 };
 
 export default AuthLayout;

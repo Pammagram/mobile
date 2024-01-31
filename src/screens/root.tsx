@@ -10,7 +10,7 @@ export const RootScreen: FC = () => {
     return null;
   }
 
-  if (user?.username) {
+  if (user) {
     return <Redirect href="/main" />;
   }
 

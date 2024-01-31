@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import { defaultValues, EnterCodeForm, schema } from '../form';
 
-import { phoneVar, userVar } from '$entities';
+import { phoneVar } from '$entities';
 import { useVerifySms } from '$features';
 
 export const useLogic = () => {
@@ -29,8 +29,6 @@ export const useLogic = () => {
 
   const onVerifySmsHandler = handleSubmit(async (data: EnterCodeForm) => {
     const response = await request({ input: { phoneNumber, code: data.code } });
-
-    userVar(response?.data ?? null);
 
     const isUserWithoutUserName = response?.data && !response.data.username;
 

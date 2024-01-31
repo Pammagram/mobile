@@ -1,28 +1,27 @@
-import { useEffect } from 'react';
+import { WatchQueryFetchPolicy } from '@apollo/client';
 
 import { useMe } from '../graphql';
 
-import { userVar } from '$entities';
-import { UserDto } from '$shared';
+import { StrictType, UserDto } from '$shared';
 
-type ReturnType = {
+type ReturnType<Strict extends StrictType = StrictType.NOT_STRICT> = {
   isLoading: boolean;
-  user: UserDto | null;
+  user: Strict extends StrictType.STRICT ? UserDto : UserDto | null;
 };
 
-export const useCurrentUser = (): ReturnType => {
+export const useCurrentUser = <
+  Strict extends StrictType = StrictType.NOT_STRICT,
+>(
+  fetchPolicy?: WatchQueryFetchPolicy,
+): ReturnType<Strict> => {
   const {
     getMe: { data, loading: isLoading },
   } = useMe({
-    fetchPolicy: 'network-only',
+    fetchPolicy: fetchPolicy ?? 'network-only',
   });
-
-  useEffect(() => {
-    userVar(data ?? null);
-  }, [data?.id]);
 
   return {
     user: data ?? null,
     isLoading,
-  };
+  } as ReturnType<Strict>;
 };

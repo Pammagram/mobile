@@ -30,10 +30,10 @@ export const useLogic = () => {
   const onVerifySmsHandler = handleSubmit(async (data: EnterCodeForm) => {
     const response = await request({ input: { phoneNumber, code: data.code } });
 
-    if (!response?.data.username) {
-      router.push('/update-me');
-    } else {
+    if (response?.data.username) {
       router.push('/');
+    } else {
+      router.push('/update-me');
     }
   });
 

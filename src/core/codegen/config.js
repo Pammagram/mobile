@@ -14,6 +14,12 @@ const config = {
     [CODEGEN_PATH]: {
       watchPattern: "src/**/*.ts",
       plugins: ['typescript'],
+      config: {
+        scalars: {
+          // * We need this to define DateTime as string type, not any.
+          DateTime: 'string',
+        }
+      }
     },
   },
 };

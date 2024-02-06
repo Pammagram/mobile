@@ -97,6 +97,11 @@ export type EditChatOutput = {
   data: ChatDto;
 };
 
+export type LogoutOutput = {
+  __typename?: 'LogoutOutput';
+  data: Scalars['Boolean']['output'];
+};
+
 export type MessageAddedOutput = {
   __typename?: 'MessageAddedOutput';
   data: MessageDto;
@@ -126,7 +131,7 @@ export type Mutation = {
   createChat: CreateChatOutput;
   createUser: CreateUserOutput;
   editChat: EditChatOutput;
-  logout: Scalars['Boolean']['output'];
+  logout: LogoutOutput;
   removeChat: RemoveChatOutput;
   removeMember: RemoveMemberOutput;
   sendSms: SendSmsOutput;

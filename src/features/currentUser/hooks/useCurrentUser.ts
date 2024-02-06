@@ -17,7 +17,7 @@ export const useCurrentUser = <
   const {
     getMe: { data, loading: isLoading },
   } = useMe({
-    fetchPolicy: fetchPolicy ?? 'network-only',
+    fetchPolicy: fetchPolicy ?? undefined,
   });
 
   return {

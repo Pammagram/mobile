@@ -11,7 +11,7 @@ export const RootScreen: FC = () => {
   }
 
   if (user) {
-    return <Redirect href="/main" />;
+    return <Redirect href="/(app)/(chats)" />;
   }
 
   return <Redirect href="/sign-in" />;

@@ -24,6 +24,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: 'pammagram-mobile',
   experiments: {
     tsconfigPaths: true,
+    typedRoutes: true,
   },
   plugins: ['expo-router'],
 });

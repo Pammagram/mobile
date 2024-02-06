@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { SafeAreaView } from 'react-native';
 import { Text, YGroup } from 'tamagui';
 
-import { useChats, useCurrentUser, useLogout } from '$features';
+import { useCurrentUser, useLogout } from '$features';
 import { Button, StrictType } from '$shared';
 
 export const MainScreen: FC = () => {
@@ -14,12 +14,6 @@ export const MainScreen: FC = () => {
     await logout.request();
   };
 
-  const { getChats } = useChats({
-    variables: {
-      input: {},
-    },
-  });
-
   return (
     <SafeAreaView>
       <YGroup>
@@ -27,12 +21,6 @@ export const MainScreen: FC = () => {
         <Text>Phone number: {user.phoneNumber}</Text>
         <Text>Username: {user.username}</Text>
         <Button onPress={handleLogout}>Logout</Button>
-        {getChats.data?.data.map((chat) => (
-          <>
-            <Text>{chat.title}</Text>
-            <Text>{chat.members.length}</Text>
-          </>
-        ))}
       </YGroup>
     </SafeAreaView>
   );

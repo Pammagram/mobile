@@ -1,4 +1,4 @@
-import { Redirect, Slot } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import { FC } from 'react';
 
 import { useCurrentUser } from '$features';
@@ -10,7 +10,28 @@ const MainLayout: FC = () => {
     return <Redirect href="/" />;
   }
 
-  return <Slot />;
+  return (
+    <Tabs>
+      <Tabs.Screen
+        name="contacts"
+        options={{
+          title: 'Contacts',
+        }}
+      />
+      <Tabs.Screen
+        name="(chats)"
+        options={{
+          title: 'Chats',
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+        }}
+      />
+    </Tabs>
+  );
 };
 
 export default MainLayout;

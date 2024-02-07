@@ -14,23 +14,23 @@ export const ChatsScreen: FC = () => {
 
   return (
     <SafeAreaView>
-      <View>
+      <View style={{ marginHorizontal: 5 }}>
         {getChats.data?.data.map((chat) => (
           <TouchableOpacity
             onPress={() => {
               router.push({
-                pathname: `(chats)/${chat.id}`,
+                pathname: `chats/${chat.id}`,
               });
             }}
             key={chat.id}
             style={{
               display: 'flex',
               flexDirection: 'row',
-              width: '100%',
+              justifyContent: 'space-between',
             }}
           >
             <Text>{chat.title}</Text>
-            <Text>{chat.members.length}</Text>
+            <Text>Members: {chat.members.length}</Text>
           </TouchableOpacity>
         ))}
       </View>

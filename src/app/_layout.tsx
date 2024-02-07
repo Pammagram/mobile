@@ -1,4 +1,4 @@
-import { Slot, SplashScreen } from 'expo-router';
+import { SplashScreen, Stack } from 'expo-router';
 import { FC, useEffect } from 'react';
 
 import { usePreloadedAssets } from '$core/assets';
@@ -24,7 +24,11 @@ const PreProviderApp: FC = () => {
 
   return (
     <MasterProvider>
-      <Slot />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
     </MasterProvider>
   );
 };

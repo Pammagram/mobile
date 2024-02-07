@@ -19,7 +19,7 @@ const MainLayout: FC = () => {
         }}
       />
       <Tabs.Screen
-        name="(chats)"
+        name="chats"
         options={{
           title: 'Chats',
         }}

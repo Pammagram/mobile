@@ -1,5 +1,5 @@
-import { useLocalSearchParams } from 'expo-router';
-import { FC } from 'react';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { FC, useEffect } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Text } from 'tamagui';
 
@@ -8,7 +8,11 @@ import { useChat } from '$features';
 export const ChatScreen: FC = () => {
   const { chatId } = useLocalSearchParams<{ chatId: string }>();
 
-  const { getChat } = useChat({
+  const navigation = useNavigation();
+
+  const {
+    getChat: { data },
+  } = useChat({
     variables: {
       input: {
         id: Number(chatId),
@@ -16,11 +20,15 @@ export const ChatScreen: FC = () => {
     },
   });
 
+  useEffect(() => {
+    navigation.setOptions({
+      title: data?.data.title,
+    });
+  }, [navigation]);
+
   return (
-    <SafeAreaView>
-      <View>
-        <Text>This is chat {getChat.data?.data.title}</Text>
-      </View>
-    </SafeAreaView>
+    <View>
+      <Text>This is chat {data?.data.title}</Text>
+    </View>
   );
 };

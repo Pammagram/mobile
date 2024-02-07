@@ -1,7 +1,6 @@
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { FC, useEffect } from 'react';
-import { SafeAreaView, View } from 'react-native';
-import { Text } from 'tamagui';
+import { Text, View } from 'tamagui';
 
 import { useChat } from '$features';
 
@@ -28,7 +27,7 @@ export const ChatScreen: FC = () => {
 
   return (
     <View>
-      <Text>This is chat {data?.data.title}</Text>
+      <Text marginTop={10}>This is chat {data?.data.title}</Text>
     </View>
   );
 };

@@ -17,4 +17,4 @@ export const QUERY = createChats({
   },
 });
 
-export type Data = InferSelection<typeof QUERY>;
+export type ChatsData = InferSelection<typeof QUERY>;

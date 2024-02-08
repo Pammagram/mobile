@@ -1,10 +1,10 @@
-import { Data, PREFIX, SUBSCRIPTION } from './subscription';
+import { MessageAddedData, PREFIX, SUBSCRIPTION } from './subscription';
 
 import { useCustomSubscription, UseSubscriptionWrapper } from '$shared';
 
 export type UseChatMessageAdded = UseSubscriptionWrapper<
   typeof PREFIX,
-  Data,
+  MessageAddedData,
   never
 >;
 

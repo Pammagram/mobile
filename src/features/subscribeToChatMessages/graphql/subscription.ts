@@ -17,4 +17,4 @@ export const SUBSCRIPTION = createChatMessagesSubscription({
   },
 });
 
-export type Data = InferSelection<typeof SUBSCRIPTION>;
+export type MessageAddedData = InferSelection<typeof SUBSCRIPTION>;

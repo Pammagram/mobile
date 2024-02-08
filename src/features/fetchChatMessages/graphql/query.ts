@@ -4,6 +4,7 @@ import { InferSelection } from '$shared';
 export const PREFIX = 'chatMessages';
 
 export const QUERY = createChatMessages({
+  chatId: true,
   data: {
     id: true,
     sender: {
@@ -17,4 +18,4 @@ export const QUERY = createChatMessages({
   },
 });
 
-export type Data = InferSelection<typeof QUERY>;
+export type ChatMessagesData = InferSelection<typeof QUERY>;

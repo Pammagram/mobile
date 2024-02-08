@@ -121,6 +121,7 @@ export type MessagesInput = {
 
 export type MessagesOutput = {
   __typename?: 'MessagesOutput';
+  chatId: Scalars['Int']['output'];
   data: Array<MessageDto>;
 };
 

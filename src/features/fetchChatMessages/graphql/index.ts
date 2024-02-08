@@ -1,4 +1,4 @@
-import { Data, PREFIX, QUERY } from './query';
+import { ChatMessagesData, PREFIX, QUERY } from './query';
 
 import {
   MessagesInput,
@@ -8,7 +8,7 @@ import {
 
 export type UseChatMessages = UseLazyQueryWrapper<
   typeof PREFIX,
-  Data,
+  ChatMessagesData,
   { input: MessagesInput }
 >;
 

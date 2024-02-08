@@ -1,18 +1,18 @@
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useChatMessages } from 'features/fetchChatMessages';
+import { SUBSCRIPTION } from 'features/subscribeToChatMessages/graphql/subscription';
 import { FC, useEffect } from 'react';
 import { ScrollView, Spinner, Text, View, XStack, YStack } from 'tamagui';
 
+import { createChatMessagesSubscription } from '$entities';
 import { useChat, useCurrentUser } from '$features';
-import { StrictType } from '$shared';
+import { MessageDto, StrictType } from '$shared';
 
 export const ChatScreen: FC = () => {
   const { getChat, getChatMessages } = useLogic();
 
   const { data: messagesData, loading: areMessagesLoading } = getChatMessages;
   const { user } = useCurrentUser<StrictType.STRICT>();
-
-  console.log('messagesData', messagesData?.data.length);
 
   return (
     <View>
@@ -46,7 +46,29 @@ const useLogic = () => {
   const router = useRouter();
 
   const { getChatMessages } = useChatMessages({
-    fetchPolicy: 'cache-first',
+    onCompleted: (_data) => {
+      getChatMessages.subscribeToMore({
+        document: SUBSCRIPTION,
+        updateQuery: (previousResult, options) => {
+          const newMessage = options.subscriptionData.data.response
+            .data as unknown as MessageDto;
+
+          console.log('newMessage', newMessage);
+
+          if (newMessage.chat.id !== Number(chatId)) {
+            return previousResult;
+          }
+
+          console.log('merging result');
+
+          return {
+            response: {
+              data: [...previousResult.response.data, newMessage],
+            },
+          };
+        },
+      });
+    },
   });
 
   const { getChat } = useChat({

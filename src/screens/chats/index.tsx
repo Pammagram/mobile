@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { FC } from 'react';
 import { SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { Text } from 'tamagui';
+import { Button, Text } from 'tamagui';
 
 import { useChats } from '$features';
 

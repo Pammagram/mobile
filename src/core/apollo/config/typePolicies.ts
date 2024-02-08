@@ -24,52 +24,52 @@ export const customTypePolicies: TypePolicies[] = [
       merge: true,
     },
 
-    Subscription: {
-      fields: {
-        messageAdded: {
-          merge: (
-            _existing: MessagesOutput,
-            incoming: MessageAddedOutput,
-            options,
-          ) => {
-            const { toReference, cache, mergeObjects } = options;
+    // Subscription: {
+    //   fields: {
+    //     messageAdded: {
+    //       merge: (
+    //         _existing: MessagesOutput,
+    //         incoming: MessageAddedOutput,
+    //         options,
+    //       ) => {
+    //         const { toReference, cache, mergeObjects } = options;
 
-            const newMessageRef = incoming.data;
-            // TODO retrieve from cache MessageDto somehow
+    //         const newMessageRef = incoming.data;
+    //         // TODO retrieve from cache MessageDto somehow
 
-            const cachedMessages = cache.read<MessagesOutput>({
-              query: QUERY,
-              optimistic: true,
-              variables: {
-                input: {
-                  chatId: 17,
-                },
-              } satisfies { input: MessagesInput },
-            });
+    //         const cachedMessages = cache.read<MessagesOutput>({
+    //           query: QUERY,
+    //           optimistic: true,
+    //           variables: {
+    //             input: {
+    //               chatId: 17,
+    //             },
+    //           } satisfies { input: MessagesInput },
+    //         });
 
-            const fakeMessage: DeepPartial<MessageDto> = {
-              id: 200,
-              chat: {
-                id: 17,
-              },
-              sender: {
-                id: 5,
-                username: 'test',
-              },
-              text: 'test',
-            };
+    //         const fakeMessage: DeepPartial<MessageDto> = {
+    //           id: 200,
+    //           chat: {
+    //             id: 17,
+    //           },
+    //           sender: {
+    //             id: 5,
+    //             username: 'test',
+    //           },
+    //           text: 'test',
+    //         };
 
-            const m = cache.modify<MessagesOutput>({
-              id: `${MESSAGES_TYPE_NAME}:2`,
-              fields: {
-                data: [],
-              },
-            });
+    //         const m = cache.modify<MessagesOutput>({
+    //           id: `${MESSAGES_TYPE_NAME}:2`,
+    //           fields: {
+    //             data: [],
+    //           },
+    //         });
 
-            console.log('m', m);
-          },
-        },
-      },
-    },
+    //         console.log('m', m);
+    //       },
+    //     },
+    //   },
+    // },
   },
 ];

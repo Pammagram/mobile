@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { FC } from 'react';
 import { SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { Button, Text } from 'tamagui';
+import { Text } from 'tamagui';
 
 import { useChats } from '$features';
 
@@ -19,18 +19,18 @@ export const ChatsScreen: FC = () => {
         {getChats.data?.data.map((chat) => (
           <TouchableOpacity
             onPress={() => {
-              router.push({
-                pathname: `chats/${chat.id}`,
-              });
+              router.push(`chats/${chat.id}`);
             }}
             key={chat.id}
             style={{
+              height: 80,
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
+              backgroundColor: '#d6d6cd',
             }}
           >
-            <Text>{chat.title}</Text>
+            <Text fontSize={20}>{chat.title}</Text>
             <Text>{chat.id}</Text>
             <Text>Members: {chat.members.length}</Text>
           </TouchableOpacity>

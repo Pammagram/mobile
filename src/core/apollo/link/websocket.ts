@@ -12,13 +12,14 @@ export const createWebsocketLink = (): ApolloLink | null => {
   // }
 
   const { apiUrl } = serverConfig;
+
   const link = new GraphQLWsLink(
     createClient({
-      url: 'ws://localhost:8080/graphql',
+      url: apiUrl.replace('http', 'ws'),
       // shouldRetry: () => true,
       // // TODO must be updated with proper auth parameters.
       connectionParams: {
-        sessionId: '69c28764-476f-4801-896a-c2610523d01a',
+        sessionId: '69c28764-476f-4801-896a-c2610523d01a', // TODO auth sessionId
       },
     }),
   );

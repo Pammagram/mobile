@@ -17,7 +17,6 @@ export const createLink = (): ApolloLink => {
   const link = split(
     ({ query }) => {
       const definition = getMainDefinition(query);
-
       return (
         definition.kind === Kind.OPERATION_DEFINITION &&
         definition.operation === OperationTypeNode.SUBSCRIPTION

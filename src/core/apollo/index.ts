@@ -10,6 +10,7 @@ export const apolloClient = new ApolloClient({
   cache: new InMemoryCache({
     typePolicies: mergeObjects<TypePolicies>(customTypePolicies.flat()),
   }),
+  connectToDevTools: true,
   defaultOptions: {
     query: {
       errorPolicy: 'all',

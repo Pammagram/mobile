@@ -1,10 +1,14 @@
+import { useApolloClientDevTools } from '@dev-plugins/apollo-client';
 import { Redirect, Tabs } from 'expo-router';
 import { FC } from 'react';
 
-import { useCurrentUser } from '$features';
+import { apolloClient } from '$core/apollo';
+import { useChatMessageAdded, useCurrentUser } from '$features';
 
 const MainLayout: FC = () => {
   const { user } = useCurrentUser('cache-only');
+
+  useChatMessageAdded({});
 
   if (!user) {
     return <Redirect href="/" />;

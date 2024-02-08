@@ -6,6 +6,7 @@ import { Text } from 'tamagui';
 import { useChats } from '$features';
 
 export const ChatsScreen: FC = () => {
+  // TODO subscription for new chats
   const { getChats } = useChats({
     variables: {
       input: {},
@@ -30,6 +31,7 @@ export const ChatsScreen: FC = () => {
             }}
           >
             <Text>{chat.title}</Text>
+            <Text>{chat.id}</Text>
             <Text>Members: {chat.members.length}</Text>
           </TouchableOpacity>
         ))}

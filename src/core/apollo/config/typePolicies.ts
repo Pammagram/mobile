@@ -1,12 +1,15 @@
-import { TypePolicies } from '@apollo/client';
+import { FieldFunctionOptions, TypePolicies } from '@apollo/client';
 import {
+  CHAT_MESSAGES_QUERY,
   ChatMessagesData,
-  QUERY,
 } from 'features/chats/logic/fetchChatMessages/graphql/query';
 import { MessageAddedData } from 'features/chats/logic/subscribeToChatMessages/graphql/subscription';
+import { DeepPartial } from 'utility-types';
 
 import { logPrettied } from '$core/utils';
 import {
+  ChatInput,
+  ChatOutput,
   GraphQlInput,
   GraphQlResponse,
   MessagesInput,
@@ -14,12 +17,42 @@ import {
 } from '$shared';
 
 const MESSAGES_TYPE_NAME = 'MessagesOutput';
+const CHAT_OUTPUT_TYPE_NAME = 'ChatOutput';
+const CHAT_TYPE_NAME = 'ChatDto';
 
+// TODO separate adequately across features
 export const customTypePolicies: TypePolicies[] = [
   {
     [MESSAGES_TYPE_NAME]: {
       merge: true,
       keyFields: ['chatId'],
+    },
+
+    Query: {
+      fields: {
+        chat: {
+          read: (
+            _existing: ChatOutput,
+            options: FieldFunctionOptions<
+              GraphQlInput<ChatInput>,
+              GraphQlInput<ChatInput>
+            >,
+          ) => {
+            const { variables, toReference } = options;
+            const chatId = variables?.input.id;
+
+            const chatReference = toReference({
+              __typename: CHAT_TYPE_NAME,
+              id: chatId,
+            });
+
+            return {
+              __typename: CHAT_OUTPUT_TYPE_NAME,
+              data: chatReference,
+            } satisfies DeepPartial<ChatOutput>;
+          },
+        },
+      },
     },
 
     Subscription: {
@@ -61,7 +94,7 @@ export const customTypePolicies: TypePolicies[] = [
                 GraphQlInput<MessagesInput>
               >(
                 {
-                  query: QUERY,
+                  query: CHAT_MESSAGES_QUERY,
                   variables: {
                     input: {
                       chatId: message.chat.id, // TODO extract id

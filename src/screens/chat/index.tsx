@@ -40,15 +40,18 @@ export const ChatScreen: FC = () => {
     setMessagesContainerHeight,
   } = useChatLayout();
 
-  const onMessageContainerLayout = useCallback((event: LayoutChangeEvent) => {
-    const newHeight = event.nativeEvent.layout.height;
+  const onMessageContainerLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      const newHeight = event.nativeEvent.layout.height;
 
-    if (newHeight === messagesContainerHeight) {
-      return;
-    }
+      if (newHeight === messagesContainerHeight) {
+        return;
+      }
 
-    setMessagesContainerHeight(newHeight);
-  }, []);
+      setMessagesContainerHeight(newHeight);
+    },
+    [messagesContainerHeight],
+  );
 
   const onInputLayout = useCallback(
     (event: LayoutChangeEvent) => {

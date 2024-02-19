@@ -1,4 +1,4 @@
-import { ChatMessagesData, PREFIX, QUERY } from './query';
+import { CHAT_MESSAGES_QUERY, ChatMessagesData, PREFIX } from './query';
 
 import { MessagesInput, useCustomQuery, UseQueryWrapper } from '$shared';
 
@@ -9,4 +9,4 @@ export type UseChatMessages = UseQueryWrapper<
 >;
 
 export const useChatMessages: UseChatMessages = (...args) =>
-  useCustomQuery(PREFIX, QUERY, ...args);
+  useCustomQuery(PREFIX, CHAT_MESSAGES_QUERY, ...args);

@@ -1,11 +1,13 @@
 import { ChevronLeft, UserCircle } from '@tamagui/lucide-icons';
 import { Colors } from 'configs/constants';
-import { router, Stack } from 'expo-router';
-import { FC, useCallback } from 'react';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { FC, useCallback, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text, XGroup, YGroup, YStack } from 'tamagui';
 import { create } from 'zustand';
+
+import { useChat } from '$features';
 
 type ChatHeaderParams = {
   // headerHeight: number;
@@ -28,6 +30,18 @@ export const useChatLayout = create<ChatHeaderParams>((set) => ({
   setMessagesContainerHeight: (messagesContainerHeight: number) =>
     set({ messagesContainerHeight }),
 }));
+
+const ChatTitle = () => {
+  const { getChat } = useLogic();
+
+  const chatName = getChat.data?.data.title;
+
+  return (
+    <YGroup alignItems="center" width={50}>
+      <Text>{chatName}r</Text>
+    </YGroup>
+  );
+};
 
 const Header: FC = () => {
   const { top } = useSafeAreaInsets();
@@ -52,11 +66,7 @@ const Header: FC = () => {
             <Text>Back</Text>
           </XGroup>
         </TouchableOpacity>
-
-        <YGroup alignItems="center" width={50}>
-          <Text>User</Text>
-        </YGroup>
-
+        <ChatTitle />
         <YGroup alignItems="center" width={50}>
           <UserCircle color="black" />
         </YGroup>
@@ -84,3 +94,27 @@ const Layout = () => {
 };
 
 export default Layout;
+
+const useLogic = () => {
+  const { chatId } = useLocalSearchParams<{ chatId: string }>();
+
+  // TODO Optimize we can get from cache from chats
+  const { getChat } = useChat({
+    variables: {
+      input: {
+        id: Number(chatId),
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (!getChat.loading && !getChat.data?.data) {
+      console.error('Not found chat');
+      router.push('/(app)/contacts');
+    }
+  }, [getChat.data]);
+
+  return {
+    getChat,
+  };
+};

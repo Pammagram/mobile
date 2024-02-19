@@ -8,18 +8,8 @@ type SendMessageParams = {
 
 export const useLogic = () => {
   const { chatId } = useLocalSearchParams<{ chatId: string }>();
-  // const navigation = useNavigation();
-  // const router = useRouter();
 
   const { addMessage } = useAddMessage();
-
-  // const { getChat } = useChat({
-  //   variables: {
-  //     input: {
-  //       id: Number(chatId),
-  //     },
-  //   },
-  // });
 
   const sendMessage = useCallback(
     (params: SendMessageParams) => {
@@ -34,19 +24,6 @@ export const useLogic = () => {
     },
     [addMessage],
   );
-
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     title: getChat.data?.data.title,
-  //   });
-  // }, [navigation]);
-
-  // useEffect(() => {
-  //   if (!getChat.loading && !getChat.data?.data) {
-  //     console.error('Not found chat');
-  //     router.push('/(app)/chats');
-  //   }
-  // }, [getChat]);
 
   return {
     // getChat,

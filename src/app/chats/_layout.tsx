@@ -1,19 +1,43 @@
 import { ChevronLeft, UserCircle } from '@tamagui/lucide-icons';
 import { Colors } from 'configs/constants';
 import { router, Stack } from 'expo-router';
+import { FC, useCallback } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Text, View, XGroup, YGroup } from 'tamagui';
+import { Text, XGroup, YGroup, YStack } from 'tamagui';
+import { create } from 'zustand';
 
-const Header = () => {
+type ChatHeaderParams = {
+  // headerHeight: number;
+  inputHeight: number;
+  messagesContainerHeight: number;
+
+  // setHeaderHeight: (height: number) => void;
+  setInputHeight: (height: number) => void;
+  setMessagesContainerHeight: (height: number) => void;
+};
+
+export const useChatLayout = create<ChatHeaderParams>((set) => ({
+  // headerHeight: 0,
+  // setHeaderHeight: (headerHeight: number) => set({ headerHeight }),
+
+  inputHeight: 0,
+  setInputHeight: (inputHeight: number) => set({ inputHeight }),
+
+  messagesContainerHeight: 0,
+  setMessagesContainerHeight: (messagesContainerHeight: number) =>
+    set({ messagesContainerHeight }),
+}));
+
+const Header: FC = () => {
   const { top } = useSafeAreaInsets();
 
-  const handlePopToTop = () => {
+  const handlePopToTop = useCallback(() => {
     router.back();
-  };
+  }, [router]);
 
   return (
-    <View paddingTop={top} backgroundColor={Colors.PRIMARY_RED}>
+    <YStack paddingTop={top} backgroundColor={Colors.PRIMARY_RED}>
       <XGroup
         paddingTop={top}
         justifyContent="space-between"
@@ -37,7 +61,7 @@ const Header = () => {
           <UserCircle color="black" />
         </YGroup>
       </XGroup>
-    </View>
+    </YStack>
   );
 };
 
@@ -46,6 +70,7 @@ const Layout = () => {
     <Stack
       screenOptions={{
         header: Header,
+        freezeOnBlur: true,
       }}
     >
       <Stack.Screen

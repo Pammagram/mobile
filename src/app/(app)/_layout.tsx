@@ -28,7 +28,6 @@ const MainLayout: FC = () => {
         name="chats"
         options={{
           title: 'Chats',
-          unmountOnBlur: false,
           tabBarIcon: tabBarIcon(MessageCircle),
         }}
       />

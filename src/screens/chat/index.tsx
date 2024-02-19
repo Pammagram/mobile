@@ -1,16 +1,20 @@
+import { useChatLayout } from 'app/chats/_layout';
 import { FC, useCallback, useRef } from 'react';
 import {
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
+  LayoutChangeEvent,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Spinner, View, YStack } from 'tamagui';
 
 import { useLogic } from './useLogic';
 
 import { InputToolbar, MessagesContainer } from '$features';
+
+let rerenders = 0;
 
 export const ChatScreen: FC = () => {
   const { getChatMessages, sendMessage, messages, user } = useLogic();
@@ -31,11 +35,27 @@ export const ChatScreen: FC = () => {
 
   const { bottom } = useSafeAreaInsets();
 
-  const inputToolBarHeightRef = useRef<number>(0);
-  const safeAreaViewHeightRef = useRef<number>(0);
+  const {
+    inputHeight,
+    messagesContainerHeight,
+    setInputHeight,
+    setMessagesContainerHeight,
+  } = useChatLayout();
 
-  const messagesContainerHeight =
-    safeAreaViewHeightRef.current - inputToolBarHeightRef.current;
+  const onMessageContainerLayout = useCallback((event: LayoutChangeEvent) => {
+    setMessagesContainerHeight(event.nativeEvent.layout.height);
+  }, []);
+
+  const onInputLayout = useCallback((params: LayoutChangeEvent) => {
+    setInputHeight(params.nativeEvent.layout.height);
+  }, []);
+
+  const messagesContainerHeightWithoutInput =
+    messagesContainerHeight - inputHeight;
+
+  rerenders++;
+
+  console.log('rerender', rerenders);
 
   return (
     <View
@@ -43,35 +63,29 @@ export const ChatScreen: FC = () => {
         overflow: 'hidden',
         flex: 1,
       }}
-      onLayout={(params) => {
-        safeAreaViewHeightRef.current = params.nativeEvent.layout.height;
-      }}
+      onLayout={onMessageContainerLayout}
     >
       <KeyboardAvoidingView
-        style={{
-          flex: 1,
-        }}
         keyboardVerticalOffset={bottom * 2}
         behavior="position"
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            {areMessagesLoading && <Spinner />}
-            {!areMessagesLoading && (
-              <MessagesContainer
-                ref={flatListRef}
-                isFromMe={(message) => message.sender.id === user?.id}
-                height={messagesContainerHeight}
-                messages={messages}
-              />
-            )}
-            <InputToolbar
-              onLayout={(params) => {
-                inputToolBarHeightRef.current =
-                  params.nativeEvent.layout.height;
+            <View
+              style={{
+                height: messagesContainerHeightWithoutInput,
               }}
-              onSubmit={onSendHandler}
-            />
+            >
+              {/* {areMessagesLoading && <Spinner />} */}
+              {!areMessagesLoading && messages && (
+                <MessagesContainer
+                  ref={flatListRef}
+                  isFromMe={(message) => message.sender.id === user?.id}
+                  messages={messages}
+                />
+              )}
+            </View>
+            <InputToolbar onLayout={onInputLayout} onSubmit={onSendHandler} />
           </>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

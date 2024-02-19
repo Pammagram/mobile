@@ -1,9 +1,10 @@
 import { Colors } from 'configs/constants';
 import { ChatMessage } from 'features/chats/logic/fetchChatMessages/graphql/query';
-import { FC, forwardRef, Ref } from 'react';
+import { FC, forwardRef, memo, Ref } from 'react';
 import { FlatList } from 'react-native';
 import { Avatar, Text, View, XStack } from 'tamagui';
 
+// TODO to util
 const stringToColor = (str: string) => {
   let hash = 0;
 
@@ -95,30 +96,32 @@ export const Message: FC<MessageProps> = (props) => {
 export type MessagesContainerProps = {
   isFromMe: (message: ChatMessage) => boolean;
   messages: ChatMessage[];
-
   height?: number;
 };
 
-export const MessagesContainer = forwardRef(
-  (props: MessagesContainerProps, ref: Ref<FlatList<ChatMessage>>) => {
-    const { height, messages, isFromMe } = props;
+export const MessagesContainer = memo(
+  forwardRef(
+    (props: MessagesContainerProps, ref: Ref<FlatList<ChatMessage>>) => {
+      const { height, messages, isFromMe } = props;
 
-    return (
-      <FlatList
-        ref={ref}
-        style={{ height }}
-        inverted
-        showsVerticalScrollIndicator={false}
-        data={messages}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item, index }) => (
-          <Message
-            isFromMe={isFromMe(item)}
-            showAvatar={messages[index - 1]?.sender.id !== item.sender.id}
-            message={item} // TODO fix typings
-          />
-        )}
-      />
-    );
-  },
+      return (
+        <FlatList
+          maxToRenderPerBatch={30}
+          ref={ref}
+          style={{ height }}
+          inverted
+          showsVerticalScrollIndicator={false}
+          data={messages}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item, index }) => (
+            <Message
+              isFromMe={isFromMe(item)}
+              showAvatar={messages[index - 1]?.sender.id !== item.sender.id}
+              message={item} // TODO fix typings
+            />
+          )}
+        />
+      );
+    },
+  ),
 );

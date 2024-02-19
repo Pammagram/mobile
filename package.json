@@ -49,7 +49,8 @@
     "react-native-swipe-list-view": "^3.2.9",
     "tamagui": "^1.74.8",
     "utility-types": "^3.10.0",
-    "yup": "^1.3.3"
+    "yup": "^1.3.3",
+    "zustand": "^4.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

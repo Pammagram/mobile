@@ -1,8 +1,13 @@
 import { Colors } from 'configs/constants';
+import { useLocalSearchParams } from 'expo-router';
+import { useChatMessages } from 'features/chats/logic';
 import { ChatMessage } from 'features/chats/logic/fetchChatMessages/graphql/query';
-import { FC, forwardRef, memo, Ref } from 'react';
+import { useCurrentUser } from 'features/currentUser';
+import { FC, forwardRef, memo, Ref, useMemo } from 'react';
 import { FlatList } from 'react-native';
-import { Avatar, Text, View, XStack } from 'tamagui';
+import { Avatar, Spinner, Text, View, XStack } from 'tamagui';
+
+import { StrictType } from '$shared';
 
 // TODO to util
 const stringToColor = (str: string) => {
@@ -93,34 +98,59 @@ export const Message: FC<MessageProps> = (props) => {
   );
 };
 
-export type MessagesContainerProps = {
-  isFromMe: (message: ChatMessage) => boolean;
-  messages: ChatMessage[];
-  height?: number;
-};
+export type MessagesContainerProps = {};
 
 export const MessagesContainer = memo(
   forwardRef(
     (props: MessagesContainerProps, ref: Ref<FlatList<ChatMessage>>) => {
-      const { height, messages, isFromMe } = props;
+      // const {} = props;
+
+      const { chatId } = useLocalSearchParams<{ chatId: string }>();
+
+      const { getChatMessages } = useChatMessages({
+        variables: {
+          input: {
+            chatId: Number(chatId),
+          },
+        },
+      });
+
+      const { loading: areMessagesLoading } = getChatMessages;
+
+      const messages = useMemo(
+        () => [...(getChatMessages.data?.data || [])].reverse(),
+        [getChatMessages.data?.data],
+      );
+
+      const { user } = useCurrentUser<StrictType.NOT_STRICT>();
 
       return (
-        <FlatList
-          maxToRenderPerBatch={30}
-          ref={ref}
-          style={{ height }}
-          inverted
-          showsVerticalScrollIndicator={false}
-          data={messages}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item, index }) => (
-            <Message
-              isFromMe={isFromMe(item)}
-              showAvatar={messages[index - 1]?.sender.id !== item.sender.id}
-              message={item} // TODO fix typings
+        <>
+          {areMessagesLoading && (
+            <View flex={1} justifyContent="center">
+              <Spinner />
+            </View>
+          )}
+          {!areMessagesLoading && messages && (
+            <FlatList
+              maxToRenderPerBatch={30}
+              ref={ref}
+              inverted
+              showsVerticalScrollIndicator={false}
+              data={messages}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item: message, index }) => (
+                <Message
+                  isFromMe={message.sender.id === user?.id}
+                  showAvatar={
+                    messages[index - 1]?.sender.id !== message.sender.id
+                  }
+                  message={message} // TODO fix typings
+                />
+              )}
             />
           )}
-        />
+        </>
       );
     },
   ),

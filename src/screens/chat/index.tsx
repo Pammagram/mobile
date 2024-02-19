@@ -14,11 +14,9 @@ import { useLogic } from './useLogic';
 
 import { InputToolbar, MessagesContainer } from '$features';
 
-let rerenders = 0;
-
 export const ChatScreen: FC = () => {
-  const { getChatMessages, sendMessage, messages, user } = useLogic();
-  const { loading: areMessagesLoading } = getChatMessages;
+  const { sendMessage } = useLogic();
+
   const flatListRef = useRef<FlatList>(null);
 
   const onSendHandler = useCallback(
@@ -43,19 +41,30 @@ export const ChatScreen: FC = () => {
   } = useChatLayout();
 
   const onMessageContainerLayout = useCallback((event: LayoutChangeEvent) => {
-    setMessagesContainerHeight(event.nativeEvent.layout.height);
+    const newHeight = event.nativeEvent.layout.height;
+
+    if (newHeight === messagesContainerHeight) {
+      return;
+    }
+
+    setMessagesContainerHeight(newHeight);
   }, []);
 
-  const onInputLayout = useCallback((params: LayoutChangeEvent) => {
-    setInputHeight(params.nativeEvent.layout.height);
-  }, []);
+  const onInputLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      const newHeight = event.nativeEvent.layout.height;
+
+      if (newHeight === inputHeight) {
+        return;
+      }
+
+      setInputHeight(newHeight);
+    },
+    [inputHeight],
+  );
 
   const messagesContainerHeightWithoutInput =
     messagesContainerHeight - inputHeight;
-
-  rerenders++;
-
-  console.log('rerender', rerenders);
 
   return (
     <View
@@ -76,14 +85,7 @@ export const ChatScreen: FC = () => {
                 height: messagesContainerHeightWithoutInput,
               }}
             >
-              {/* {areMessagesLoading && <Spinner />} */}
-              {!areMessagesLoading && messages && (
-                <MessagesContainer
-                  ref={flatListRef}
-                  isFromMe={(message) => message.sender.id === user?.id}
-                  messages={messages}
-                />
-              )}
+              <MessagesContainer ref={flatListRef} />
             </View>
             <InputToolbar onLayout={onInputLayout} onSubmit={onSendHandler} />
           </>

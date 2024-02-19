@@ -1,19 +1,14 @@
 import { FC, useCallback, useRef } from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  SafeAreaView,
-  TextInput,
-} from 'react-native';
+import { KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Spinner, Text, XStack } from 'tamagui';
+import { Spinner } from 'tamagui';
 
 import { useLogic } from './useLogic';
 
-import { InputToolbar } from '$features';
+import { InputToolbar, MessagesContainer } from '$features';
 
 export const ChatScreen: FC = () => {
-  const { getChatMessages, sendMessage, messages } = useLogic();
+  const { getChatMessages, sendMessage, messages, user } = useLogic();
   const { loading: areMessagesLoading } = getChatMessages;
 
   const onSendHandler = useCallback((text: string) => {
@@ -25,7 +20,7 @@ export const ChatScreen: FC = () => {
 
   const { bottom } = useSafeAreaInsets();
 
-  const flatListHeight =
+  const messagesContainerHeight =
     safeAreaViewHeightRef.current - inputToolBarHeightRef.current - bottom;
 
   return (
@@ -48,21 +43,10 @@ export const ChatScreen: FC = () => {
       >
         {areMessagesLoading && <Spinner />}
         {!areMessagesLoading && (
-          <FlatList
-            style={{
-              height: flatListHeight,
-            }}
-            inverted
-            data={messages}
-            renderItem={(props) => {
-              const { item: message } = props;
-
-              return (
-                <XStack>
-                  <Text>{message.text}</Text>
-                </XStack>
-              );
-            }}
+          <MessagesContainer
+            isFromMe={(message) => message.sender.id === user?.id}
+            height={messagesContainerHeight}
+            messages={messages}
           />
         )}
         <InputToolbar

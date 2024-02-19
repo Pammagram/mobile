@@ -19,3 +19,5 @@ export const QUERY = createChatMessages({
 });
 
 export type ChatMessagesData = InferSelection<typeof QUERY>;
+
+export type ChatMessage = ChatMessagesData['data'][0];

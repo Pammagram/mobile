@@ -2,10 +2,8 @@ import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useChatMessages } from 'features/chats/logic/fetchChatMessages';
 import { useAddMessage } from 'features/chats/logic/sendMessage';
 import { useCallback, useEffect, useMemo } from 'react';
-import { IMessage } from 'react-native-gifted-chat';
 
-import { useChat } from '$features';
-import { MessageDto } from '$shared';
+import { useChat, useCurrentUser } from '$features';
 
 type SendMessageParams = {
   text: string;
@@ -15,6 +13,7 @@ export const useLogic = () => {
   const { chatId } = useLocalSearchParams<{ chatId: string }>();
   const navigation = useNavigation();
   const router = useRouter();
+  const { user } = useCurrentUser();
 
   const { getChatMessages } = useChatMessages({
     variables: {
@@ -35,17 +34,15 @@ export const useLogic = () => {
   });
 
   const sendMessage = useCallback(
-    async (params: SendMessageParams) => {
+    (params: SendMessageParams) => {
       const { text } = params;
 
-      const response = await addMessage.request({
+      void addMessage.request({
         input: {
           chatId: Number(chatId),
           text,
         },
       });
-
-      console.log('response', response);
     },
     [addMessage],
   );
@@ -73,18 +70,6 @@ export const useLogic = () => {
     getChatMessages,
     sendMessage,
     messages,
+    user,
   };
 };
-
-export const transformMessage: (message: MessageDto) => IMessage = (
-  message,
-) => ({
-  _id: message.id,
-  createdAt: new Date(),
-  text: message.text,
-  user: {
-    _id: message.sender.id,
-    name: message.sender.username || '',
-  },
-  sent: true,
-});

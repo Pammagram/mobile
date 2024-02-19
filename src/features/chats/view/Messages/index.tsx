@@ -1,3 +1,4 @@
+import { Colors } from 'configs/constants';
 import { ChatMessage } from 'features/chats/logic/fetchChatMessages/graphql/query';
 import { FC, forwardRef, Ref } from 'react';
 import { FlatList } from 'react-native';
@@ -52,7 +53,12 @@ const MessageText: FC<MessageTextProps> = (props) => {
   const { text } = props;
 
   return (
-    <View backgroundColor="rgb(98,177,236)" borderRadius={10} padding={10}>
+    <View
+      backgroundColor={Colors.PRIMARY_BLUE}
+      borderRadius={10}
+      maxWidth="80%"
+      padding={10}
+    >
       <Text>{text}</Text>
     </View>
   );
@@ -102,7 +108,9 @@ export const MessagesContainer = forwardRef(
         ref={ref}
         style={{ height }}
         inverted
+        showsVerticalScrollIndicator={false}
         data={messages}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) => (
           <Message
             isFromMe={isFromMe(item)}

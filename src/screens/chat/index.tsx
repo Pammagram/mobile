@@ -3,11 +3,10 @@ import {
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
-  SafeAreaView,
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Spinner } from 'tamagui';
+import { Spinner, View, YStack } from 'tamagui';
 
 import { useLogic } from './useLogic';
 
@@ -30,16 +29,16 @@ export const ChatScreen: FC = () => {
     [flatListRef],
   );
 
+  const { bottom } = useSafeAreaInsets();
+
   const inputToolBarHeightRef = useRef<number>(0);
   const safeAreaViewHeightRef = useRef<number>(0);
 
-  const { bottom } = useSafeAreaInsets();
-
   const messagesContainerHeight =
-    safeAreaViewHeightRef.current - inputToolBarHeightRef.current - bottom;
+    safeAreaViewHeightRef.current - inputToolBarHeightRef.current;
 
   return (
-    <SafeAreaView
+    <View
       style={{
         overflow: 'hidden',
         flex: 1,
@@ -51,9 +50,8 @@ export const ChatScreen: FC = () => {
       <KeyboardAvoidingView
         style={{
           flex: 1,
-          marginBottom: bottom,
         }}
-        keyboardVerticalOffset={140}
+        keyboardVerticalOffset={bottom * 2}
         behavior="position"
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -77,6 +75,6 @@ export const ChatScreen: FC = () => {
           </>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };

@@ -1,7 +1,9 @@
-import { Send } from '@tamagui/lucide-icons';
+import { Paperclip, Send } from '@tamagui/lucide-icons';
+import { Colors } from 'configs/constants';
 import { FC, memo, useCallback, useRef } from 'react';
 import { LayoutChangeEvent, TextInput, TouchableOpacity } from 'react-native';
-import { XStack } from 'tamagui';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Input, XStack } from 'tamagui';
 
 export type InputToolbarProps = {
   onSubmit: (text: string) => void;
@@ -13,6 +15,7 @@ export const InputToolbar: FC<InputToolbarProps> = memo((props) => {
 
   const textRef = useRef<string>('');
   const inputRef = useRef<TextInput>(null);
+  const { bottom } = useSafeAreaInsets();
 
   const pressHandler = useCallback(() => {
     onSubmit(textRef.current);
@@ -25,12 +28,23 @@ export const InputToolbar: FC<InputToolbarProps> = memo((props) => {
   }, []);
 
   return (
-    <XStack onLayout={onLayout} padding={10} justifyContent="space-between">
-      <TextInput
+    <XStack
+      onLayout={onLayout}
+      paddingHorizontal={15}
+      backgroundColor={Colors.SECONDARY_RED}
+      justifyContent="space-between"
+      alignItems="center"
+      gap={15}
+      paddingVertical={10}
+      paddingBottom={bottom}
+      marginTop={5}
+    >
+      <Paperclip color="black" />
+      <Input
+        flex={1}
         ref={inputRef}
         onChangeText={changeTextHandler}
-        placeholder="test"
-        style={{ flex: 1 }}
+        placeholder="Enter your message..."
       />
       <TouchableOpacity onPress={pressHandler}>
         <Send color="black" />

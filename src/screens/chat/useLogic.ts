@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
-import { useChatMessages } from 'features/chats/fetchChatMessages';
-import { useAddMessage } from 'features/chats/sendMessage';
-import { useCallback, useEffect } from 'react';
+import { useChatMessages } from 'features/chats/logic/fetchChatMessages';
+import { useAddMessage } from 'features/chats/logic/sendMessage';
+import { useCallback, useEffect, useMemo } from 'react';
 import { IMessage } from 'react-native-gifted-chat';
 
 import { useChat } from '$features';
@@ -50,6 +50,11 @@ export const useLogic = () => {
     [addMessage],
   );
 
+  const messages = useMemo(
+    () => [...(getChatMessages.data?.data || [])].reverse(),
+    [getChatMessages.data?.data],
+  );
+
   useEffect(() => {
     navigation.setOptions({
       title: getChat.data?.data.title,
@@ -67,6 +72,7 @@ export const useLogic = () => {
     getChat,
     getChatMessages,
     sendMessage,
+    messages,
   };
 };
 

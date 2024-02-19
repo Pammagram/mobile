@@ -2,8 +2,8 @@ import { TypePolicies } from '@apollo/client';
 import {
   ChatMessagesData,
   QUERY,
-} from 'features/chats/fetchChatMessages/graphql/query';
-import { MessageAddedData } from 'features/chats/subscribeToChatMessages/graphql/subscription';
+} from 'features/chats/logic/fetchChatMessages/graphql/query';
+import { MessageAddedData } from 'features/chats/logic/subscribeToChatMessages/graphql/subscription';
 
 import { logPrettied } from '$core/utils';
 import {

@@ -1,5 +1,11 @@
 import { FC, useCallback, useRef } from 'react';
-import { KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import {
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Spinner } from 'tamagui';
 
@@ -10,10 +16,19 @@ import { InputToolbar, MessagesContainer } from '$features';
 export const ChatScreen: FC = () => {
   const { getChatMessages, sendMessage, messages, user } = useLogic();
   const { loading: areMessagesLoading } = getChatMessages;
+  const flatListRef = useRef<FlatList>(null);
 
-  const onSendHandler = useCallback((text: string) => {
-    void sendMessage({ text });
-  }, []);
+  const onSendHandler = useCallback(
+    (text: string) => {
+      void sendMessage({ text });
+
+      flatListRef.current?.scrollToOffset({
+        offset: 0,
+        animated: true,
+      });
+    },
+    [flatListRef],
+  );
 
   const inputToolBarHeightRef = useRef<number>(0);
   const safeAreaViewHeightRef = useRef<number>(0);
@@ -41,20 +56,26 @@ export const ChatScreen: FC = () => {
         keyboardVerticalOffset={140}
         behavior="position"
       >
-        {areMessagesLoading && <Spinner />}
-        {!areMessagesLoading && (
-          <MessagesContainer
-            isFromMe={(message) => message.sender.id === user?.id}
-            height={messagesContainerHeight}
-            messages={messages}
-          />
-        )}
-        <InputToolbar
-          onLayout={(params) => {
-            inputToolBarHeightRef.current = params.nativeEvent.layout.height;
-          }}
-          onSubmit={onSendHandler}
-        />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <>
+            {areMessagesLoading && <Spinner />}
+            {!areMessagesLoading && (
+              <MessagesContainer
+                ref={flatListRef}
+                isFromMe={(message) => message.sender.id === user?.id}
+                height={messagesContainerHeight}
+                messages={messages}
+              />
+            )}
+            <InputToolbar
+              onLayout={(params) => {
+                inputToolBarHeightRef.current =
+                  params.nativeEvent.layout.height;
+              }}
+              onSubmit={onSendHandler}
+            />
+          </>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

@@ -1,5 +1,5 @@
 import { ChatMessage } from 'features/chats/logic/fetchChatMessages/graphql/query';
-import { FC } from 'react';
+import { FC, forwardRef, Ref } from 'react';
 import { FlatList } from 'react-native';
 import { Avatar, Text, View, XStack } from 'tamagui';
 
@@ -89,26 +89,28 @@ export const Message: FC<MessageProps> = (props) => {
 export type MessagesContainerProps = {
   isFromMe: (message: ChatMessage) => boolean;
   messages: ChatMessage[];
+
   height?: number;
 };
 
-export const MessagesContainer: FC<MessagesContainerProps> = (props) => {
-  const { height, messages, isFromMe } = props;
+export const MessagesContainer = forwardRef(
+  (props: MessagesContainerProps, ref: Ref<FlatList<ChatMessage>>) => {
+    const { height, messages, isFromMe } = props;
 
-  return (
-    <FlatList
-      style={{
-        height,
-      }}
-      inverted
-      data={messages}
-      renderItem={({ item, index }) => (
-        <Message
-          isFromMe={isFromMe(item)}
-          showAvatar={messages[index - 1]?.sender.id !== item.sender.id}
-          message={item} // TODO fix typings
-        />
-      )}
-    />
-  );
-};
+    return (
+      <FlatList
+        ref={ref}
+        style={{ height }}
+        inverted
+        data={messages}
+        renderItem={({ item, index }) => (
+          <Message
+            isFromMe={isFromMe(item)}
+            showAvatar={messages[index - 1]?.sender.id !== item.sender.id}
+            message={item} // TODO fix typings
+          />
+        )}
+      />
+    );
+  },
+);

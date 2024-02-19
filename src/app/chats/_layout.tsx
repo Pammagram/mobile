@@ -17,6 +17,7 @@ const Header = () => {
       justifyContent="space-between"
       alignItems="center"
       marginHorizontal={5}
+      paddingVertical={5}
     >
       {/* Fixed height for correct element centering */}
       <TouchableOpacity onPress={handlePopToTop}>

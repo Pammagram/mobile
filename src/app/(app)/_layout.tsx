@@ -1,6 +1,8 @@
+import { MessageCircle, Settings, UserCircle2 } from '@tamagui/lucide-icons';
 import { Redirect, Tabs } from 'expo-router';
 import { FC } from 'react';
 
+import { tabBarIcon } from '$core/utils';
 import { useChatMessageAdded, useCurrentUser } from '$features';
 
 const MainLayout: FC = () => {
@@ -19,6 +21,7 @@ const MainLayout: FC = () => {
         name="contacts"
         options={{
           title: 'Contacts',
+          tabBarIcon: tabBarIcon(UserCircle2),
         }}
       />
       <Tabs.Screen
@@ -26,12 +29,14 @@ const MainLayout: FC = () => {
         options={{
           title: 'Chats',
           unmountOnBlur: false,
+          tabBarIcon: tabBarIcon(MessageCircle),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
+          tabBarIcon: tabBarIcon(Settings),
         }}
       />
     </Tabs>

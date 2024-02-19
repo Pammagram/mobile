@@ -1,66 +1,124 @@
-import { FC, memo, useCallback, useMemo } from 'react';
-import { SafeAreaView } from 'react-native';
+import { Send } from '@tamagui/lucide-icons';
 import {
-  GiftedChat,
-  IMessage,
-  Message,
-  MessageProps,
-} from 'react-native-gifted-chat';
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import { IMessage } from 'react-native-gifted-chat';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Spinner, Text, XStack } from 'tamagui';
 
-import { transformMessage, useLogic } from './useLogic';
+import { useLogic } from './useLogic';
 
-import { useCurrentUser } from '$features';
-import { StrictType } from '$shared';
-
-const CustomMessage: FC<MessageProps<IMessage>> = memo(
-  (props) => {
-    const { currentMessage } = props;
-
-    console.log('rerender');
-
-    return <Message {...props} />;
-  },
-  () => false,
-);
+import { MessageDto } from '$shared';
 
 export const ChatScreen: FC = () => {
   const { getChatMessages, sendMessage } = useLogic();
   const { data: messagesData, loading: areMessagesLoading } = getChatMessages;
-  const { user } = useCurrentUser<StrictType.STRICT>();
 
-  // const [message, setMessage] = useState('');
+  const flatListRef = useRef<FlatList<MessageDto>>(null);
 
-  const transformedMessages = useMemo(
-    () =>
-      messagesData?.data.map((message) => transformMessage(message)).reverse(),
-    [messagesData?.data.length],
-  );
-
-  const onSendHandler = useCallback((messages: IMessage[]) => {
-    const { text } = messages[0];
-
+  const onSendHandler = useCallback((text: string) => {
     void sendMessage({ text });
   }, []);
 
-  if (areMessagesLoading) {
-    return null;
-  }
+  useEffect(() => {
+    if (!flatListRef) {
+      return;
+    }
 
-  console.log('rerender the whole component');
+    flatListRef.current?.scrollToEnd({
+      animated: false,
+    });
+  }, [flatListRef]);
+
+  const { bottom } = useSafeAreaInsets();
+
+  const messages = useMemo(
+    () => [...(messagesData?.data || [])].reverse(),
+    [messagesData?.data],
+  );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <GiftedChat
-        // text={message}
-        // onInputTextChanged={(text) => setMessage(text)}
-        user={{
-          _id: user.id,
-          name: user.username,
+    <SafeAreaView
+      style={{
+        overflow: 'hidden',
+        flex: 1,
+      }}
+    >
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+          marginBottom: bottom,
         }}
-        // renderMessage={CustomMessage}
-        onSend={onSendHandler}
-        messages={transformedMessages}
-      />
+        keyboardVerticalOffset={140}
+        behavior="position"
+      >
+        {areMessagesLoading && <Spinner />}
+        {!areMessagesLoading && (
+          <FlatList<MessageDto>
+            inverted
+            // initialScrollIndex={messagesData?.data.length - 1}
+            ref={flatListRef}
+            data={messages as MessageDto[]}
+            renderItem={(props) => {
+              const { item: message } = props;
+
+              return (
+                <XStack>
+                  <Text>{message.text}</Text>
+                </XStack>
+              );
+            }}
+          />
+        )}
+        <InputToolbar onSubmit={onSendHandler} />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
+
+type InputToolbarProps = {
+  onSubmit: (text: string) => void;
+};
+
+export const InputToolbar: FC<InputToolbarProps> = memo((props) => {
+  const { onSubmit } = props;
+
+  const textRef = useRef<string>('');
+  const inputRef = useRef<TextInput>(null);
+
+  const pressHandler = useCallback(() => {
+    onSubmit(textRef.current);
+    inputRef.current?.clear();
+  }, [onSubmit]);
+
+  const changeTextHandler = useCallback((text: string) => {
+    textRef.current = text;
+  }, []);
+
+  return (
+    <XStack padding={10} justifyContent="space-between">
+      <TextInput
+        ref={inputRef}
+        onChangeText={changeTextHandler}
+        placeholder="test"
+        style={{ flex: 1 }}
+      />
+      <TouchableOpacity onPress={pressHandler}>
+        <Send color="black" />
+      </TouchableOpacity>
+    </XStack>
+  );
+});

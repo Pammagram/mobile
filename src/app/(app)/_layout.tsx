@@ -6,6 +6,7 @@ import { useChatMessageAdded, useCurrentUser } from '$features';
 const MainLayout: FC = () => {
   const { user } = useCurrentUser('cache-only');
 
+  // TODO unsubscribe on logout
   useChatMessageAdded({});
 
   if (!user) {
@@ -24,6 +25,7 @@ const MainLayout: FC = () => {
         name="chats"
         options={{
           title: 'Chats',
+          unmountOnBlur: false,
         }}
       />
       <Tabs.Screen

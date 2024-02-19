@@ -1,4 +1,5 @@
 import { WatchQueryFetchPolicy } from '@apollo/client';
+import { DeepNonNullable } from 'utility-types';
 
 import { useMe } from '../graphql';
 
@@ -6,7 +7,9 @@ import { StrictType, UserDto } from '$shared';
 
 type ReturnType<Strict extends StrictType = StrictType.NOT_STRICT> = {
   isLoading: boolean;
-  user: Strict extends StrictType.STRICT ? UserDto : UserDto | null;
+  user: Strict extends StrictType.STRICT
+    ? DeepNonNullable<UserDto>
+    : UserDto | null;
 };
 
 export const useCurrentUser = <
@@ -21,7 +24,7 @@ export const useCurrentUser = <
   });
 
   return {
-    user: data ?? null,
+    user: data,
     isLoading,
   } as ReturnType<Strict>;
 };

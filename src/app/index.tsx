@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { useCurrentUser } from '$features';
 
 export const RootScreen: FC = () => {
-  const { user, isLoading } = useCurrentUser();
+  const { user, isLoading } = useCurrentUser('network-only');
 
   if (isLoading) {
     return null;

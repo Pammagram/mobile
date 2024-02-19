@@ -195,7 +195,7 @@ export type Query = {
   chat: ChatOutput;
   chats: ChatsOutput;
   dummy: Scalars['String']['output'];
-  me: UserDto;
+  me?: Maybe<UserDto>;
   messages: MessagesOutput;
   users: Array<UserDto>;
 };

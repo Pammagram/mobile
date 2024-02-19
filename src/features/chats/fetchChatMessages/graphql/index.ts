@@ -1,16 +1,12 @@
 import { ChatMessagesData, PREFIX, QUERY } from './query';
 
-import {
-  MessagesInput,
-  useCustomLazyQuery,
-  UseLazyQueryWrapper,
-} from '$shared';
+import { MessagesInput, useCustomQuery, UseQueryWrapper } from '$shared';
 
-export type UseChatMessages = UseLazyQueryWrapper<
+export type UseChatMessages = UseQueryWrapper<
   typeof PREFIX,
   ChatMessagesData,
   { input: MessagesInput }
 >;
 
 export const useChatMessages: UseChatMessages = (...args) =>
-  useCustomLazyQuery(PREFIX, QUERY, ...args);
+  useCustomQuery(PREFIX, QUERY, ...args);

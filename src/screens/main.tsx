@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { FC } from 'react';
 import { SafeAreaView } from 'react-native';
 import { Text, YGroup } from 'tamagui';
@@ -11,7 +12,11 @@ export const MainScreen: FC = () => {
   const { logout } = useLogout();
 
   const handleLogout = async () => {
-    await logout.request();
+    await logout.request({});
+
+    router.navigate('/');
+
+    // TODO clear user variable here and unsubscribe from events
   };
 
   return (

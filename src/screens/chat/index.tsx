@@ -1,5 +1,10 @@
-import { FC, useCallback } from 'react';
-import { FlatList, KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { FC, useCallback, useRef } from 'react';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  TextInput,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Spinner, Text, XStack } from 'tamagui';
 
@@ -15,13 +20,22 @@ export const ChatScreen: FC = () => {
     void sendMessage({ text });
   }, []);
 
+  const inputToolBarHeightRef = useRef<number>(0);
+  const safeAreaViewHeightRef = useRef<number>(0);
+
   const { bottom } = useSafeAreaInsets();
+
+  const flatListHeight =
+    safeAreaViewHeightRef.current - inputToolBarHeightRef.current - bottom;
 
   return (
     <SafeAreaView
       style={{
         overflow: 'hidden',
         flex: 1,
+      }}
+      onLayout={(params) => {
+        safeAreaViewHeightRef.current = params.nativeEvent.layout.height;
       }}
     >
       <KeyboardAvoidingView
@@ -35,6 +49,9 @@ export const ChatScreen: FC = () => {
         {areMessagesLoading && <Spinner />}
         {!areMessagesLoading && (
           <FlatList
+            style={{
+              height: flatListHeight,
+            }}
             inverted
             data={messages}
             renderItem={(props) => {
@@ -48,7 +65,12 @@ export const ChatScreen: FC = () => {
             }}
           />
         )}
-        <InputToolbar onSubmit={onSendHandler} />
+        <InputToolbar
+          onLayout={(params) => {
+            inputToolBarHeightRef.current = params.nativeEvent.layout.height;
+          }}
+          onSubmit={onSendHandler}
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

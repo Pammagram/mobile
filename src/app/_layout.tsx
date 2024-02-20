@@ -1,8 +1,14 @@
+import {
+  ApolloClient,
+  ApolloProvider,
+  NormalizedCacheObject,
+  useApolloClient,
+} from '@apollo/client';
 import { useApolloClientDevTools } from '@dev-plugins/apollo-client/build/useApolloClientDevTools';
 import { SplashScreen, Stack } from 'expo-router';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-import { apolloClient } from '$core/apollo';
+import { initializeApolloClient } from '$core/apollo';
 import { usePreloadedAssets } from '$core/assets';
 import { combineProviders } from '$core/providers';
 
@@ -11,20 +17,10 @@ void SplashScreen.preventAutoHideAsync();
 const manager = combineProviders();
 const MasterProvider = manager.master();
 
-const PreProviderApp: FC = () => {
-  useApolloClientDevTools(apolloClient);
+const PostProvider = () => {
+  const client = useApolloClient() as ApolloClient<NormalizedCacheObject>;
 
-  const { areAssetsLoaded } = usePreloadedAssets();
-
-  useEffect(() => {
-    if (areAssetsLoaded) {
-      void SplashScreen.hideAsync();
-    }
-  }, [areAssetsLoaded]);
-
-  if (!areAssetsLoaded) {
-    return null;
-  }
+  useApolloClientDevTools(client);
 
   return (
     <MasterProvider>
@@ -34,6 +30,41 @@ const PreProviderApp: FC = () => {
         }}
       />
     </MasterProvider>
+  );
+};
+
+const PreProviderApp: FC = () => {
+  const [client, setClient] = useState<
+    ApolloClient<NormalizedCacheObject> | undefined
+  >();
+
+  const { areAssetsLoaded } = usePreloadedAssets();
+
+  useEffect(() => {
+    async function init() {
+      const apolloClient = await initializeApolloClient();
+
+      setClient(apolloClient);
+    }
+
+    init().catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if (areAssetsLoaded) {
+      void SplashScreen.hideAsync();
+    }
+  }, [areAssetsLoaded]);
+
+  if (!areAssetsLoaded || !client) {
+    return null;
+    // TODO splashcreen
+  }
+
+  return (
+    <ApolloProvider client={client}>
+      <PostProvider />
+    </ApolloProvider>
   );
 };
 

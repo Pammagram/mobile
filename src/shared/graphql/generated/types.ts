@@ -110,9 +110,11 @@ export type MessageAddedOutput = {
 export type MessageDto = {
   __typename?: 'MessageDto';
   chat: ChatDto;
+  createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   sender: UserDto;
   text: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type MessagesInput = {

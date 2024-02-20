@@ -14,6 +14,8 @@ export const CHAT_MESSAGES_QUERY = createChatMessages({
     chat: {
       id: true,
     },
+    createdAt: true,
+    updatedAt: true,
     text: true,
   },
 });

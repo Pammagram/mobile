@@ -13,6 +13,8 @@ export const SUBSCRIPTION = createChatMessagesSubscription({
     chat: {
       id: true,
     },
+    createdAt: true,
+    updatedAt: true,
     text: true,
   },
 });

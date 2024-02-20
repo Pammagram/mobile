@@ -3,27 +3,13 @@ import { useLocalSearchParams } from 'expo-router';
 import { useChatMessages } from 'features/chats/logic';
 import { ChatMessage } from 'features/chats/logic/fetchChatMessages/graphql/query';
 import { useCurrentUser } from 'features/currentUser';
+import moment from 'moment';
 import { FC, forwardRef, memo, Ref, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { Avatar, Spinner, Text, View, XStack } from 'tamagui';
 
+import { stringToColor } from '$core/utils';
 import { StrictType } from '$shared';
-
-// TODO to util
-const stringToColor = (str: string) => {
-  let hash = 0;
-
-  for (let index = 0; index < str.length; index++) {
-    // eslint-disable-next-line no-bitwise, no-magic-numbers -- generator fo color
-    hash = str.charCodeAt(index) + ((hash << 5) - hash);
-  }
-
-  const seconds = 360;
-
-  const h = hash % seconds;
-
-  return `hsl(${h}, 30%, 80%)`;
-};
 
 type UserAvatarProps = {
   isVisible: boolean;
@@ -35,8 +21,8 @@ const UserAvatar: FC<UserAvatarProps> = (props) => {
 
   return (
     <Avatar
-      style={{ opacity: isVisible ? '100' : 0 }}
-      backgroundColor={initials ? stringToColor(initials) : undefined}
+      style={{ opacity: Number(isVisible) }}
+      backgroundColor={initials && stringToColor(initials)}
       circular
       size="$2.5"
     >
@@ -51,24 +37,24 @@ const UserAvatar: FC<UserAvatarProps> = (props) => {
   );
 };
 
-type MessageTextProps = {
-  text: string;
-};
+// type MessageTextProps = {
+//   text: string;
+// };
 
-const MessageText: FC<MessageTextProps> = (props) => {
-  const { text } = props;
+// const MessageText: FC<MessageTextProps> = (props) => {
+//   const { text } = props;
 
-  return (
-    <View
-      backgroundColor={Colors.PRIMARY_BLUE}
-      borderRadius={10}
-      maxWidth="80%"
-      padding={10}
-    >
-      <Text>{text}</Text>
-    </View>
-  );
-};
+//   return (
+//     <View
+//       backgroundColor={Colors.PRIMARY_BLUE}
+//       borderRadius={10}
+//       maxWidth="80%"
+//       padding={10}
+//     >
+//       <Text>{text}</Text>
+//     </View>
+//   );
+// };
 
 export type MessageProps = {
   message: ChatMessage;
@@ -86,6 +72,7 @@ export const Message: FC<MessageProps> = (props) => {
       paddingVertical={5}
       gap={5}
       justifyContent={isFromMe ? 'flex-end' : 'flex-start'}
+      position="relative"
     >
       {!isFromMe && (
         <UserAvatar
@@ -93,7 +80,21 @@ export const Message: FC<MessageProps> = (props) => {
           isVisible={showAvatar}
         />
       )}
-      <MessageText text={message.text} />
+      <XStack
+        backgroundColor={Colors.PRIMARY_BLUE}
+        borderRadius={10}
+        padding={10}
+        gap={5}
+        maxWidth="80%"
+      >
+        <Text>{message.text}</Text>
+        <Text marginTop="auto" fontSize={8} color="white">
+          {
+            moment(message.createdAt).format('HH:mm')
+            // TODO to utils in one place
+          }
+        </Text>
+      </XStack>
     </XStack>
   );
 };
@@ -139,15 +140,44 @@ export const MessagesContainer = memo(
               showsVerticalScrollIndicator={false}
               data={messages}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item: message, index }) => (
-                <Message
-                  isFromMe={message.sender.id === user?.id}
-                  showAvatar={
-                    messages[index - 1]?.sender.id !== message.sender.id
-                  }
-                  message={message} // TODO fix typings
-                />
-              )}
+              renderItem={({ item: message, index }) => {
+                const RenderedMessage = () => (
+                  <Message
+                    isFromMe={message.sender.id === user?.id}
+                    showAvatar={
+                      messages[index - 1]?.sender.id !== message.sender.id
+                    }
+                    message={message} // TODO fix typings
+                  />
+                );
+
+                const hasNextMessage = index + 1 < messages.length;
+
+                if (!hasNextMessage) {
+                  return <RenderedMessage />;
+                }
+
+                const currentTimestamp = moment(messages[index].createdAt);
+                const nextTimestamp = moment(messages[index + 1].createdAt);
+
+                const isSameDay = moment(currentTimestamp).isSame(
+                  nextTimestamp,
+                  'day',
+                );
+
+                // TODO test this
+
+                return (
+                  <>
+                    <RenderedMessage />
+                    {!isSameDay && (
+                      <XStack justifyContent="center" flex={1}>
+                        <Text bg="beige">{nextTimestamp.format('MMM, D')}</Text>
+                      </XStack>
+                    )}
+                  </>
+                );
+              }}
             />
           )}
         </>

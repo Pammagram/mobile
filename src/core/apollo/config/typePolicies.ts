@@ -86,6 +86,8 @@ export const customTypePolicies: TypePolicies[] = [
                     readField('sender', messageRef),
                   ),
                 },
+                createdAt: readField('createdAt', messageRef) as string,
+                updatedAt: readField('updatedAt', messageRef) as string,
                 text: readField('text', messageRef) as string,
               } satisfies ChatMessagesData['data'][0];
 

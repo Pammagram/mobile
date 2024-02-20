@@ -13,6 +13,8 @@ export const MUTATION = createAddMessage({
     chat: {
       id: true,
     },
+    createdAt: true,
+    updatedAt: true,
     text: true,
   },
 });

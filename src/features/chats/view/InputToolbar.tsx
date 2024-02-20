@@ -35,7 +35,7 @@ export const InputToolbar: FC<InputToolbarProps> = memo((props) => {
       justifyContent="space-between"
       alignItems="center"
       gap={15}
-      paddingVertical={10}
+      paddingTop={10}
       paddingBottom={bottom}
       marginTop={5}
     >

@@ -78,7 +78,8 @@ export const ChatScreen: FC = () => {
       onLayout={onMessageContainerLayout}
     >
       <KeyboardAvoidingView
-        keyboardVerticalOffset={bottom * 2}
+        // eslint-disable-next-line no-magic-numbers -- we need to increase offset because of keyboard
+        keyboardVerticalOffset={bottom * 2.3}
         behavior="position"
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

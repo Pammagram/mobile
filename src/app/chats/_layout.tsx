@@ -37,7 +37,7 @@ const ChatTitle = () => {
   const chatName = getChat.data?.data.title;
 
   return (
-    <YGroup alignItems="center" width={50}>
+    <YGroup alignItems="center" flex={1}>
       <Text>{chatName}r</Text>
     </YGroup>
   );
@@ -98,7 +98,6 @@ export default Layout;
 const useLogic = () => {
   const { chatId } = useLocalSearchParams<{ chatId: string }>();
 
-  // TODO Optimize we can get from cache from chats
   const { getChat } = useChat({
     variables: {
       input: {

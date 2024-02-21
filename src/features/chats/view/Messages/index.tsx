@@ -43,7 +43,7 @@ export type MessageProps = {
 
 // TODO add avatar and etc.
 export const Message: FC<MessageProps> = (props) => {
-  const { message, showAvatar = true, isFromMe = false } = props;
+  const { message, showAvatar = true, isFromMe = true } = props;
 
   return (
     <XStack
@@ -51,7 +51,9 @@ export const Message: FC<MessageProps> = (props) => {
       paddingVertical={5}
       gap={5}
       justifyContent={isFromMe ? 'flex-end' : 'flex-start'}
-      position="relative"
+      marginLeft={isFromMe ? '$6' : 0}
+      marginRight={!isFromMe ? '$11' : 0}
+      alignItems="flex-end"
     >
       {!isFromMe && (
         <UserAvatar
@@ -60,19 +62,25 @@ export const Message: FC<MessageProps> = (props) => {
         />
       )}
       <XStack
-        backgroundColor={Colors.PRIMARY_BLUE}
+        backgroundColor={isFromMe ? Colors.PRIMARY_BLUE : Colors.TERNARY_BLUE}
         borderRadius={10}
         padding={10}
         gap={5}
-        maxWidth="80%"
+        flexWrap="wrap"
+        alignItems="flex-end"
       >
-        <Text>{message.text}</Text>
-        <Text marginTop="auto" fontSize={8} color="white">
-          {
-            moment(message.createdAt).format('HH:mm')
-            // TODO to utils in one place
-          }
-        </Text>
+        <Text textBreakStrategy="highQuality">{message.text}</Text>
+        <XStack gap={2} marginLeft="auto" flexWrap="wrap">
+          {/* <Text fontSize={8} color="white">
+            edited
+          </Text> */}
+          <Text fontSize={8} color="white">
+            {
+              moment(message.createdAt).format('HH:mm')
+              // TODO to utils in one place
+            }
+          </Text>
+        </XStack>
       </XStack>
     </XStack>
   );

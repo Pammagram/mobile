@@ -18,7 +18,7 @@ export const useCurrentUser = <
     getMe: { data, loading: isLoading },
   } = useMe({
     fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-only',
+    nextFetchPolicy: 'cache-first',
   });
 
   return {

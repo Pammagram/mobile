@@ -1,15 +1,13 @@
 import { Colors } from 'configs/constants';
 import { useLocalSearchParams } from 'expo-router';
-import { useChatMessages } from 'features/chats/graphql';
-import { ChatMessage } from 'features/chats/graphql/chatMessages/query';
-import { useCurrentUser } from 'features/user/graphql/currentUser';
+import { ChatMessage, useChatMessages } from 'features/chats/graphql';
+import { useMe } from 'features/user';
 import moment from 'moment';
 import { FC, forwardRef, memo, Ref, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { Avatar, Spinner, Text, View, XStack } from 'tamagui';
 
 import { stringToColor } from '$core/utils';
-import { StrictType } from '$shared';
 
 type UserAvatarProps = {
   isVisible: boolean;
@@ -80,12 +78,13 @@ export const Message: FC<MessageProps> = (props) => {
   );
 };
 
-// TODO separate
 export const MessagesContainer = memo(
   forwardRef((_props, ref: Ref<FlatList<ChatMessage>>) => {
     const { chatId } = useLocalSearchParams<{ chatId: string }>();
 
     const { getChatMessages } = useChatMessages({
+      fetchPolicy: 'cache-and-network',
+      nextFetchPolicy: 'cache-first',
       variables: {
         input: {
           chatId: Number(chatId),
@@ -103,7 +102,11 @@ export const MessagesContainer = memo(
       [getChatMessages.data?.data],
     );
 
-    const { user } = useCurrentUser<StrictType.NOT_STRICT>();
+    const {
+      getMe: { data: user },
+    } = useMe({
+      fetchPolicy: 'cache-only',
+    });
 
     return (
       <>

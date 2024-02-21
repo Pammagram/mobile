@@ -6,13 +6,13 @@ import { tabBarIcon } from '$core/utils';
 import { useChatMessageAdded, useCurrentUser } from '$features';
 
 const MainLayout: FC = () => {
-  const { user } = useCurrentUser('cache-only');
+  const { user } = useCurrentUser();
 
   // TODO unsubscribe on logout
   useChatMessageAdded({});
 
   if (!user) {
-    return <Redirect href="/" />;
+    return <Redirect href="/(auth)/sign-in" />;
   }
 
   return (

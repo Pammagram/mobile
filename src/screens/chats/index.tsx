@@ -74,6 +74,8 @@ const Modal: FC<ModalProps> = (props) => {
 export const ChatsScreen: FC = () => {
   // TODO subscription for new chats
   const { getChats } = useChats({
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
     variables: {
       input: {},
     },

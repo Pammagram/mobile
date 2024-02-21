@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "concurrently -r \"npm run codegen\" \"expo start\"",
+    "start": "concurrently -r \"npm run codegen\" \"expo start -c\"",
     "android": "concurrently -r \"npm run codegen\" \"expo start --android\"",
     "ios": "concurrently -r \"npm run codegen\" \"expo start --ios\"",
     "web": "concurrently -r \"npm run codegen\" \"expo start --web\"",

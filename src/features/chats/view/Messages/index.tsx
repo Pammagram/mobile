@@ -37,25 +37,6 @@ const UserAvatar: FC<UserAvatarProps> = (props) => {
   );
 };
 
-// type MessageTextProps = {
-//   text: string;
-// };
-
-// const MessageText: FC<MessageTextProps> = (props) => {
-//   const { text } = props;
-
-//   return (
-//     <View
-//       backgroundColor={Colors.PRIMARY_BLUE}
-//       borderRadius={10}
-//       maxWidth="80%"
-//       padding={10}
-//     >
-//       <Text>{text}</Text>
-//     </View>
-//   );
-// };
-
 export type MessageProps = {
   message: ChatMessage;
   isFromMe?: boolean;
@@ -99,12 +80,9 @@ export const Message: FC<MessageProps> = (props) => {
   );
 };
 
-// export type MessagesContainerProps = {};
-
+// TODO separate
 export const MessagesContainer = memo(
   forwardRef((_props, ref: Ref<FlatList<ChatMessage>>) => {
-    // const {} = props;
-
     const { chatId } = useLocalSearchParams<{ chatId: string }>();
 
     const { getChatMessages } = useChatMessages({
@@ -118,7 +96,10 @@ export const MessagesContainer = memo(
     const { loading: areMessagesLoading } = getChatMessages;
 
     const messages = useMemo(
-      () => [...(getChatMessages.data?.data || [])].reverse(),
+      () =>
+        [...(getChatMessages.data?.data || [])].sort((a, b) =>
+          a.createdAt < b.createdAt ? 1 : -1,
+        ),
       [getChatMessages.data?.data],
     );
 
@@ -151,12 +132,21 @@ export const MessagesContainer = memo(
               );
 
               const hasNextMessage = index + 1 < messages.length;
+              const currentTimestamp = moment(messages[index].createdAt);
 
               if (!hasNextMessage) {
-                return <RenderedMessage />;
+                return (
+                  <>
+                    <RenderedMessage />
+                    <XStack justifyContent="center" flex={1}>
+                      <Text bg="beige">
+                        {currentTimestamp.format('MMM, D')}
+                      </Text>
+                    </XStack>
+                  </>
+                );
               }
 
-              const currentTimestamp = moment(messages[index].createdAt);
               const nextTimestamp = moment(messages[index + 1].createdAt);
 
               const isSameDay = moment(currentTimestamp).isSame(
@@ -171,7 +161,9 @@ export const MessagesContainer = memo(
                   <RenderedMessage />
                   {!isSameDay && (
                     <XStack justifyContent="center" flex={1}>
-                      <Text bg="beige">{nextTimestamp.format('MMM, D')}</Text>
+                      <Text bg="beige">
+                        {currentTimestamp.format('MMM, D')}
+                      </Text>
                     </XStack>
                   )}
                 </>

@@ -26,7 +26,6 @@ export const useLogic = () => {
   );
 
   return {
-    // getChat,
     sendMessage,
   };
 };

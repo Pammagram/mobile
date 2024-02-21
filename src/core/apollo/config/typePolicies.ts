@@ -1,13 +1,16 @@
 import { FieldFunctionOptions, TypePolicies } from '@apollo/client';
-import {
-  CHAT_MESSAGES_QUERY,
-  ChatMessagesData,
-} from 'features/chats/logic/fetchChatMessages/graphql/query';
-import { MessageAddedData } from 'features/chats/logic/subscribeToChatMessages/graphql/subscription';
-import { DeepPartial } from 'utility-types';
 
 import { logPrettied } from '$core/utils';
 import {
+  CHAT_MESSAGES_QUERY,
+  CHAT_OUTPUT_TYPE_NAME,
+  CHAT_TYPE_NAME,
+  ChatMessagesData,
+  MessageAddedData,
+  MESSAGES_OUTPUT_TYPE_NAME,
+} from '$features';
+import {
+  ChatDto,
   ChatInput,
   ChatOutput,
   GraphQlInput,
@@ -16,40 +19,35 @@ import {
   MessagesOutput,
 } from '$shared';
 
-const MESSAGES_TYPE_NAME = 'MessagesOutput';
-const CHAT_OUTPUT_TYPE_NAME = 'ChatOutput';
-const CHAT_TYPE_NAME = 'ChatDto';
-
 // TODO separate adequately across features
 export const customTypePolicies: TypePolicies[] = [
   {
-    [MESSAGES_TYPE_NAME]: {
+    [MESSAGES_OUTPUT_TYPE_NAME]: {
       merge: true,
       keyFields: ['chatId'],
     },
-
+    // TODO move to chats feature
     Query: {
       fields: {
         chat: {
           read: (
             _existing: ChatOutput,
-            options: FieldFunctionOptions<
-              GraphQlInput<ChatInput>,
-              GraphQlInput<ChatInput>
-            >,
+            options: FieldFunctionOptions<Record<string, unknown>>,
           ) => {
-            const { variables, toReference } = options;
-            const chatId = variables?.input.id;
+            const { toReference } = options;
+
+            const variables = options.variables as GraphQlInput<ChatInput>;
 
             const chatReference = toReference({
               __typename: CHAT_TYPE_NAME,
-              id: chatId,
-            });
+              id: variables.input.id,
+            }) as unknown as ChatDto;
 
+            // * Imitate chat output dto by referencing chats output
             return {
               __typename: CHAT_OUTPUT_TYPE_NAME,
               data: chatReference,
-            } satisfies DeepPartial<ChatOutput>;
+            } satisfies ChatOutput;
           },
         },
       },
@@ -99,7 +97,7 @@ export const customTypePolicies: TypePolicies[] = [
                   query: CHAT_MESSAGES_QUERY,
                   variables: {
                     input: {
-                      chatId: message.chat.id, // TODO extract id
+                      chatId: message.chat.id,
                     },
                   },
                 },

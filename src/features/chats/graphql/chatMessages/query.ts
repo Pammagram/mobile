@@ -1,7 +1,9 @@
 import { createChatMessages } from '$entities';
 import { InferSelection } from '$shared';
 
-export const PREFIX = 'chatMessages';
+export const CHAT_MESSAGES_PREFIX = 'chatMessages';
+
+export const MESSAGES_OUTPUT_TYPE_NAME = 'MessagesOutput';
 
 export const CHAT_MESSAGES_QUERY = createChatMessages({
   chatId: true,

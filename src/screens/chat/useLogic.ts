@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { useAddMessage } from 'features/chats/logic/sendMessage';
+import { useAddMessage } from 'features/chats/graphql/sendMessage';
 import { useCallback } from 'react';
 
 type SendMessageParams = {

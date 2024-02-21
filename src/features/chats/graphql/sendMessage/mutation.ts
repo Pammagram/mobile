@@ -1,9 +1,9 @@
-import { createChatMessagesSubscription } from '$entities';
+import { createAddMessage } from '$entities';
 import { InferSelection } from '$shared';
 
-export const PREFIX = 'messageAdded';
+export const ADD_MESSAGE_PREFIX = 'addMessage';
 
-export const SUBSCRIPTION = createChatMessagesSubscription({
+export const ADD_MESSAGE_MUTATION = createAddMessage({
   data: {
     id: true,
     sender: {
@@ -19,4 +19,4 @@ export const SUBSCRIPTION = createChatMessagesSubscription({
   },
 });
 
-export type MessageAddedData = InferSelection<typeof SUBSCRIPTION>;
+export type AddMessageData = InferSelection<typeof ADD_MESSAGE_MUTATION>;

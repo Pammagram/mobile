@@ -1,8 +1,8 @@
 import { Colors } from 'configs/constants';
 import { useLocalSearchParams } from 'expo-router';
-import { useChatMessages } from 'features/chats/logic';
-import { ChatMessage } from 'features/chats/logic/fetchChatMessages/graphql/query';
-import { useCurrentUser } from 'features/currentUser';
+import { useChatMessages } from 'features/chats/graphql';
+import { ChatMessage } from 'features/chats/graphql/chatMessages/query';
+import { useCurrentUser } from 'features/user/graphql/currentUser';
 import moment from 'moment';
 import { FC, forwardRef, memo, Ref, useMemo } from 'react';
 import { FlatList } from 'react-native';
@@ -99,89 +99,87 @@ export const Message: FC<MessageProps> = (props) => {
   );
 };
 
-export type MessagesContainerProps = {};
+// export type MessagesContainerProps = {};
 
 export const MessagesContainer = memo(
-  forwardRef(
-    (props: MessagesContainerProps, ref: Ref<FlatList<ChatMessage>>) => {
-      // const {} = props;
+  forwardRef((_props, ref: Ref<FlatList<ChatMessage>>) => {
+    // const {} = props;
 
-      const { chatId } = useLocalSearchParams<{ chatId: string }>();
+    const { chatId } = useLocalSearchParams<{ chatId: string }>();
 
-      const { getChatMessages } = useChatMessages({
-        variables: {
-          input: {
-            chatId: Number(chatId),
-          },
+    const { getChatMessages } = useChatMessages({
+      variables: {
+        input: {
+          chatId: Number(chatId),
         },
-      });
+      },
+    });
 
-      const { loading: areMessagesLoading } = getChatMessages;
+    const { loading: areMessagesLoading } = getChatMessages;
 
-      const messages = useMemo(
-        () => [...(getChatMessages.data?.data || [])].reverse(),
-        [getChatMessages.data?.data],
-      );
+    const messages = useMemo(
+      () => [...(getChatMessages.data?.data || [])].reverse(),
+      [getChatMessages.data?.data],
+    );
 
-      const { user } = useCurrentUser<StrictType.NOT_STRICT>();
+    const { user } = useCurrentUser<StrictType.NOT_STRICT>();
 
-      return (
-        <>
-          {areMessagesLoading && (
-            <View flex={1} justifyContent="center">
-              <Spinner />
-            </View>
-          )}
-          {!areMessagesLoading && messages && (
-            <FlatList
-              maxToRenderPerBatch={30}
-              ref={ref}
-              inverted
-              showsVerticalScrollIndicator={false}
-              data={messages}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item: message, index }) => {
-                const RenderedMessage = () => (
-                  <Message
-                    isFromMe={message.sender.id === user?.id}
-                    showAvatar={
-                      messages[index - 1]?.sender.id !== message.sender.id
-                    }
-                    message={message} // TODO fix typings
-                  />
-                );
+    return (
+      <>
+        {areMessagesLoading && (
+          <View flex={1} justifyContent="center">
+            <Spinner />
+          </View>
+        )}
+        {!areMessagesLoading && messages && (
+          <FlatList
+            maxToRenderPerBatch={30}
+            ref={ref}
+            inverted
+            showsVerticalScrollIndicator={false}
+            data={messages}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item: message, index }) => {
+              const RenderedMessage = () => (
+                <Message
+                  isFromMe={message.sender.id === user?.id}
+                  showAvatar={
+                    messages[index - 1]?.sender.id !== message.sender.id
+                  }
+                  message={message} // TODO fix typings
+                />
+              );
 
-                const hasNextMessage = index + 1 < messages.length;
+              const hasNextMessage = index + 1 < messages.length;
 
-                if (!hasNextMessage) {
-                  return <RenderedMessage />;
-                }
+              if (!hasNextMessage) {
+                return <RenderedMessage />;
+              }
 
-                const currentTimestamp = moment(messages[index].createdAt);
-                const nextTimestamp = moment(messages[index + 1].createdAt);
+              const currentTimestamp = moment(messages[index].createdAt);
+              const nextTimestamp = moment(messages[index + 1].createdAt);
 
-                const isSameDay = moment(currentTimestamp).isSame(
-                  nextTimestamp,
-                  'day',
-                );
+              const isSameDay = moment(currentTimestamp).isSame(
+                nextTimestamp,
+                'day',
+              );
 
-                // TODO test this
+              // TODO test this
 
-                return (
-                  <>
-                    <RenderedMessage />
-                    {!isSameDay && (
-                      <XStack justifyContent="center" flex={1}>
-                        <Text bg="beige">{nextTimestamp.format('MMM, D')}</Text>
-                      </XStack>
-                    )}
-                  </>
-                );
-              }}
-            />
-          )}
-        </>
-      );
-    },
-  ),
+              return (
+                <>
+                  <RenderedMessage />
+                  {!isSameDay && (
+                    <XStack justifyContent="center" flex={1}>
+                      <Text bg="beige">{nextTimestamp.format('MMM, D')}</Text>
+                    </XStack>
+                  )}
+                </>
+              );
+            }}
+          />
+        )}
+      </>
+    );
+  }),
 );

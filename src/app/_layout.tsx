@@ -7,6 +7,7 @@ import {
 import { useApolloClientDevTools } from '@dev-plugins/apollo-client/build/useApolloClientDevTools';
 import { SplashScreen, Stack } from 'expo-router';
 import { FC, useEffect, useState } from 'react';
+import { Spinner } from 'tamagui';
 
 import { initializeApolloClient } from '$core/apollo';
 import { usePreloadedAssets } from '$core/assets';
@@ -57,8 +58,7 @@ const PreProviderApp: FC = () => {
   }, [areAssetsLoaded]);
 
   if (!areAssetsLoaded || !client) {
-    return null;
-    // TODO splashcreen
+    return <Spinner />;
   }
 
   return (

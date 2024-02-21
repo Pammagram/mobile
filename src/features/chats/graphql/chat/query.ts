@@ -1,7 +1,11 @@
 import { createChat } from '$entities';
 import { InferSelection } from '$shared';
 
-export const PREFIX = 'chat';
+export const CHAT_PREFIX = 'chat';
+
+export const CHAT_OUTPUT_TYPE_NAME = 'ChatOutput';
+
+export const CHAT_TYPE_NAME = 'ChatDto';
 
 export const CHAT_QUERY = createChat({
   data: {
@@ -17,4 +21,4 @@ export const CHAT_QUERY = createChat({
   },
 });
 
-export type Data = InferSelection<typeof CHAT_QUERY>;
+export type ChatData = InferSelection<typeof CHAT_QUERY>;

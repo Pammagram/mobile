@@ -1,12 +1,14 @@
-import { CHATS_QUERY, ChatsData, PREFIX } from './query';
+import { CHATS_PREFIX, CHATS_QUERY, ChatsData } from './query';
 
 import { ChatsInput, useCustomQuery, UseQueryWrapper } from '$shared';
 
+export * from './query';
+
 export type UseChats = UseQueryWrapper<
-  typeof PREFIX,
+  typeof CHATS_PREFIX,
   ChatsData,
   { input: ChatsInput }
 >;
 
 export const useChats: UseChats = (...args) =>
-  useCustomQuery(PREFIX, CHATS_QUERY, ...args);
+  useCustomQuery(CHATS_PREFIX, CHATS_QUERY, ...args);

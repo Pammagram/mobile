@@ -1,4 +1,4 @@
-import { MUTATION, PREFIX } from './mutation';
+import { ADD_MESSAGE_MUTATION, ADD_MESSAGE_PREFIX } from './mutation';
 
 import {
   AddMessageInput,
@@ -8,11 +8,13 @@ import {
   UseMutationWrapper,
 } from '$shared';
 
+export * from './mutation';
+
 export type UseAddMessage = UseMutationWrapper<
-  typeof PREFIX,
+  typeof ADD_MESSAGE_PREFIX,
   AddMessageOutput,
   GraphQlInput<AddMessageInput>
 >;
 
 export const useAddMessage: UseAddMessage = (...args) =>
-  useCustomMutation(PREFIX, MUTATION, ...args);
+  useCustomMutation(ADD_MESSAGE_PREFIX, ADD_MESSAGE_MUTATION, ...args);

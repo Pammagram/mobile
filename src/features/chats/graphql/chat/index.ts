@@ -1,4 +1,4 @@
-import { CHAT_QUERY, Data, PREFIX } from './query';
+import { CHAT_PREFIX, CHAT_QUERY, ChatData } from './query';
 
 import {
   ChatInput,
@@ -7,11 +7,13 @@ import {
   UseQueryWrapper,
 } from '$shared';
 
+export * from './query';
+
 export type UseChat = UseQueryWrapper<
-  typeof PREFIX,
-  Data,
+  typeof CHAT_PREFIX,
+  ChatData,
   GraphQlInput<ChatInput>
 >;
 
 export const useChat: UseChat = (...args) =>
-  useCustomQuery(PREFIX, CHAT_QUERY, ...args);
+  useCustomQuery(CHAT_PREFIX, CHAT_QUERY, ...args);

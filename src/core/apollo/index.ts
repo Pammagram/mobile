@@ -24,11 +24,8 @@ export const initializeApolloClient = async () => {
     connectToDevTools: true,
     credentials: 'include',
     defaultOptions: {
-      watchQuery: {
-        fetchPolicy: 'cache-and-network',
-        nextFetchPolicy: 'cache-first',
-      },
       query: {
+        fetchPolicy: 'cache-first',
         errorPolicy: 'all',
       },
       mutate: {

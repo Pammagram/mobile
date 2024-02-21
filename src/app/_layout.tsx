@@ -24,13 +24,11 @@ const PostProvider = () => {
   useApolloClientDevTools(client);
 
   return (
-    <MasterProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
-    </MasterProvider>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    />
   );
 };
 
@@ -41,6 +39,7 @@ const PreProviderApp: FC = () => {
 
   const { areAssetsLoaded } = usePreloadedAssets();
 
+  // TODO to hook
   useEffect(() => {
     async function init() {
       const apolloClient = await initializeApolloClient();
@@ -68,4 +67,8 @@ const PreProviderApp: FC = () => {
   );
 };
 
-export default PreProviderApp;
+export default () => (
+  <MasterProvider>
+    <PreProviderApp />
+  </MasterProvider>
+);

@@ -93,7 +93,7 @@ export const ChatsScreen: FC = () => {
           data={getChats.data?.data}
           renderItem={({ item: chat }) => (
             <Pressable
-              onPress={() => router.push(`chats/${chat.id}` as Href<string>)}
+              onPress={() => router.push(`chat/${chat.id}` as Href<string>)}
               onLongPress={() => setIsOpen(true)}
               key={chat.id}
             >

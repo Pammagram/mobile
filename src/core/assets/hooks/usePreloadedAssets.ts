@@ -5,16 +5,12 @@ type ReturnType = {
 };
 
 export const usePreloadedAssets = (): ReturnType => {
-  const [isFontsLoaded] = useFonts({
+  const [areFontsLoaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
   });
 
-  const assetsLoadStatus = [isFontsLoaded];
-
-  const areAssetsLoaded = assetsLoadStatus.every(
-    (isAssetLoaded) => isAssetLoaded,
-  );
+  const areAssetsLoaded = [areFontsLoaded].every(Boolean);
 
   return {
     areAssetsLoaded,

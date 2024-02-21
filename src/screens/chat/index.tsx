@@ -1,4 +1,4 @@
-import { useChatLayout } from 'app/chats/_layout';
+import { useChatLayout } from 'app/chat/_layout';
 import { FC, useCallback, useRef } from 'react';
 import {
   FlatList,

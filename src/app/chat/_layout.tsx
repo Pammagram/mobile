@@ -20,9 +20,6 @@ type ChatHeaderParams = {
 };
 
 export const useChatLayout = create<ChatHeaderParams>((set) => ({
-  // headerHeight: 0,
-  // setHeaderHeight: (headerHeight: number) => set({ headerHeight }),
-
   inputHeight: 0,
   setInputHeight: (inputHeight: number) => set({ inputHeight }),
 

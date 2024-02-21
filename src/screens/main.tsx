@@ -3,11 +3,11 @@ import { FC } from 'react';
 import { SafeAreaView } from 'react-native';
 import { Text, YGroup } from 'tamagui';
 
-import { useCurrentUser, useLogout } from '$features';
-import { Button, StrictType } from '$shared';
+import { useLogout, useMe } from '$features';
+import { Button } from '$shared';
 
 export const MainScreen: FC = () => {
-  const { user } = useCurrentUser<StrictType.STRICT>('cache-only');
+  const { getMe } = useMe({});
 
   const { logout } = useLogout();
 
@@ -23,8 +23,8 @@ export const MainScreen: FC = () => {
     <SafeAreaView>
       <YGroup>
         <Text>This is main screen!</Text>
-        <Text>Phone number: {user.phoneNumber}</Text>
-        <Text>Username: {user.username}</Text>
+        <Text>Phone number: {getMe.data?.phoneNumber}</Text>
+        <Text>Username: {getMe.data?.username}</Text>
         <Button onPress={handleLogout}>Logout</Button>
       </YGroup>
     </SafeAreaView>

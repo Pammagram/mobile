@@ -6,7 +6,7 @@ import { useCurrentUser } from '$features';
 import { HeadlessStack } from '$shared';
 
 const AuthLayout: FC = () => {
-  const { user } = useCurrentUser('cache-only');
+  const { user } = useCurrentUser();
 
   if (user) {
     return <Redirect href="/" />;

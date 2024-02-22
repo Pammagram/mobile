@@ -12,11 +12,14 @@ export const initializeApolloClient = async () => {
     typePolicies: mergeObjects<TypePolicies>(customTypePolicies.flat()),
   });
 
-  await persistCache({
-    cache,
-    storage: new AsyncStorageWrapper(AsyncStorage),
-    maxSize: false,
-  });
+  // * enable storing only in production to speed up development
+  if (process.env.NODE_ENV === 'production') {
+    await persistCache({
+      cache,
+      storage: new AsyncStorageWrapper(AsyncStorage),
+      maxSize: false,
+    });
+  }
 
   const apolloClient = new ApolloClient({
     link: createLink(),

@@ -1,4 +1,3 @@
-import { useChatLayout } from 'app/chat/_layout';
 import { FC, useCallback, useRef } from 'react';
 import {
   FlatList,
@@ -10,9 +9,12 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useChatLayout } from './layout';
 import { useLogic } from './useLogic';
 
 import { InputToolbar, MessagesContainer } from '$features';
+
+export * from './layout';
 
 export const ChatScreen: FC = () => {
   const { sendMessage } = useLogic();

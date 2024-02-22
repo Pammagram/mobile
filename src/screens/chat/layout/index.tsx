@@ -1,32 +1,14 @@
 import { ChevronLeft, UserCircle } from '@tamagui/lucide-icons';
 import { Colors } from 'configs/constants';
-import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { FC, useCallback, useEffect } from 'react';
+import { router, Stack } from 'expo-router';
+import { FC, useCallback } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text, XGroup, YGroup, YStack } from 'tamagui';
-import { create } from 'zustand';
 
-import { useChat } from '$features';
+import { useLogic } from './useLogic';
 
-type ChatHeaderParams = {
-  // headerHeight: number;
-  inputHeight: number;
-  messagesContainerHeight: number;
-
-  // setHeaderHeight: (height: number) => void;
-  setInputHeight: (height: number) => void;
-  setMessagesContainerHeight: (height: number) => void;
-};
-
-export const useChatLayout = create<ChatHeaderParams>((set) => ({
-  inputHeight: 0,
-  setInputHeight: (inputHeight: number) => set({ inputHeight }),
-
-  messagesContainerHeight: 0,
-  setMessagesContainerHeight: (messagesContainerHeight: number) =>
-    set({ messagesContainerHeight }),
-}));
+export { useChatLayout } from './useLogic';
 
 const ChatTitle = () => {
   const { getChat } = useLogic();
@@ -72,7 +54,7 @@ const Header: FC = () => {
   );
 };
 
-const Layout = () => {
+export const ChatLayout = () => {
   return (
     <Stack
       screenOptions={{
@@ -88,29 +70,4 @@ const Layout = () => {
       />
     </Stack>
   );
-};
-
-export default Layout;
-
-const useLogic = () => {
-  const { chatId } = useLocalSearchParams<{ chatId: string }>();
-
-  const { getChat } = useChat({
-    variables: {
-      input: {
-        id: Number(chatId),
-      },
-    },
-  });
-
-  useEffect(() => {
-    if (!getChat.loading && !getChat.data?.data) {
-      console.error('Not found chat');
-      router.push('/(app)/contacts');
-    }
-  }, [getChat.data]);
-
-  return {
-    getChat,
-  };
 };

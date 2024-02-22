@@ -1,9 +1,30 @@
-import { MessageCircle, Settings, UserCircle2 } from '@tamagui/lucide-icons';
+import {
+  MessageCircle,
+  Pencil,
+  Settings,
+  UserCircle2,
+} from '@tamagui/lucide-icons';
 import { Redirect, Tabs } from 'expo-router';
 import { FC } from 'react';
+import { TouchableOpacity } from 'react-native';
 
 import { tabBarIcon } from '$core/utils';
-import { useChatMessageAdded, useCurrentUser } from '$features';
+import {
+  toggleActionSheet,
+  useChatMessageAdded,
+  useCurrentUser,
+} from '$features';
+
+const CreateChatButton: FC = () => {
+  return (
+    <TouchableOpacity
+      onPress={() => toggleActionSheet()}
+      style={{ padding: 10 }}
+    >
+      <Pencil color="black" />
+    </TouchableOpacity>
+  );
+};
 
 const MainLayout: FC = () => {
   const { user } = useCurrentUser();
@@ -29,6 +50,7 @@ const MainLayout: FC = () => {
         options={{
           title: 'Chats',
           tabBarIcon: tabBarIcon(MessageCircle),
+          headerRight: CreateChatButton,
         }}
       />
       <Tabs.Screen

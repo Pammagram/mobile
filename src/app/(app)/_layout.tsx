@@ -17,10 +17,7 @@ import {
 
 const CreateChatButton: FC = () => {
   return (
-    <TouchableOpacity
-      onPress={() => toggleActionSheet()}
-      style={{ padding: 10 }}
-    >
+    <TouchableOpacity onPress={toggleActionSheet} style={{ padding: 10 }}>
       <Pencil color="black" />
     </TouchableOpacity>
   );

@@ -5,16 +5,20 @@ import { Pressable, SafeAreaView, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { AlertDialog, Button, Text, XGroup, YStack } from 'tamagui';
 
-import { useChats } from '$features';
+import { useMe, useMyChats, useRemoveChat } from '$features';
+import { ChatType } from '$shared';
 
 type ModalProps = {
   isOpen: boolean;
   onCancel: () => void;
   onOpenChange: (newStatus: boolean) => void;
+  chatId?: number;
 };
 
 const Modal: FC<ModalProps> = (props) => {
-  const { isOpen, onOpenChange, onCancel } = props;
+  const { isOpen, onOpenChange, onCancel, chatId } = props;
+
+  const { removeChat } = useRemoveChat();
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
@@ -53,7 +57,23 @@ const Modal: FC<ModalProps> = (props) => {
                   Mute
                 </Button>
               </AlertDialog.Action>
-              <AlertDialog.Action asChild width="100%">
+              <AlertDialog.Action
+                asChild
+                width="100%"
+                onPress={() => {
+                  if (!chatId) {
+                    console.error('No chat id selected!');
+
+                    return;
+                  }
+
+                  void removeChat.request({
+                    input: {
+                      chatId,
+                    },
+                  });
+                }}
+              >
                 <Button theme="active">
                   <Trash /> Delete
                 </Button>
@@ -72,8 +92,10 @@ const Modal: FC<ModalProps> = (props) => {
 };
 
 export const ChatsScreen: FC = () => {
+  const { getMe } = useMe({});
+
   // TODO subscription for new chats
-  const { getChats } = useChats({
+  const { getMyChats } = useMyChats({
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
     variables: {
@@ -83,20 +105,28 @@ export const ChatsScreen: FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const [selectedChatId, setSelectedChatId] = useState<number>();
+
   return (
     <SafeAreaView style={{ display: 'flex', flexDirection: 'column' }}>
       <View style={{ marginHorizontal: 5, height: '100%' }}>
         <Modal
+          chatId={selectedChatId}
           isOpen={isOpen}
           onOpenChange={(newStatus) => setIsOpen(newStatus)}
           onCancel={() => setIsOpen(false)}
         />
         <SwipeListView
-          data={getChats.data?.data}
+          data={getMyChats.data?.data}
           renderItem={({ item: chat }) => (
             <Pressable
-              onPress={() => router.push(`chat/${chat.id}` as Href<string>)}
-              onLongPress={() => setIsOpen(true)}
+              onPress={() => {
+                router.push(`chats/${chat.id}` as Href<string>);
+              }}
+              onLongPress={() => {
+                setSelectedChatId(chat.id);
+                setIsOpen(true);
+              }}
               key={chat.id}
             >
               <View
@@ -108,9 +138,16 @@ export const ChatsScreen: FC = () => {
                   backgroundColor: '#d6d6cd',
                 }}
               >
-                <Text fontSize={20}>{chat.title}</Text>
+                <Text fontSize={20}>
+                  {chat.type === ChatType.Private
+                    ? chat.members.find(
+                        (member) => member.id !== getMe.data?.data?.id,
+                      )?.username
+                    : chat.title}
+                </Text>
                 <Text>{chat.id}</Text>
                 <Text>Members: {chat.members.length}</Text>
+                <Text>Type: {chat.type}</Text>
               </View>
             </Pressable>
           )}

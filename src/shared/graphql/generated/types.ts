@@ -1,18 +1,31 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  DateTime: { input: string; output: string; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  DateTime: { input: string; output: string };
 };
 
 export type AddMembersInput = {
@@ -40,7 +53,7 @@ export type ChatDto = {
   id: Scalars['Int']['output'];
   members: Array<UserDto>;
   title: Scalars['String']['output'];
-  type: Scalars['String']['output'];
+  type: ChatType;
 };
 
 export type ChatInput = {
@@ -54,7 +67,7 @@ export type ChatOutput = {
 
 export enum ChatType {
   Group = 'GROUP',
-  Private = 'PRIVATE'
+  Private = 'PRIVATE',
 }
 
 export type ChatsInput = {
@@ -102,6 +115,11 @@ export type LogoutOutput = {
   data: Scalars['Boolean']['output'];
 };
 
+export type MeOutput = {
+  __typename?: 'MeOutput';
+  data?: Maybe<UserDto>;
+};
+
 export type MessageAddedOutput = {
   __typename?: 'MessageAddedOutput';
   data: MessageDto;
@@ -142,51 +160,41 @@ export type Mutation = {
   verifySms: VerifySmsOutput;
 };
 
-
 export type MutationAddMembersArgs = {
   input: AddMembersInput;
 };
-
 
 export type MutationAddMessageArgs = {
   input: AddMessageInput;
 };
 
-
 export type MutationCreateChatArgs = {
   input: CreateChatInput;
 };
-
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
 };
 
-
 export type MutationEditChatArgs = {
   input: EditChatInput;
 };
-
 
 export type MutationRemoveChatArgs = {
   input: RemoveChatInput;
 };
 
-
 export type MutationRemoveMemberArgs = {
   input: RemoveMemberInput;
 };
-
 
 export type MutationSendSmsArgs = {
   input: SendSmsInput;
 };
 
-
 export type MutationUpdateMeArgs = {
   input: UpdateUserInput;
 };
-
 
 export type MutationVerifySmsArgs = {
   input: VerifySmsInput;
@@ -197,24 +205,26 @@ export type Query = {
   chat: ChatOutput;
   chats: ChatsOutput;
   dummy: Scalars['String']['output'];
-  me?: Maybe<UserDto>;
+  me?: Maybe<MeOutput>;
   messages: MessagesOutput;
-  users: Array<UserDto>;
+  myChats: ChatsOutput;
+  users: UsersOutput;
 };
-
 
 export type QueryChatArgs = {
   input: ChatInput;
 };
 
-
 export type QueryChatsArgs = {
   input: ChatsInput;
 };
 
-
 export type QueryMessagesArgs = {
   input: MessagesInput;
+};
+
+export type QueryMyChatsArgs = {
+  input: ChatsInput;
 };
 
 export type RemoveChatInput = {
@@ -266,6 +276,11 @@ export type UserDto = {
   lastActiveInMs: Scalars['DateTime']['output'];
   phoneNumber: Scalars['String']['output'];
   username?: Maybe<Scalars['String']['output']>;
+};
+
+export type UsersOutput = {
+  __typename?: 'UsersOutput';
+  data: Array<UserDto>;
 };
 
 export type VerifySmsInput = {

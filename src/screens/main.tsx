@@ -23,8 +23,8 @@ export const MainScreen: FC = () => {
     <SafeAreaView>
       <YGroup>
         <Text>This is main screen!</Text>
-        <Text>Phone number: {getMe.data?.phoneNumber}</Text>
-        <Text>Username: {getMe.data?.username}</Text>
+        <Text>Phone number: {getMe.data?.data?.phoneNumber}</Text>
+        <Text>Username: {getMe.data?.data?.username}</Text>
         <Button onPress={handleLogout}>Logout</Button>
       </YGroup>
     </SafeAreaView>

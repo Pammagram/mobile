@@ -1,4 +1,9 @@
 import {
+  ApolloClient,
+  NormalizedCacheObject,
+  useApolloClient,
+} from '@apollo/client';
+import {
   MessageCircle,
   Pencil,
   Settings,
@@ -10,14 +15,27 @@ import { TouchableOpacity } from 'react-native';
 
 import { tabBarIcon } from '$core/utils';
 import {
-  toggleActionSheet,
+  showActionSheet,
   useChatMessageAdded,
   useCurrentUser,
 } from '$features';
 
-const CreateChatButton: FC = () => {
+type CreateChatButtonProps = {
+  apolloClient: ApolloClient<NormalizedCacheObject>;
+};
+
+const CreateChatButton: FC<CreateChatButtonProps> = (props) => {
+  const { apolloClient } = props;
+
   return (
-    <TouchableOpacity onPress={toggleActionSheet} style={{ padding: 10 }}>
+    <TouchableOpacity
+      onPress={() =>
+        showActionSheet({
+          apolloClient,
+        })
+      }
+      style={{ padding: 10 }}
+    >
       <Pencil color="black" />
     </TouchableOpacity>
   );
@@ -28,6 +46,8 @@ const MainLayout: FC = () => {
 
   // TODO unsubscribe on logout
   useChatMessageAdded({});
+
+  const client = useApolloClient();
 
   if (!user) {
     return <Redirect href="/(auth)/sign-in" />;
@@ -47,7 +67,9 @@ const MainLayout: FC = () => {
         options={{
           title: 'Chats',
           tabBarIcon: tabBarIcon(MessageCircle),
-          headerRight: CreateChatButton,
+          headerRight: CreateChatButton.bind(null, {
+            apolloClient: client,
+          }),
         }}
       />
       <Tabs.Screen

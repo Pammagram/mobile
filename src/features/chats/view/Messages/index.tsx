@@ -134,7 +134,7 @@ export const MessagesContainer = memo(
             renderItem={({ item: message, index }) => {
               const RenderedMessage = () => (
                 <Message
-                  isFromMe={message.sender.id === user?.id}
+                  isFromMe={message.sender.id === user?.data?.id}
                   showAvatar={
                     messages[index - 1]?.sender.id !== message.sender.id
                   }

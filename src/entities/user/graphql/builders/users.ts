@@ -1,15 +1,15 @@
 import { DocumentNode, gql } from '@apollo/client';
 
 import {
-  ChatsOutput,
   createGraphqlBuilder,
   DEFAULT_RESPONSE_NAME,
+  UsersOutput,
 } from '$shared';
 
-export const createChats = createGraphqlBuilder<ChatsOutput, DocumentNode>(
+export const createUsers = createGraphqlBuilder<UsersOutput, DocumentNode>(
   (selection) => gql`
-    query GetChats ($input: ChatsInput!) {
-      ${DEFAULT_RESPONSE_NAME}: chats(input: $input) {
+    query Users {
+      ${DEFAULT_RESPONSE_NAME}: users {
         ${selection}
       }
     }

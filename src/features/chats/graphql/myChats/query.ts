@@ -1,9 +1,9 @@
-import { createChats } from '$entities';
+import { createMyChats } from '$entities';
 import { InferSelection } from '$shared';
 
-export const CHATS_PREFIX = 'chats';
+export const CHATS_PREFIX = 'myChats';
 
-export const CHATS_QUERY = createChats({
+export const CHATS_QUERY = createMyChats({
   data: {
     id: true,
     members: {

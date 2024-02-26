@@ -8,16 +8,27 @@ import { Text, XGroup, YGroup, YStack } from 'tamagui';
 
 import { useLogic } from './useLogic';
 
+import { useMe } from '$features';
+import { ChatType } from '$shared';
+
 export { useChatLayout } from './useLogic';
 
 const ChatTitle = () => {
   const { getChat } = useLogic();
 
-  const chatName = getChat.data?.data.title;
+  const { getMe } = useMe({});
+
+  const chat = getChat.data?.data;
+
+  const chatName =
+    chat?.type === ChatType.Private
+      ? chat.members.find((member) => member.id !== getMe.data?.data?.id)
+          ?.username
+      : chat?.title;
 
   return (
     <YGroup alignItems="center" flex={1}>
-      <Text>{chatName}r</Text>
+      <Text>{chatName}</Text>
     </YGroup>
   );
 };

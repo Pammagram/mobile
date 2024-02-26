@@ -7,6 +7,7 @@ import {
 import { useApolloClientDevTools } from '@dev-plugins/apollo-client/build/useApolloClientDevTools';
 import { SplashScreen, Stack } from 'expo-router';
 import { FC, useEffect, useState } from 'react';
+import { SheetProvider } from 'react-native-actions-sheet';
 import { Spinner } from 'tamagui';
 
 import { initializeApolloClient } from '$core/apollo';
@@ -14,7 +15,6 @@ import { usePreloadedAssets } from '$core/assets';
 import { combineProviders } from '$core/providers';
 
 void SplashScreen.preventAutoHideAsync();
-
 const manager = combineProviders();
 const MasterProvider = manager.master();
 
@@ -61,9 +61,11 @@ const PreProviderApp: FC = () => {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <PostProvider />
-    </ApolloProvider>
+    <SheetProvider>
+      <ApolloProvider client={client}>
+        <PostProvider />
+      </ApolloProvider>
+    </SheetProvider>
   );
 };
 

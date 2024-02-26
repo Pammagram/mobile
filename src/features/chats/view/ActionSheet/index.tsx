@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers -- temp solution */
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { Colors } from 'configs/constants';
 import { router } from 'expo-router';
 import { useCreateChat, useMyChats } from 'features/chats/graphql';
@@ -19,7 +19,7 @@ import { ChatType } from '$shared';
 
 export type CustomActionSheetProps = {
   payload: {
-    apolloClient: ApolloClient<NormalizedCacheObject>;
+    apolloClient: ApolloClient<object>;
   };
 };
 

@@ -1,8 +1,4 @@
-import {
-  ApolloClient,
-  NormalizedCacheObject,
-  useApolloClient,
-} from '@apollo/client';
+import { ApolloClient, useApolloClient } from '@apollo/client';
 import {
   MessageCircle,
   Pencil,
@@ -21,7 +17,7 @@ import {
 } from '$features';
 
 type CreateChatButtonProps = {
-  apolloClient: ApolloClient<NormalizedCacheObject>;
+  apolloClient: ApolloClient<object>;
 };
 
 const CreateChatButton: FC<CreateChatButtonProps> = (props) => {

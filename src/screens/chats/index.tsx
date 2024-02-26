@@ -1,11 +1,16 @@
 import { Bell, Trash, X } from '@tamagui/lucide-icons';
 import { Href, router } from 'expo-router';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Pressable, SafeAreaView, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { AlertDialog, Button, Text, XGroup, YStack } from 'tamagui';
 
-import { useMe, useMyChats, useRemoveChat } from '$features';
+import {
+  CHAT_CREATED_SUBSCRIPTION,
+  useMe,
+  useMyChats,
+  useRemoveChat,
+} from '$features';
 import { ChatType } from '$shared';
 
 type ModalProps = {
@@ -102,6 +107,27 @@ export const ChatsScreen: FC = () => {
       input: {},
     },
   });
+
+  useEffect(() => {
+    getMyChats.subscribeToMore({
+      document: CHAT_CREATED_SUBSCRIPTION,
+      updateQuery: (previousResult, options) => {
+        const { subscriptionData } = options;
+
+        return {
+          response: {
+            ...previousResult.response,
+            data: [
+              ...previousResult.response.data,
+              subscriptionData.data.response.data,
+            ],
+          },
+        };
+      },
+    });
+  }, []);
+
+  // useChatCreated({});
 
   const [isOpen, setIsOpen] = useState(false);
 

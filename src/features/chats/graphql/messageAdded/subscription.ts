@@ -3,7 +3,7 @@ import { InferSelection } from '$shared';
 
 export const MESSAGE_ADDED_PREFIX = 'messageAdded';
 
-export const MESSAGES_SUBSCRIPTION = createChatMessagesSubscription({
+export const MESSAGE_ADDED_SUBSCRIPTION = createChatMessagesSubscription({
   data: {
     id: true,
     sender: {
@@ -19,4 +19,6 @@ export const MESSAGES_SUBSCRIPTION = createChatMessagesSubscription({
   },
 });
 
-export type MessageAddedData = InferSelection<typeof MESSAGES_SUBSCRIPTION>;
+export type MessageAddedData = InferSelection<
+  typeof MESSAGE_ADDED_SUBSCRIPTION
+>;

@@ -1,4 +1,4 @@
-import { FieldFunctionOptions, TypePolicies } from '@apollo/client';
+import { FieldFunctionOptions, Reference, TypePolicies } from '@apollo/client';
 
 import { logPrettied } from '$core/utils';
 import {
@@ -6,6 +6,7 @@ import {
   CHAT_OUTPUT_TYPE_NAME,
   CHAT_TYPE_NAME,
   ChatMessagesData,
+  ChatRemovedData,
   MessageAddedData,
   MESSAGES_OUTPUT_TYPE_NAME,
 } from '$features';
@@ -103,14 +104,24 @@ export const customTypePolicies: TypePolicies[] = [
                 },
                 (data) => {
                   if (!data?.response) {
-                    return undefined;
+                    return;
                   }
+
+                  const messageAlreadyExists = data?.response.data.find(
+                    (existingMessage) => existingMessage.id === message.id,
+                  );
+
+                  if (messageAlreadyExists) {
+                    return;
+                  }
+
+                  const updatedMessages = [...data.response.data, message];
 
                   // TODO handle case when no chat exist
                   return {
                     response: {
                       chatId: message.chat.id,
-                      data: [...(data?.response.data || []), message],
+                      data: updatedMessages,
                     },
                   };
                 },
@@ -118,6 +129,25 @@ export const customTypePolicies: TypePolicies[] = [
             } catch (error) {
               logPrettied(error);
             }
+          },
+        },
+        chatRemoved: {
+          merge: (_existing: unknown, incoming: ChatRemovedData, options) => {
+            const { cache, canRead } = options;
+
+            const chatId = (incoming.data as unknown as Reference).__ref;
+
+            if (
+              !canRead({
+                __ref: chatId,
+              })
+            ) {
+              return;
+            }
+
+            cache.evict({ id: chatId });
+
+            cache.gc();
           },
         },
       },

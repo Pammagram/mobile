@@ -6,3 +6,4 @@ export * from './addMessage';
 export * from './createChat';
 export * from './removeChat';
 export * from './chatCreated';
+export * from './chatRemoved';

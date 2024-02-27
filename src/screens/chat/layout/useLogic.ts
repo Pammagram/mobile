@@ -17,8 +17,7 @@ export const useLogic = () => {
 
   useEffect(() => {
     if (!getChat.loading && !getChat.data?.data) {
-      console.error('Not found chat');
-      router.push('/(app)/contacts');
+      router.push('/(app)/chats');
     }
   }, [getChat.data]);
 

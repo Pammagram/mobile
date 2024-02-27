@@ -1,7 +1,7 @@
 import {
   MESSAGE_ADDED_PREFIX,
+  MESSAGE_ADDED_SUBSCRIPTION,
   MessageAddedData,
-  MESSAGES_SUBSCRIPTION,
 } from './subscription';
 
 import { useCustomSubscription, UseSubscriptionWrapper } from '$shared';
@@ -15,4 +15,8 @@ export type UseChatMessageAdded = UseSubscriptionWrapper<
 >;
 
 export const useChatMessageAdded: UseChatMessageAdded = (...args) =>
-  useCustomSubscription(MESSAGE_ADDED_PREFIX, MESSAGES_SUBSCRIPTION, ...args);
+  useCustomSubscription(
+    MESSAGE_ADDED_PREFIX,
+    MESSAGE_ADDED_SUBSCRIPTION,
+    ...args,
+  );

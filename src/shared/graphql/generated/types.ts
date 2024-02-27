@@ -54,6 +54,11 @@ export type ChatInput = {
 
 export type ChatOutput = {
   __typename?: 'ChatOutput';
+  data?: Maybe<ChatDto>;
+};
+
+export type ChatRemovedOutput = {
+  __typename?: 'ChatRemovedOutput';
   data: ChatDto;
 };
 
@@ -239,7 +244,7 @@ export type RemoveChatInput = {
 
 export type RemoveChatOutput = {
   __typename?: 'RemoveChatOutput';
-  data: Scalars['Boolean']['output'];
+  data: ChatDto;
 };
 
 export type RemoveMemberInput = {
@@ -264,6 +269,7 @@ export type SendSmsOutput = {
 export type Subscription = {
   __typename?: 'Subscription';
   chatCreated: ChatCreatedOutput;
+  chatRemoved: ChatRemovedOutput;
   messageAdded: MessageAddedOutput;
 };
 

@@ -1,38 +1,27 @@
-import { ApolloClient, useApolloClient } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import {
   MessageCircle,
   Pencil,
   Settings,
   UserCircle2,
 } from '@tamagui/lucide-icons';
-import { Tabs } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 import { FC, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { tabBarIcon } from '$core/utils';
 import {
   CHAT_CREATED_SUBSCRIPTION,
-  showActionSheet,
   useChatMessageAdded,
   useChatRemoved,
   useMyChats,
 } from '$features';
 import { ChatDto } from '$shared';
 
-type CreateChatButtonProps = {
-  apolloClient: ApolloClient<object>;
-};
-
-const CreateChatButton: FC<CreateChatButtonProps> = (props) => {
-  const { apolloClient } = props;
-
+const CreateChatButton: FC = () => {
   return (
     <TouchableOpacity
-      onPress={() =>
-        showActionSheet({
-          apolloClient,
-        })
-      }
+      onPress={() => router.push('/(app)/chats/create')}
       style={{ padding: 10 }}
     >
       <Pencil color="black" />
@@ -106,6 +95,7 @@ const MainLayout: FC = () => {
         name="chats"
         options={{
           title: 'Chats',
+          // headerShown: false,
           tabBarIcon: tabBarIcon(MessageCircle),
           headerRight: CreateChatButton.bind(null, {
             apolloClient: client,

@@ -146,7 +146,6 @@ export const customTypePolicies: TypePolicies[] = [
             }
 
             cache.evict({ id: chatId });
-
             cache.gc();
           },
         },

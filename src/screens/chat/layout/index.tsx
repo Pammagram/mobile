@@ -70,7 +70,7 @@ export const ChatLayout = () => {
     <Stack
       screenOptions={{
         header: Header,
-        freezeOnBlur: true,
+        freezeOnBlur: false,
       }}
     >
       <Stack.Screen

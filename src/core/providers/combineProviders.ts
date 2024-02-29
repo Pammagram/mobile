@@ -11,7 +11,7 @@ export const combineProviders = (): CombineProviders => {
 
   manager.push(TamaguiProvider, {
     config: tamaguiConfig,
-    defaultTheme: 'dark',
+    // defaultTheme: 'dark',
   });
 
   return manager;

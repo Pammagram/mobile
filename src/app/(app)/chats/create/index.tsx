@@ -26,9 +26,15 @@ const CreateChat: FC = () => {
   return (
     <YStack>
       <YStack marginTop={10}>
-        <XStack jc="center">
-          <Text>Create group chat</Text>
-        </XStack>
+        <TouchableOpacity
+          onPress={() => {
+            router.push('/(app)/chats/create/group');
+          }}
+        >
+          <XStack jc="center">
+            <Text>Create group chat</Text>
+          </XStack>
+        </TouchableOpacity>
         {getUsers.data?.data
           .filter((user) => user.id !== getMe.data?.data?.id)
           .map((user, index) => {

@@ -1,3 +1,3 @@
 export * from './InputToolbar';
 export * from './Messages';
-export * from './ActionSheet';
+export * from './Icon';

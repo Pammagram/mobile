@@ -1,6 +1,6 @@
 import { Camera, XCircle } from '@tamagui/lucide-icons';
 import { Colors } from 'configs/constants';
-import { Icon } from 'features/chats/view/ActionSheet/Icon';
+import { Icon } from 'features/chats/view';
 import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
 import { TouchableOpacity } from 'react-native';

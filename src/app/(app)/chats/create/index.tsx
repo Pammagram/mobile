@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers -- temp solution */
 import { router } from 'expo-router';
 import { useCreateChat, useMyChats } from 'features/chats/graphql';
-import { Icon } from 'features/chats/view/ActionSheet/Icon';
+import { Icon } from 'features/chats/view';
 import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
 import { TouchableOpacity } from 'react-native';

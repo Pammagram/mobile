@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers -- temp solution */
 import { Check } from '@tamagui/lucide-icons';
-import { Icon } from 'features/chats/view/ActionSheet/Icon';
+import { Icon } from 'features/chats/view';
 import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
 import { Checkbox, Text, XStack, YStack } from 'tamagui';

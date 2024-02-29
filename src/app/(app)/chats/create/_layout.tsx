@@ -18,7 +18,6 @@ type UseCreateChat = {
   chatType: ChatType.Group;
   memberIds: number[];
 
-  // setChatType: (type: ChatType) => void;
   setMemberIds: (memberIds: number[]) => void;
 
   setTitle: (title: string) => void;
@@ -107,7 +106,7 @@ const Layout: FC = () => {
           name="index"
           options={{
             headerShown: false,
-            freezeOnBlur: true,
+            // freezeOnBlur: true,
           }}
         />
         <Stack.Screen

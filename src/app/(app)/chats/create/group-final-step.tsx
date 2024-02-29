@@ -3,7 +3,8 @@ import { Colors } from 'configs/constants';
 import { Icon } from 'features/chats/view';
 import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Input, Text, View, XStack, YStack } from 'tamagui';
 
 import { useCreateGroupChat } from './_layout';
@@ -16,12 +17,14 @@ const CreateGroupScreen: FC = () => {
 
   const { memberIds, title, setTitle } = useCreateGroupChat();
 
+  const { bottom } = useSafeAreaInsets();
+
   const chosenUsers = getUsers.data!.data.filter(
     (user) => memberIds.includes(user.id) && user.id !== getMe.data?.data?.id,
   );
 
   return (
-    <YStack marginHorizontal={10} marginVertical={10}>
+    <YStack marginHorizontal={10} marginVertical={10} flex={1}>
       <XStack br={15} bg={Colors.TERNARY_BLUE} width="100%" p={10} gap={10}>
         <View br={100} bg={Colors.TERNARY_RED} p={20}>
           <Camera />
@@ -38,21 +41,30 @@ const CreateGroupScreen: FC = () => {
           </TouchableOpacity>
         </XStack>
       </XStack>
-      <YStack marginTop={10}>
-        {chosenUsers.map((user, index) => {
-          return (
-            <XStack key={index} ai="center">
-              <XStack gap={10} padding={10}>
-                <Icon />
-                <YStack>
-                  <Text>{user.username}</Text>
-                  <Text>Last - 30 minutes ago</Text>
-                </YStack>
-              </XStack>
-            </XStack>
-          );
-        })}
-      </YStack>
+      <View paddingHorizontal={10} flex={1}>
+        <FlatList
+          ListFooterComponent={<View height={bottom} />}
+          showsVerticalScrollIndicator
+          data={chosenUsers}
+          renderItem={(props) => {
+            const { index, item: user } = props;
+
+            return (
+              <TouchableOpacity>
+                <XStack key={index} ai="center">
+                  <XStack gap={10} padding={10}>
+                    <Icon />
+                    <YStack>
+                      <Text>{user.username}</Text>
+                      <Text>Last - 30 minutes ago</Text>
+                    </YStack>
+                  </XStack>
+                </XStack>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
     </YStack>
   );
 };

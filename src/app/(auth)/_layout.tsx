@@ -2,13 +2,17 @@ import { Redirect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { FC } from 'react';
 
-import { useCurrentUser } from '$features';
+import { useMe } from '$features';
 import { HeadlessStack } from '$shared';
 
 const AuthLayout: FC = () => {
-  const { user } = useCurrentUser();
+  const {
+    getMe: { data },
+  } = useMe({
+    fetchPolicy: 'network-only',
+  });
 
-  if (user) {
+  if (data) {
     return <Redirect href="/" />;
   }
 

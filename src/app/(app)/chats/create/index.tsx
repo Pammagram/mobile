@@ -1,11 +1,13 @@
-/* eslint-disable no-magic-numbers -- temp solution */
+import { Users } from '@tamagui/lucide-icons';
+import { Colors } from 'configs/constants';
 import { router } from 'expo-router';
 import { useCreateChat, useMyChats } from 'features/chats/graphql';
 import { Icon } from 'features/chats/view';
 import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Text, XStack, YStack } from 'tamagui';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button, Text, View, XStack, YStack } from 'tamagui';
 
 import { ChatType } from '$shared';
 
@@ -21,23 +23,34 @@ const CreateChat: FC = () => {
     },
   });
 
+  const { bottom } = useSafeAreaInsets();
+
   const { createChat } = useCreateChat({});
 
   return (
     <YStack>
-      <YStack marginTop={10}>
-        <TouchableOpacity
+      <YStack marginTop={10} backgroundColor={Colors.WHITE_SECONDARY}>
+        <Button
+          jc="flex-start"
+          ai="center"
           onPress={() => {
             router.push('/(app)/chats/create/group');
           }}
         >
-          <XStack jc="center">
-            <Text>Create group chat</Text>
-          </XStack>
-        </TouchableOpacity>
-        {getUsers.data?.data
-          .filter((user) => user.id !== getMe.data?.data?.id)
-          .map((user, index) => {
+          <Users />
+          <Text>Create group chat</Text>
+        </Button>
+      </YStack>
+      <YStack>
+        <FlatList
+          ListFooterComponent={<View height={bottom} />}
+          showsVerticalScrollIndicator
+          data={getUsers.data?.data.filter(
+            (user) => user.id !== getMe.data?.data?.id,
+          )}
+          renderItem={(props) => {
+            const { index, item: user } = props;
+
             return (
               <TouchableOpacity
                 onPress={async () => {
@@ -73,7 +86,8 @@ const CreateChat: FC = () => {
                 </XStack>
               </TouchableOpacity>
             );
-          })}
+          }}
+        />
       </YStack>
     </YStack>
   );

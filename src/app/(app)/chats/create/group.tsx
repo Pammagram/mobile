@@ -3,7 +3,9 @@ import { Check } from '@tamagui/lucide-icons';
 import { Icon } from 'features/chats/view';
 import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
-import { Checkbox, Text, XStack, YStack } from 'tamagui';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Checkbox, Text, View, XStack, YStack } from 'tamagui';
 
 import { useCreateGroupChat } from './_layout';
 
@@ -14,41 +16,52 @@ const CreateGroupScreen: FC = () => {
 
   const { getUsers } = useUsers({});
 
+  const { bottom } = useSafeAreaInsets();
+
   return (
-    <YStack>
-      <YStack marginTop={10}>
-        {getUsers.data?.data
-          .filter((user) => user.id !== getMe.data?.data?.id)
-          .map((user, index) => {
+    <YStack flex={1}>
+      <View paddingHorizontal={10} flex={1}>
+        <FlatList
+          ListFooterComponent={<View height={bottom} />}
+          showsVerticalScrollIndicator
+          data={getUsers.data?.data.filter(
+            (user) => user.id !== getMe.data?.data?.id,
+          )}
+          renderItem={(props) => {
+            const { index, item: user } = props;
+
             return (
-              <XStack key={index} ai="center">
-                <Checkbox
-                  size="$4"
-                  onCheckedChange={(isChecked) => {
-                    if (!isChecked) {
-                      setMemberIds(memberIds.filter((id) => id !== user.id));
+              <TouchableOpacity>
+                <XStack key={index} ai="center">
+                  <Checkbox
+                    size="$4"
+                    onCheckedChange={(isChecked) => {
+                      if (!isChecked) {
+                        setMemberIds(memberIds.filter((id) => id !== user.id));
 
-                      return;
-                    }
+                        return;
+                      }
 
-                    setMemberIds([...memberIds, user.id]);
-                  }}
-                >
-                  <Checkbox.Indicator>
-                    <Check />
-                  </Checkbox.Indicator>
-                </Checkbox>
-                <XStack gap={10} padding={10}>
-                  <Icon />
-                  <YStack>
-                    <Text>{user.username}</Text>
-                    <Text>Last - 30 minutes ago</Text>
-                  </YStack>
+                      setMemberIds([...memberIds, user.id]);
+                    }}
+                  >
+                    <Checkbox.Indicator>
+                      <Check />
+                    </Checkbox.Indicator>
+                  </Checkbox>
+                  <XStack gap={10} padding={10}>
+                    <Icon />
+                    <YStack>
+                      <Text>{user.username}</Text>
+                      <Text>Last - 30 minutes ago</Text>
+                    </YStack>
+                  </XStack>
                 </XStack>
-              </XStack>
+              </TouchableOpacity>
             );
-          })}
-      </YStack>
+          }}
+        />
+      </View>
     </YStack>
   );
 };

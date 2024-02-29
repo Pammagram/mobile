@@ -1,7 +1,7 @@
 import { useApolloClient } from '@apollo/client';
 import {
   MessageCircle,
-  Pencil,
+  MessageSquarePlus,
   Settings,
   UserCircle2,
 } from '@tamagui/lucide-icons';
@@ -24,7 +24,7 @@ const CreateChatButton: FC = () => {
       onPress={() => router.push('/(app)/chats/create')}
       style={{ padding: 10 }}
     >
-      <Pencil color="black" />
+      <MessageSquarePlus color="black" />
     </TouchableOpacity>
   );
 };

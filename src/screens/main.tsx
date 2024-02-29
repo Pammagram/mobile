@@ -6,7 +6,7 @@ import { Text, YGroup } from 'tamagui';
 import { useLogout, useMe } from '$features';
 import { Button } from '$shared';
 
-export const MainScreen: FC = () => {
+export const SettingsScreen: FC = () => {
   const { getMe } = useMe({});
 
   const { logout } = useLogout();
@@ -14,7 +14,7 @@ export const MainScreen: FC = () => {
   const handleLogout = async () => {
     await logout.request({});
 
-    router.navigate('/');
+    router.navigate('/(auth)/sign-in');
 
     // TODO clear user variable here and unsubscribe from events
   };

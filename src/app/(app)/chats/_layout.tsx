@@ -9,13 +9,14 @@ const Layout: FC = () => {
         options={{
           // Hide the header for all other routes.
           headerShown: false,
+          freezeOnBlur: true,
         }}
       />
       <Stack.Screen
         name="create"
         options={{
           // Set the presentation mode to modal for our modal route.
-          presentation: 'modal',
+          presentation: 'formSheet',
           headerShown: false,
           freezeOnBlur: true,
         }}

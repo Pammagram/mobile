@@ -3,8 +3,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { ChatMessage, useChatMessages } from 'features/chats/graphql';
 import { useMe } from 'features/user';
 import moment from 'moment';
-import { FC, forwardRef, memo, Ref, useMemo } from 'react';
-import { FlatList } from 'react-native';
+import { FC, forwardRef, memo, Ref, useEffect, useMemo, useRef } from 'react';
+import { Animated, FlatList, Keyboard } from 'react-native';
 import { Avatar, Spinner, Text, View, XStack } from 'tamagui';
 
 import { stringToColor } from '$core/utils';
@@ -12,6 +12,56 @@ import { stringToColor } from '$core/utils';
 type UserAvatarProps = {
   isVisible: boolean;
   initials?: string;
+};
+
+const Spacer: FC = () => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const decreaseHeight = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const increaseHeight = (keyboardHeight: number) => {
+    Animated.timing(fadeAnim, {
+      toValue: keyboardHeight,
+      duration: 0,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  useEffect(() => {
+    const cleanup = Keyboard.addListener('keyboardWillShow', (event) => {
+      const {
+        endCoordinates: { height },
+      } = event;
+
+      increaseHeight(height);
+    });
+
+    return () => {
+      cleanup.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const cleanup = Keyboard.addListener('keyboardWillHide', decreaseHeight);
+
+    return () => {
+      cleanup.remove();
+    };
+  }, []);
+
+  return (
+    <Animated.View
+      style={{
+        height: fadeAnim,
+      }}
+    />
+  );
 };
 
 const UserAvatar: FC<UserAvatarProps> = (props) => {
@@ -128,6 +178,7 @@ export const MessagesContainer = memo(
             maxToRenderPerBatch={30}
             ref={ref}
             inverted
+            ListFooterComponent={<Spacer />}
             showsVerticalScrollIndicator={false}
             data={messages}
             keyExtractor={(item) => item.id.toString()}

@@ -86,11 +86,7 @@ export const ChatScreen: FC = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            <View
-              style={{
-                height: messagesContainerHeightWithoutInput,
-              }}
-            >
+            <View style={{ height: messagesContainerHeightWithoutInput }}>
               <MessagesContainer ref={flatListRef} />
             </View>
             <InputToolbar onLayout={onInputLayout} onSubmit={onSendHandler} />

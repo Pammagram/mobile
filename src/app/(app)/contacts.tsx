@@ -1,7 +1,77 @@
-import { Text } from 'tamagui';
+import * as Contacts from 'expo-contacts';
+import { useEffect, useState } from 'react';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, View, XStack, YStack } from 'tamagui';
 
-const Contacts = () => {
-  return <Text>Contacts</Text>;
+import { Icon, useUsers } from '$features';
+
+const ContactsScreen = () => {
+  const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
+  const { getUsers } = useUsers();
+
+  useEffect(() => {
+    void (async () => {
+      const { status } = await Contacts.requestPermissionsAsync();
+
+      if (status === Contacts.PermissionStatus.GRANTED) {
+        const { data } = await Contacts.getContactsAsync({
+          fields: [
+            Contacts.Fields.FirstName,
+            Contacts.Fields.LastName,
+            Contacts.Fields.PhoneNumbers,
+          ],
+        });
+
+        setContacts(data);
+      }
+    })();
+  }, []);
+
+  const { bottom } = useSafeAreaInsets();
+
+  const availableContacts = contacts.filter((contact) => {
+    const phoneNumbers = contact.phoneNumbers?.map(({ digits }) => digits);
+
+    const users = getUsers.data?.data;
+
+    const hasAccount = users?.some(
+      (user) =>
+        phoneNumbers?.some(
+          (phoneNumber) => phoneNumber?.includes(user.phoneNumber),
+        ),
+    );
+
+    return hasAccount;
+  });
+
+  return (
+    <YStack f={1}>
+      <FlatList
+        ListFooterComponent={<View height={bottom} />}
+        data={availableContacts}
+        renderItem={(props) => {
+          const { item: contact } = props;
+
+          return (
+            <TouchableOpacity key={contact.id}>
+              <XStack ai="center">
+                <XStack gap={10} padding={10}>
+                  <Icon />
+                  <YStack>
+                    <Text>
+                      {contact.firstName} {contact.lastName}
+                    </Text>
+                    <Text>Last - 30 minutes ago</Text>
+                  </YStack>
+                </XStack>
+              </XStack>
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </YStack>
+  );
 };
 
-export default Contacts;
+export default ContactsScreen;

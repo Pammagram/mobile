@@ -75,7 +75,6 @@ const MainLayout: FC = () => {
       chatCreatedCleanup();
     };
   }, []);
-
   const client = useApolloClient();
 
   return (

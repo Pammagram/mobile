@@ -11,8 +11,6 @@ import { useLogic } from './useLogic';
 import { ChatType } from '$core/graphql';
 import { useMe } from '$modules/user';
 
-export { useChatLayout } from './useLogic';
-
 const ChatTitle = () => {
   const { getChat } = useLogic();
 

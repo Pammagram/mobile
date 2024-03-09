@@ -11,11 +11,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useLogic } from './useLogic';
 
-import { useChatLayout } from '../../layout/Chat';
-
+import { useChatLayout } from '$modules/chat/providers';
 import { InputToolbar, MessagesContainer } from '$modules/chats/view';
-
-export * from '../../layout/Chat';
 
 export const ChatScreen: FC = () => {
   const { sendMessage } = useLogic();

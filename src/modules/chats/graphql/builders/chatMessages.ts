@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { createGraphqlBuilder } from 'gql-ts-builder';
 import { DocumentNode } from 'graphql';
 
-import { DEFAULT_RESPONSE_NAME } from '$core/apollo';
+import { DEFAULT_RESPONSE_NAME } from '$core/apollo/constants';
 import { MessagesOutput } from '$core/graphql';
 
 export const createChatMessages = createGraphqlBuilder<

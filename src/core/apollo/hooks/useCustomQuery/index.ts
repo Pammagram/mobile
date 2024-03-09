@@ -10,7 +10,7 @@ import { useCallback } from 'react';
 
 import { PrefixedQueryResult, StrictPrefixedQueryResult } from './types';
 
-import { DEFAULT_RESPONSE_NAME } from '../constants';
+import { DEFAULT_RESPONSE_NAME } from '../../constants';
 
 import { GraphQlResponse } from '$core/apollo/hooks/types';
 import { getGraphqlRequestKey } from '$core/apollo/hooks/utils';

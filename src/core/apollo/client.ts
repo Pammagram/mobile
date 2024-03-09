@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, TypePolicies } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AsyncStorageWrapper, persistCache } from 'apollo3-cache-persist';
 
-import { customTypePolicies } from './config';
+import { customTypePolicies } from './config/typePolicies';
 import { createLink } from './link';
 
 import { mergeObjects } from '$core/utils';

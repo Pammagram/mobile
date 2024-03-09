@@ -170,11 +170,11 @@ export type Mutation = {
   editChat: EditChatOutput;
   logout: LogoutOutput;
   removeChat: RemoveChatOutput;
-  __typename?: 'Mutation';
   removeMember: RemoveMemberOutput;
   sendSms: SendSmsOutput;
   updateMe: UpdateUserOutput;
   verifySms: VerifySmsOutput;
+  __typename?: 'Mutation';
 };
 
 export type MutationAddMembersArgs = {

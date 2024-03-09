@@ -1,14 +1,12 @@
-import { FieldFunctionOptions, TypePolicies } from '@apollo/client';
-import { Reference } from 'yup';
+import { FieldFunctionOptions, Reference, TypePolicies } from '@apollo/client';
 
+import { CHAT_OUTPUT_TYPE_NAME, CHAT_TYPE_NAME } from '../documents/chat/query';
+import { ChatRemovedData } from '../documents/chatDeleted/subscription';
 import {
   CHAT_MESSAGES_QUERY,
-  CHAT_OUTPUT_TYPE_NAME,
-  CHAT_TYPE_NAME,
   ChatMessagesData,
-  ChatRemovedData,
-  MessageAddedData,
-} from '../documents';
+} from '../documents/chatMessages/query';
+import { MessageAddedData } from '../documents/messageAdded';
 
 import { GraphQlInput, GraphQlResponse } from '$core/apollo';
 import {

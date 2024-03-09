@@ -1,7 +1,10 @@
 import { LegacyRef, useRef } from 'react';
 import { Dimensions, ScrollView } from 'react-native';
 
-import { EnterCode, SubmitPhone } from '$modules/auth/screens/SignIn/components';
+import {
+  EnterCode,
+  SubmitPhone,
+} from '$modules/auth/screens/SignIn/components';
 
 export const useLogic = () => {
   const scrollRef = useRef<ScrollView>();

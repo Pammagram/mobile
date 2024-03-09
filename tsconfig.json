@@ -58,7 +58,13 @@
       ],
       "$screens": [
         "screens"
-      ]
+      ],
+      "$modules": [
+        "modules"
+      ],
+      "$modules/*": [
+        "modules/*"
+      ],
     }
   },
   "extends": "expo/tsconfig.base",

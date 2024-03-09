@@ -17,6 +17,7 @@ export const EnterCode: FC = () => {
       <InputController
         control={control}
         name="code"
+        keyboardType="number-pad"
         errorMessage={errorMessage}
         placeholder="Enter code"
         size="$5"

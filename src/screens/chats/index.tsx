@@ -115,11 +115,12 @@ export const ChatsScreen: FC = () => {
           onCancel={() => setIsOpen(false)}
         />
         <SwipeListView
+          showsVerticalScrollIndicator={false}
           data={getMyChats.data?.data}
           renderItem={({ item: chat }) => (
             <Pressable
               onPress={() => {
-                router.push(`chats/${chat.id}` as Href<string>);
+                router.push(`chat/${chat.id}` as Href<string>); // TODO create builder for routes
               }}
               onLongPress={() => {
                 setSelectedChatId(chat.id);

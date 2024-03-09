@@ -4,3 +4,4 @@ export * from './main';
 export * from './update-me';
 export * from './chats';
 export * from './chat';
+export * from './Root';

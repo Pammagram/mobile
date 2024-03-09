@@ -1,10 +1,11 @@
 import { router } from 'expo-router';
 import { FC } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, YGroup } from 'tamagui';
 
-import { useLogout, useMe } from '$features';
-import { Button } from '$shared';
+import { Button } from '$core/components';
+import { useMe } from '$modules';
+import { useLogout } from '$modules/auth/graphql';
 
 export const SettingsScreen: FC = () => {
   const { getMe } = useMe({});

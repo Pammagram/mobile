@@ -1,10 +1,8 @@
 import { DocumentNode, gql } from '@apollo/client';
+import { createGraphqlBuilder } from 'gql-ts-builder';
 
-import {
-  createGraphqlBuilder,
-  DEFAULT_RESPONSE_NAME,
-  VerifySmsOutput,
-} from '$shared';
+import { DEFAULT_RESPONSE_NAME } from '$core/apollo';
+import { VerifySmsOutput } from '$core/graphql';
 
 export const createVerifySms = createGraphqlBuilder<
   VerifySmsOutput,

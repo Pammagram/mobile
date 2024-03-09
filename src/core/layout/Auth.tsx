@@ -2,8 +2,8 @@ import { Redirect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { FC } from 'react';
 
-import { useMe } from '$features';
-import { HeadlessStack } from '$shared';
+import { HeadlessStack } from '$core/components';
+import { useMe } from '$modules';
 
 export const AuthLayout: FC = () => {
   const {

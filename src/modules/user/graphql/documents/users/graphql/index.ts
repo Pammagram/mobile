@@ -1,6 +1,7 @@
 import { Data, USERS_PREFIX, USERS_QUERY } from './query';
 
-import { MutationUpdateMeArgs, useCustomQuery, UseQueryWrapper } from '$shared';
+import { useCustomQuery, UseQueryWrapper } from '$core/apollo';
+import { MutationUpdateMeArgs } from '$core/graphql';
 
 export type UseUsers = UseQueryWrapper<
   typeof USERS_PREFIX,

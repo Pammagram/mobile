@@ -1,5 +1,6 @@
-import { createAddMessage } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
+
+import { createAddMessage } from '$modules/chats/graphql/builders';
 
 export const ADD_MESSAGE_PREFIX = 'addMessage';
 

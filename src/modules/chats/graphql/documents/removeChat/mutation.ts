@@ -1,5 +1,6 @@
-import { createRemoveChat } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
+
+import { createRemoveChat } from '../../builders';
 
 export const REMOVE_CHAT_PREFIX = 'removeChat';
 

@@ -1,5 +1,6 @@
-import { createMyChats } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
+
+import { createMyChats } from '../../builders';
 
 export const CHATS_PREFIX = 'myChats';
 

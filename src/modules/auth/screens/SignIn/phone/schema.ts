@@ -1,7 +1,7 @@
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { string } from 'yup';
 
-import { ValidationHints } from '$shared';
+import { ValidationHints } from '../validation';
 
 export const phoneSchema = string().test(
   'is-phone-valid',

@@ -1,1 +1,1 @@
-export { UnmatchedRouteScreen as default } from '$screens';
+export { UnmatchedRouteScreen as default } from '$core/screens';

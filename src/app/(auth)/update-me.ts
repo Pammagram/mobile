@@ -1,1 +1,1 @@
-export { UpdateMeScreen as default } from '$screens';
+export { UpdateMeScreen as default } from '$modules';

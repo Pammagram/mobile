@@ -1,5 +1,6 @@
-import { createUsers } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
+
+import { createUsers } from '$modules/user/graphql/builders';
 
 export const USERS_PREFIX = 'users';
 

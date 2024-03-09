@@ -1,5 +1,6 @@
-import { createMe } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
+
+import { createMe } from '$modules/user/graphql/builders';
 
 export const PREFIX = 'me';
 

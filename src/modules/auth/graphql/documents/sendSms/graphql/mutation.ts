@@ -1,5 +1,5 @@
 import { createSendSms } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
 
 export const PREFIX = 'sendSms';
 

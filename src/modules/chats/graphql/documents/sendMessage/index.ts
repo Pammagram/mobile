@@ -1,12 +1,11 @@
 import { ADD_MESSAGE_MUTATION, ADD_MESSAGE_PREFIX } from './mutation';
 
 import {
-  AddMessageInput,
-  AddMessageOutput,
   GraphQlInput,
   useCustomMutation,
   UseMutationWrapper,
-} from '$shared';
+} from '$core/apollo';
+import { AddMessageInput, AddMessageOutput } from '$core/graphql';
 
 export * from './mutation';
 

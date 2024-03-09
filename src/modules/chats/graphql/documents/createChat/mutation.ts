@@ -1,5 +1,6 @@
-import { createCreateChat } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
+
+import { createCreateChat } from '../../builders';
 
 export const CREATE_CHAT_PREFIX = 'createChat';
 

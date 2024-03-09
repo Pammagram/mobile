@@ -1,7 +1,7 @@
 import { Redirect } from 'expo-router';
 import { FC } from 'react';
 
-import { useCurrentUser } from '$features';
+import { useCurrentUser } from '$modules';
 
 export const RootScreen: FC = () => {
   const { user, isLoading } = useCurrentUser();

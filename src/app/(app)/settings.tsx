@@ -1,1 +1,1 @@
-export { SettingsScreen as default } from '$screens';
+export { SettingsScreen as default } from '$core/screens';

@@ -1,5 +1,14 @@
 import { FieldFunctionOptions, Reference, TypePolicies } from '@apollo/client';
 
+import { GraphQlInput, GraphQlResponse } from '../types';
+
+import {
+  ChatDto,
+  ChatInput,
+  ChatOutput,
+  MessagesInput,
+  MessagesOutput,
+} from '$core/graphql';
 import { logPrettied } from '$core/utils';
 import {
   CHAT_MESSAGES_QUERY,
@@ -9,16 +18,7 @@ import {
   ChatRemovedData,
   MessageAddedData,
   MESSAGES_OUTPUT_TYPE_NAME,
-} from '$features';
-import {
-  ChatDto,
-  ChatInput,
-  ChatOutput,
-  GraphQlInput,
-  GraphQlResponse,
-  MessagesInput,
-  MessagesOutput,
-} from '$shared';
+} from '$modules';
 
 // TODO separate adequately across features
 export const customTypePolicies: TypePolicies[] = [

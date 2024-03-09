@@ -1,11 +1,7 @@
 import { CHAT_PREFIX, CHAT_QUERY, ChatData } from './query';
 
-import {
-  ChatInput,
-  GraphQlInput,
-  useCustomQuery,
-  UseQueryWrapper,
-} from '$shared';
+import { GraphQlInput, useCustomQuery, UseQueryWrapper } from '$core/apollo';
+import { ChatInput } from '$core/graphql';
 
 export * from './query';
 

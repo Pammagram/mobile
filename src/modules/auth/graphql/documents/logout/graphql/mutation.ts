@@ -1,5 +1,6 @@
-import { createLogout } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
+
+import { createLogout } from '$modules/user/graphql';
 
 export const PREFIX = 'logout';
 

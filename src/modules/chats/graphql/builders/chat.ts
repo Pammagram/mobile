@@ -1,10 +1,8 @@
 import { DocumentNode, gql } from '@apollo/client';
+import { createGraphqlBuilder } from 'gql-ts-builder';
 
-import {
-  ChatOutput,
-  createGraphqlBuilder,
-  DEFAULT_RESPONSE_NAME,
-} from '$shared';
+import { DEFAULT_RESPONSE_NAME } from '$core/apollo';
+import { ChatOutput } from '$core/graphql';
 
 export const createChat = createGraphqlBuilder<ChatOutput, DocumentNode>(
   (selection) => gql`

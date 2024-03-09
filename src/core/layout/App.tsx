@@ -9,14 +9,14 @@ import { router, Tabs } from 'expo-router';
 import { FC, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 
+import { ChatDto } from '$core/graphql';
 import { tabBarIcon } from '$core/utils';
 import {
   CHAT_CREATED_SUBSCRIPTION,
   useChatMessageAdded,
   useChatRemoved,
   useMyChats,
-} from '$features';
-import { ChatDto } from '$shared';
+} from '$modules';
 
 const CreateChatButton: FC = () => {
   return (

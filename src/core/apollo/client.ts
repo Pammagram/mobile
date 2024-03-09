@@ -5,7 +5,7 @@ import { AsyncStorageWrapper, persistCache } from 'apollo3-cache-persist';
 import { customTypePolicies } from './config';
 import { createLink } from './link';
 
-import { mergeObjects } from '$shared';
+import { mergeObjects } from '$core/utils';
 
 export const initializeApolloClient = async () => {
   const cache = new InMemoryCache({

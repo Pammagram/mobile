@@ -5,11 +5,11 @@ import {
 } from './mutation';
 
 import {
-  CreateChatInput,
   GraphQlInput,
   useCustomMutation,
   UseMutationWrapper,
-} from '$shared';
+} from '$core/apollo';
+import { CreateChatInput } from '$core/graphql';
 
 export * from './mutation';
 

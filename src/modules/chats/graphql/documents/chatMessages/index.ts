@@ -4,7 +4,8 @@ import {
   ChatMessagesData,
 } from './query';
 
-import { MessagesInput, useCustomQuery, UseQueryWrapper } from '$shared';
+import { useCustomQuery, UseQueryWrapper } from '$core/apollo';
+import { MessagesInput } from '$core/graphql';
 
 export * from './query';
 

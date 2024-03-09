@@ -6,10 +6,10 @@ import {
 
 import {
   GraphQlInput,
-  RemoveChatInput,
   useCustomMutation,
   UseMutationWrapper,
-} from '$shared';
+} from '$core/apollo';
+import { RemoveChatInput } from '$core/graphql';
 
 export * from './mutation';
 

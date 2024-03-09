@@ -1,10 +1,7 @@
 import { Data, MUTATION, PREFIX } from './mutation';
 
-import {
-  MutationSendSmsArgs,
-  useCustomMutation,
-  UseMutationWrapper,
-} from '$shared';
+import { useCustomMutation, UseMutationWrapper } from '$core/apollo';
+import { MutationSendSmsArgs } from '$core/graphql';
 
 export type UseSendSms = UseMutationWrapper<
   typeof PREFIX,

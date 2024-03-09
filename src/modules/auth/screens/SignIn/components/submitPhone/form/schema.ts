@@ -1,6 +1,6 @@
 import { object } from 'yup';
 
-import { phoneSchema } from '$entities';
+import { phoneSchema } from '../../../phone';
 
 export const schema = object({
   phone: phoneSchema.required(),

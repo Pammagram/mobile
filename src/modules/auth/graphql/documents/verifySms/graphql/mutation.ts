@@ -1,5 +1,6 @@
-import { createVerifySms } from '$entities';
-import { InferSelection } from '$shared';
+import { InferSelection } from 'gql-ts-builder';
+
+import { createVerifySms } from '$modules/auth/graphql/builders';
 
 export const PREFIX = 'verifySms';
 

@@ -4,7 +4,8 @@ import { FlatList, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text, View, XStack, YStack } from 'tamagui';
 
-import { Icon, useUsers } from '$features';
+import { Icon } from '$modules/chats/view';
+import { useUsers } from '$modules/user';
 
 export const ContactsScreen = () => {
   const [contacts, setContacts] = useState<Contacts.Contact[]>([]);

@@ -1,1 +1,1 @@
-export { RootScreen as default } from '$screens';
+export { RootScreen as default } from '$core/screens';

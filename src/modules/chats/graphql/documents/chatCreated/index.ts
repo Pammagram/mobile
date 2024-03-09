@@ -4,7 +4,7 @@ import {
   ChatCreatedData,
 } from './subscription';
 
-import { useCustomSubscription, UseSubscriptionWrapper } from '$shared';
+import { useCustomSubscription, UseSubscriptionWrapper } from '$core/apollo';
 
 export * from './subscription';
 

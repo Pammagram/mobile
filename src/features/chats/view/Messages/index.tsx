@@ -182,6 +182,7 @@ export const MessagesContainer = memo(
             showsVerticalScrollIndicator={false}
             data={messages}
             keyExtractor={(item) => item.id.toString()}
+            initialNumToRender={15}
             renderItem={({ item: message, index }) => {
               const RenderedMessage = () => (
                 <Message
@@ -189,7 +190,7 @@ export const MessagesContainer = memo(
                   showAvatar={
                     messages[index - 1]?.sender.id !== message.sender.id
                   }
-                  message={message} // TODO fix typings
+                  message={message}
                 />
               );
 
@@ -215,8 +216,6 @@ export const MessagesContainer = memo(
                 nextTimestamp,
                 'day',
               );
-
-              // TODO test this
 
               return (
                 <>

@@ -70,13 +70,12 @@ export const ChatLayout = () => {
     <Stack
       screenOptions={{
         header: Header,
-        freezeOnBlur: false,
       }}
     >
       <Stack.Screen
         name="[chatId]"
         options={{
-          freezeOnBlur: true,
+          freezeOnBlur: false,
         }}
       />
     </Stack>

@@ -4,7 +4,10 @@ import {
   ChatRemovedData,
 } from './subscription';
 
-import { useCustomSubscription, UseSubscriptionWrapper } from '$core/apollo';
+import {
+  useCustomSubscription,
+  UseSubscriptionWrapper,
+} from '$core/apollo/hooks';
 
 export * from './subscription';
 

@@ -3,10 +3,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 
+import { phoneVar } from '../../../phone';
 import { defaultValues, EnterCodeForm, schema } from '../form';
 
-import { phoneVar } from '$entities';
-import { useVerifySms } from '$features';
+import { useVerifySms } from '$modules/auth/graphql';
 
 export const useLogic = () => {
   const {

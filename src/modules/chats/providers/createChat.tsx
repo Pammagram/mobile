@@ -7,8 +7,8 @@ import {
 } from 'react';
 import { create, useStore } from 'zustand';
 
-import { useMe } from '$features';
-import { ChatType } from '$shared';
+import { ChatType } from '$core/graphql';
+import { useMe } from '$modules/user';
 
 export type UseCreateChat = {
   chatType: ChatType.Group;

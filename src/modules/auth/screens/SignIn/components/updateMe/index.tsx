@@ -3,7 +3,7 @@ import { View } from 'tamagui';
 
 import { useLogic } from './hooks';
 
-import { Button, InputController } from '$shared';
+import { Button, InputController } from '$core/components';
 
 export const UpdateMe: FC = () => {
   const { control, errors, isLoading, isValid, onUpdateMeHandler } = useLogic();

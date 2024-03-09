@@ -1,13 +1,13 @@
 import { Colors } from 'configs/constants';
 import { useLocalSearchParams } from 'expo-router';
-import { ChatMessage, useChatMessages } from '$modules/chats/graphql/documents';
-import { useMe } from 'features/user';
 import moment from 'moment';
 import { FC, forwardRef, memo, Ref, useEffect, useMemo, useRef } from 'react';
 import { Animated, FlatList, Keyboard } from 'react-native';
 import { Avatar, Spinner, Text, View, XStack } from 'tamagui';
 
 import { stringToColor } from '$core/utils';
+import { ChatMessage, useChatMessages } from '$modules/chats/graphql/documents';
+import { useMe } from '$modules/user';
 
 type UserAvatarProps = {
   isVisible: boolean;

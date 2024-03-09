@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
+import { phoneVar } from '../../../phone';
 import { defaultValues, schema, SubmitPhoneForm } from '../form';
 
 import { useSendSms } from '$modules/auth/graphql';

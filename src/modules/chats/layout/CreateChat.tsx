@@ -4,7 +4,8 @@ import { FC } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text } from 'tamagui';
 
-import { useCreateChat } from '$features';
+import { useCreateChat } from '../graphql';
+
 import {
   CreateChatProvider,
   useCreateGroupChat,

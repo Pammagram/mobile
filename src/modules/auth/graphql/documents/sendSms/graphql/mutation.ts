@@ -1,5 +1,6 @@
-import { createSendSms } from '$entities';
 import { InferSelection } from 'gql-ts-builder';
+
+import { createSendSms } from '$modules/auth/graphql/builders';
 
 export const PREFIX = 'sendSms';
 

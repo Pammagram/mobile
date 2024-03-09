@@ -13,7 +13,7 @@ import { useLogic } from './useLogic';
 
 import { useChatLayout } from '../../layout/Chat';
 
-import { InputToolbar, MessagesContainer } from '$features';
+import { InputToolbar, MessagesContainer } from '$modules/chats/view';
 
 export * from '../../layout/Chat';
 

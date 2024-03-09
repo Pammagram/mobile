@@ -40,7 +40,7 @@ export const ContactsScreen = () => {
       const userPhoneNumber = user.phoneNumber;
 
       return phoneNumbers?.some((phoneNumber) =>
-        userPhoneNumber.includes(phoneNumber),
+        userPhoneNumber.includes(phoneNumber || ''),
       );
     });
 

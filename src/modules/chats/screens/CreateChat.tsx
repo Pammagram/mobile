@@ -1,15 +1,15 @@
 import { Users } from '@tamagui/lucide-icons';
 import { Colors } from 'configs/constants';
 import { router } from 'expo-router';
-import { useCreateChat, useMyChats } from '$modules/chats/graphql/documents';
-import { Icon } from '$modules/chats/view';
-import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, Text, View, XStack, YStack } from 'tamagui';
 
-import { ChatType } from '$shared';
+import { ChatType } from '$core/graphql';
+import { useCreateChat, useMyChats } from '$modules/chats/graphql/documents';
+import { Icon } from '$modules/chats/view';
+import { useMe, useUsers } from '$modules/user';
 
 export const CreateChatScreen: FC = () => {
   const { getMe } = useMe({});

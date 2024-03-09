@@ -8,8 +8,8 @@ import { Text, XGroup, YGroup, YStack } from 'tamagui';
 
 import { useLogic } from './useLogic';
 
-import { useMe } from '$features';
-import { ChatType } from '$shared';
+import { ChatType } from '$core/graphql';
+import { useMe } from '$modules/user';
 
 export { useChatLayout } from './useLogic';
 

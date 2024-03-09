@@ -1,13 +1,13 @@
 import { Check } from '@tamagui/lucide-icons';
-import { Icon } from '$modules/chats/view';
-import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Checkbox, Text, View, XStack, YStack } from 'tamagui';
 
+import { UserDto } from '$core/graphql';
 import { useCreateGroupChat } from '$modules/chats/providers';
-import { UserDto } from '$shared';
+import { Icon } from '$modules/chats/view';
+import { useMe, useUsers } from '$modules/user';
 
 type ContactProps = {
   user: UserDto;

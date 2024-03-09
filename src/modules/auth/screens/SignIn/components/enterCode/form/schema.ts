@@ -1,8 +1,7 @@
 import { object, string } from 'yup';
 
+import { ValidationHints } from '../../../validation';
 import { CODE_LENGTH } from '../configs';
-
-import { ValidationHints } from '$shared';
 
 export const schema = object({
   code: string()

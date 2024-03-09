@@ -2,7 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { create } from 'zustand';
 
-import { useChat } from '$features';
+import { useChat } from '$modules/chats';
 
 export const useLogic = () => {
   const { chatId } = useLocalSearchParams<{ chatId: string }>();

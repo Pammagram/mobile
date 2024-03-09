@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { defaultValues, schema, UpdateMeForm } from '../form';
 
-import { useUpdateMe } from '$features';
+import { useUpdateMe } from '$modules/user';
 
 export const useLogic = () => {
   const {

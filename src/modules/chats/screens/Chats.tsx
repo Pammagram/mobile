@@ -5,8 +5,10 @@ import { Pressable, SafeAreaView, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { AlertDialog, Button, Text, XGroup, YStack } from 'tamagui';
 
-import { useMe, useMyChats, useRemoveChat } from '$features';
-import { ChatType } from '$shared';
+import { useMyChats, useRemoveChat } from '../graphql';
+
+import { ChatType } from '$core/graphql';
+import { useMe } from '$modules/user';
 
 type ModalProps = {
   isOpen: boolean;

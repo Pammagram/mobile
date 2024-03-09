@@ -8,6 +8,8 @@ import { Text, View } from 'tamagui';
 import { DEFAULT_CODE } from './configs';
 import { useLogic } from './hooks';
 
+import { Button } from '$core/components';
+
 type Props = {
   afterSubmit?: () => void;
 };

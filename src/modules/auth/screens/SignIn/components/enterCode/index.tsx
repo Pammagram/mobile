@@ -4,7 +4,7 @@ import { Text } from 'tamagui';
 
 import { useLogic } from './hooks';
 
-import { Button, InputController } from '$shared';
+import { Button, InputController } from '$core/components';
 
 export const EnterCode: FC = () => {
   const { control, errors, isLoading, isValid, onVerifySmsHandler } =

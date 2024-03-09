@@ -1,13 +1,13 @@
 import { Camera, XCircle } from '@tamagui/lucide-icons';
 import { Colors } from 'configs/constants';
-import { Icon } from '$modules/chats/view';
-import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Input, Text, View, XStack, YStack } from 'tamagui';
 
 import { useCreateGroupChat } from '$modules/chats/providers';
+import { Icon } from '$modules/chats/view';
+import { useMe, useUsers } from '$modules/user';
 
 export const CreateGroupFinalStepScreen: FC = () => {
   // TODO custom hook

@@ -2,7 +2,7 @@ import { DeepNonNullable } from 'utility-types';
 
 import { useMe } from '../graphql';
 
-import { StrictType, UserDto } from '$shared';
+import { StrictType, UserDto } from '$core/graphql';
 
 type ReturnType<Strict extends StrictType = StrictType.NOT_STRICT> = {
   isLoading: boolean;

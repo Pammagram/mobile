@@ -1,8 +1,8 @@
 import { Users } from '@tamagui/lucide-icons';
 import { Colors } from 'configs/constants';
 import { router } from 'expo-router';
-import { useCreateChat, useMyChats } from 'features/chats/graphql';
-import { Icon } from 'features/chats/view';
+import { useCreateChat, useMyChats } from '$modules/chats/graphql/documents';
+import { Icon } from '$modules/chats/view';
 import { useMe, useUsers } from 'features/user';
 import { FC } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';

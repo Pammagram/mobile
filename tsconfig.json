@@ -50,12 +50,6 @@
       "$entities": [
         "entities"
       ],
-      "$shared": [
-        "shared"
-      ],
-      "$shared/*": [
-        "shared/*"
-      ],
       "$screens": [
         "screens"
       ],

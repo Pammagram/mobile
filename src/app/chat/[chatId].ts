@@ -1,1 +1,1 @@
-export { ChatScreen as default } from '$screens';
+export { ChatScreen as default } from '$modules';

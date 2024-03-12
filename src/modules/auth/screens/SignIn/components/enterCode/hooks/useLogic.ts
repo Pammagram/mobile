@@ -1,5 +1,6 @@
 import { useReactiveVar } from '@apollo/client';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as Device from 'expo-device';
 import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 
@@ -28,7 +29,18 @@ export const useLogic = () => {
   });
 
   const onVerifySmsHandler = handleSubmit(async (data: EnterCodeForm) => {
-    const response = await request({ input: { phoneNumber, code: data.code } });
+    const response = await request({
+      input: {
+        phoneNumber,
+        code: data.code,
+        device:
+          Device.modelName ||
+          Device.deviceName ||
+          Device.brand ||
+          Device.deviceType?.toString() ||
+          'Unknown device',
+      },
+    });
 
     if (response?.data.username) {
       router.push('/');

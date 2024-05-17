@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { Text, View, XGroup } from 'tamagui';
+import { View } from 'tamagui';
 
 import { ChatCard } from '../components/ChatCard';
 import { ChatOptionsModal } from '../components/ChatOptionsModal';
@@ -25,7 +25,7 @@ export const ChatsScreen: FC = () => {
 
   return (
     <SafeAreaView style={{ display: 'flex', flexDirection: 'column' }}>
-      <View marginHorizontal={5} h="100%">
+      <View>
         <ChatOptionsModal
           chatId={selectedChatId}
           isOpen={isOpen}
@@ -41,17 +41,8 @@ export const ChatsScreen: FC = () => {
               chat={chat}
             />
           )}
-          renderHiddenItem={(_data, _rowMap) => (
-            <XGroup jc="space-between">
-              <View bg="red">
-                <Text>Left</Text>
-              </View>
-              <View bg="red">
-                <Text>Right</Text>
-              </View>
-            </XGroup>
-          )}
-          leftOpenValue={150}
+          renderHiddenItem={() => <View />}
+          // leftOpenValue={150}
           rightOpenValue={-150}
         />
       </View>

@@ -80,7 +80,7 @@ export const AppLayout: FC = () => {
   return (
     <Tabs
       screenOptions={{
-        unmountOnBlur: true,
+        unmountOnBlur: false,
       }}
     >
       <Tabs.Screen
@@ -94,7 +94,6 @@ export const AppLayout: FC = () => {
         name="chats"
         options={{
           title: 'Chats',
-          // headerShown: false,
           tabBarIcon: tabBarIcon(MessageCircle),
           headerRight: CreateChatButton.bind(null, {
             apolloClient: client,

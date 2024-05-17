@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import { SafeAreaView } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { View } from 'tamagui';
+import { ScrollView, View } from 'tamagui';
 
 import { ChatCard } from '../components/ChatCard';
 import { ChatOptionsModal } from '../components/ChatOptionsModal';
@@ -32,20 +31,16 @@ export const ChatsScreen: FC = () => {
           onOpenChange={(newStatus) => setIsOpen(newStatus)}
           onCancel={() => setIsOpen(false)}
         />
-        <SwipeListView
-          showsVerticalScrollIndicator={false}
-          data={getMyChats.data?.data}
-          renderItem={({ item: chat }) => (
+        <ScrollView>
+          {getMyChats.data?.data.map((chat) => (
             <ChatCard
+              key={chat.id}
               onLongPress={() => onChatCardLongPress(chat.id)}
               chat={chat}
               lastMessage={chat.lastMessage}
             />
-          )}
-          renderHiddenItem={() => <View />}
-          // leftOpenValue={150}
-          rightOpenValue={-150}
-        />
+          ))}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

@@ -9,12 +9,13 @@ import { Button, Text, View, XStack, YStack } from 'tamagui';
 import { ChatType } from '$core/graphql';
 import { useCreateChat, useMyChats } from '$modules/chats/graphql/documents';
 import { Icon } from '$modules/chats/view';
-import { useMe, useUsers } from '$modules/user';
+import { useContacts } from '$modules/contacts/hooks/useContacts';
+import { useCurrentUser } from '$modules/user';
 
 export const CreateChatScreen: FC = () => {
-  const { getMe } = useMe({});
+  const { user } = useCurrentUser();
 
-  const { getUsers } = useUsers({});
+  const { contacts } = useContacts();
 
   const { getMyChats } = useMyChats({
     variables: {
@@ -44,11 +45,9 @@ export const CreateChatScreen: FC = () => {
         <FlatList
           ListFooterComponent={<View height={bottom} />}
           showsVerticalScrollIndicator
-          data={getUsers.data?.data.filter(
-            (user) => user.id !== getMe.data?.data?.id,
-          )}
+          data={contacts}
           renderItem={(props) => {
-            const { index, item: user } = props;
+            const { index, item: contact } = props;
 
             return (
               <TouchableOpacity
@@ -56,13 +55,13 @@ export const CreateChatScreen: FC = () => {
                   let privateChat = getMyChats.data?.data.find(
                     (chat) =>
                       chat.type === ChatType.Private &&
-                      chat.members.find((member) => member.id === user.id),
+                      chat.members.find((member) => member.id === contact.id),
                   );
 
                   if (!privateChat) {
                     const response = await createChat.request({
                       input: {
-                        memberIds: [getMe.data!.data!.id, user.id], // TODO avoid this
+                        memberIds: [user!.id, contact.id],
                         type: ChatType.Private,
                         title: 'redundant',
                       },
@@ -79,7 +78,7 @@ export const CreateChatScreen: FC = () => {
                 <XStack gap={10} padding={10}>
                   <Icon />
                   <YStack>
-                    <Text>{user.username}</Text>
+                    <Text>{contact.username}</Text>
                     <Text>Last - 30 minutes ago</Text>
                   </YStack>
                 </XStack>

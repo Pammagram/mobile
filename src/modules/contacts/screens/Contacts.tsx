@@ -1,79 +1,34 @@
-import * as Contacts from 'expo-contacts';
-import { useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Text, View, XStack, YStack } from 'tamagui';
+import { Text, View, YStack } from 'tamagui';
 
-import { useLazyUsersByPhoneNumbers } from '../graphql/usersByPhoneNumbers';
-
-import { UserDto } from '$core/graphql';
-import { Icon } from '$modules/chats/view';
-import { useCurrentUser } from '$modules/user';
+import { Contact } from '../components/Contact';
+import { ContactSkeleton } from '../components/ContactSkeleton';
+import { useContacts } from '../hooks/useContacts';
 
 export const ContactsScreen = () => {
-  const [contacts, setContacts] = useState<UserDto[]>([]);
-  const { getUsersByPhoneNumbers } = useLazyUsersByPhoneNumbers();
-  const { user } = useCurrentUser();
-
-  useEffect(() => {
-    void (async () => {
-      const { status } = await Contacts.requestPermissionsAsync();
-
-      if (status === Contacts.PermissionStatus.GRANTED) {
-        const { data } = await Contacts.getContactsAsync({
-          fields: [
-            Contacts.Fields.FirstName,
-            Contacts.Fields.LastName,
-            Contacts.Fields.PhoneNumbers,
-          ],
-        });
-
-        const possibleContactsPhoneNumbers = data
-          .map(
-            ({ phoneNumbers }) =>
-              (phoneNumbers || [])?.map((number) => `${number.digits}`),
-          )
-          .flat()
-          .filter((phoneNumber) => phoneNumber !== user?.phoneNumber);
-
-        const response = await getUsersByPhoneNumbers.request({
-          input: {
-            phoneNumbers: possibleContactsPhoneNumbers,
-          },
-        });
-
-        if (response?.users) {
-          setContacts(response?.users);
-        }
-      }
-    })();
-  }, []);
-
   const { bottom } = useSafeAreaInsets();
+  const { areContactsLoading, contacts } = useContacts();
 
   return (
     <YStack f={1}>
-      <FlatList
-        ListFooterComponent={<View height={bottom} />}
-        data={contacts}
-        renderItem={(props) => {
-          const { item: contact } = props;
+      {areContactsLoading && <ContactSkeleton />}
+      {!areContactsLoading && contacts.length === 0 && (
+        <View f={1} jc="center" ai="center">
+          <Text>No contacts yet</Text>
+        </View>
+      )}
+      {!areContactsLoading && contacts.length > 0 && (
+        <FlatList
+          ListFooterComponent={<View height={bottom} />}
+          data={contacts}
+          renderItem={(props) => {
+            const { item: contact } = props;
 
-          return (
-            <TouchableOpacity key={contact.id}>
-              <XStack ai="center">
-                <XStack gap={10} padding={10}>
-                  <Icon />
-                  <YStack>
-                    <Text>{contact.username}</Text>
-                    <Text>Last - 30 minutes ago</Text>
-                  </YStack>
-                </XStack>
-              </XStack>
-            </TouchableOpacity>
-          );
-        }}
-      />
+            return <Contact key={contact.id} user={contact} />;
+          }}
+        />
+      )}
     </YStack>
   );
 };

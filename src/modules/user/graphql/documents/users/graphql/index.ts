@@ -9,5 +9,9 @@ export type UseUsers = UseQueryWrapper<
   MutationUpdateMeArgs
 >;
 
+/**
+ * @deprecated do not use anymore
+ * @returns
+ */
 export const useUsers: UseUsers = (...args) =>
   useCustomQuery(USERS_PREFIX, USERS_QUERY, ...args);

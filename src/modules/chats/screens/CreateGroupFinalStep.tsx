@@ -7,20 +7,18 @@ import { Input, Text, View, XStack, YStack } from 'tamagui';
 
 import { useCreateGroupChat } from '$modules/chats/providers';
 import { Icon } from '$modules/chats/view';
-import { useMe, useUsers } from '$modules/user';
+import { useContacts } from '$modules/contacts/hooks/useContacts';
 
 export const CreateGroupFinalStepScreen: FC = () => {
   // TODO custom hook
-  const { getMe } = useMe({});
-
-  const { getUsers } = useUsers({});
+  const { contacts } = useContacts();
 
   const { memberIds, title, setTitle } = useCreateGroupChat();
 
   const { bottom } = useSafeAreaInsets();
 
-  const chosenUsers = getUsers.data!.data.filter(
-    (user) => memberIds.includes(user.id) && user.id !== getMe.data?.data?.id,
+  const chosenUsers = contacts.filter((contact) =>
+    memberIds.includes(contact.id),
   );
 
   return (

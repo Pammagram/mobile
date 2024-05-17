@@ -227,6 +227,7 @@ export type Query = {
   myChats: ChatsOutput;
   mySessions: MySessionsOutput;
   users: UsersOutput;
+  usersByPhoneNumbers: UsersByPhoneNumbersOutput;
 };
 
 
@@ -247,6 +248,11 @@ export type QueryMessagesArgs = {
 
 export type QueryMyChatsArgs = {
   input: ChatsInput;
+};
+
+
+export type QueryUsersByPhoneNumbersArgs = {
+  input: UsersByPhoneNumbersInput;
 };
 
 export type RemoveChatInput = {
@@ -317,6 +323,15 @@ export type UserDto = {
   lastActiveInMs: Scalars['DateTime']['output'];
   phoneNumber: Scalars['String']['output'];
   username?: Maybe<Scalars['String']['output']>;
+};
+
+export type UsersByPhoneNumbersInput = {
+  phoneNumbers: Array<Scalars['String']['input']>;
+};
+
+export type UsersByPhoneNumbersOutput = {
+  __typename?: 'UsersByPhoneNumbersOutput';
+  users: Array<UserDto>;
 };
 
 export type UsersOutput = {

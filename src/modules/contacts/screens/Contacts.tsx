@@ -4,12 +4,16 @@ import { FlatList, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text, View, XStack, YStack } from 'tamagui';
 
+import { useLazyUsersByPhoneNumbers } from '../graphql/usersByPhoneNumbers';
+
+import { UserDto } from '$core/graphql';
 import { Icon } from '$modules/chats/view';
-import { useUsers } from '$modules/user';
+import { useCurrentUser } from '$modules/user';
 
 export const ContactsScreen = () => {
-  const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
-  const { getUsers } = useUsers();
+  const [contacts, setContacts] = useState<UserDto[]>([]);
+  const { getUsersByPhoneNumbers } = useLazyUsersByPhoneNumbers();
+  const { user } = useCurrentUser();
 
   useEffect(() => {
     void (async () => {
@@ -24,34 +28,34 @@ export const ContactsScreen = () => {
           ],
         });
 
-        setContacts(data);
+        const possibleContactsPhoneNumbers = data
+          .map(
+            ({ phoneNumbers }) =>
+              (phoneNumbers || [])?.map((number) => `${number.digits}`),
+          )
+          .flat()
+          .filter((phoneNumber) => phoneNumber !== user?.phoneNumber);
+
+        const response = await getUsersByPhoneNumbers.request({
+          input: {
+            phoneNumbers: possibleContactsPhoneNumbers,
+          },
+        });
+
+        if (response?.users) {
+          setContacts(response?.users);
+        }
       }
     })();
   }, []);
 
   const { bottom } = useSafeAreaInsets();
 
-  const availableContacts = contacts.filter((contact) => {
-    const phoneNumbers = contact.phoneNumbers?.map(({ digits }) => digits);
-
-    const users = getUsers.data?.data;
-
-    const hasAccount = users?.some((user) => {
-      const userPhoneNumber = user.phoneNumber;
-
-      return phoneNumbers?.some((phoneNumber) =>
-        userPhoneNumber.includes(phoneNumber || ''),
-      );
-    });
-
-    return hasAccount;
-  });
-
   return (
     <YStack f={1}>
       <FlatList
         ListFooterComponent={<View height={bottom} />}
-        data={availableContacts}
+        data={contacts}
         renderItem={(props) => {
           const { item: contact } = props;
 
@@ -61,9 +65,7 @@ export const ContactsScreen = () => {
                 <XStack gap={10} padding={10}>
                   <Icon />
                   <YStack>
-                    <Text>
-                      {contact.firstName} {contact.lastName}
-                    </Text>
+                    <Text>{contact.username}</Text>
                     <Text>Last - 30 minutes ago</Text>
                   </YStack>
                 </XStack>

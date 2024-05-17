@@ -43,6 +43,7 @@ export type ChatCreatedOutput = {
 export type ChatDto = {
   __typename?: 'ChatDto';
   id: Scalars['Int']['output'];
+  lastMessage?: Maybe<MessageDto>;
   members: Array<UserDto>;
   title: Scalars['String']['output'];
   type: ChatType;

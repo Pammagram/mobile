@@ -1,19 +1,25 @@
 import { Href, router } from 'expo-router';
+import moment from 'moment';
 import { FC } from 'react';
 import { PressableProps } from 'react-native';
 import { Avatar, XStack, YStack } from 'tamagui';
 
-import { ChatDto, ChatType } from '$core/graphql';
+import { ChatDto, ChatType, Maybe, MessageDto } from '$core/graphql';
 import { Pressable } from '$modules/common/components/Pressable';
 import { Text } from '$modules/common/components/Text';
 import { useCurrentUser } from '$modules/user';
 
+type LastMessage = Pick<MessageDto, 'text' | 'createdAt'> & {
+  sender: Pick<MessageDto['sender'], 'username'>;
+};
+
 type Props = Pick<PressableProps, 'onLongPress'> & {
   chat: Pick<ChatDto, 'type' | 'title' | 'id' | 'members'>;
+  lastMessage?: Maybe<LastMessage>;
 };
 
 export const ChatCard: FC<Props> = (props) => {
-  const { chat, onLongPress } = props;
+  const { chat, onLongPress, lastMessage } = props;
   const { user } = useCurrentUser();
 
   const onPress = (chatId: number) => {
@@ -24,6 +30,24 @@ export const ChatCard: FC<Props> = (props) => {
     chat.type === ChatType.Private
       ? chat.members.find((member) => member.id !== user?.id)?.username
       : chat.title;
+
+  const lastMessageDate = moment(lastMessage?.createdAt);
+
+  const isCurrentDay = lastMessageDate.isSame(moment(new Date()), 'day');
+  const isCurrentWeek = lastMessageDate.isSame(moment(new Date()), 'week');
+  const isCurrentYear = lastMessageDate.isSame(moment(new Date()), 'year');
+
+  let dateToDisplay: string | undefined;
+
+  if (isCurrentDay) {
+    dateToDisplay = lastMessageDate.format('HH:MM');
+  } else if (isCurrentWeek) {
+    dateToDisplay = lastMessageDate.format('dddd');
+  } else if (isCurrentYear) {
+    dateToDisplay = lastMessageDate.format('DD.MM');
+  } else {
+    dateToDisplay = lastMessageDate.format('DD.MM.YYYY');
+  }
 
   return (
     <Pressable
@@ -39,15 +63,17 @@ export const ChatCard: FC<Props> = (props) => {
           />
           <Avatar.Fallback backgroundColor="$blue10" />
         </Avatar>
-        <YStack gap={5}>
-          <XStack jc="space-between">
+        <YStack gap={5} f={1}>
+          <XStack jc="space-between" ai="center">
             <Text fontSize={16} fontWeight="500">
               {chatTitle}
             </Text>
-            <Text color="grey">15:17</Text>
+            <Text fontSize={12} color="grey">
+              {dateToDisplay}
+            </Text>
           </XStack>
           <Text fontSize={14} color="grey">
-            Last testing message, nothing to see here yet
+            {lastMessage?.text}
           </Text>
         </YStack>
       </XStack>

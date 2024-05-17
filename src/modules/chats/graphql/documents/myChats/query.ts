@@ -15,6 +15,14 @@ export const CHATS_QUERY = createMyChats({
     },
     title: true,
     type: true,
+    lastMessage: {
+      id: true,
+      createdAt: true,
+      sender: {
+        username: true,
+      },
+      text: true,
+    },
   },
 });
 

@@ -39,6 +39,7 @@ export const ChatsScreen: FC = () => {
             <ChatCard
               onLongPress={() => onChatCardLongPress(chat.id)}
               chat={chat}
+              lastMessage={chat.lastMessage}
             />
           )}
           renderHiddenItem={() => <View />}

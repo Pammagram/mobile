@@ -222,8 +222,7 @@ export type Query = {
   __typename?: 'Query';
   chat: ChatOutput;
   chats: ChatsOutput;
-  dummy: Scalars['String']['output'];
-  me?: Maybe<MeOutput>;
+  me: MeOutput;
   messages: MessagesOutput;
   myChats: ChatsOutput;
   mySessions: MySessionsOutput;

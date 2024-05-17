@@ -72,7 +72,7 @@ export const CreateChatScreen: FC = () => {
                   }
 
                   router.back();
-                  router.navigate(`chats/${privateChat?.id}`);
+                  router.navigate(`/chat/${privateChat?.id}`);
                 }}
                 key={index}
               >

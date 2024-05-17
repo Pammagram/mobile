@@ -22,7 +22,7 @@ export const useCurrentUser = <
   });
 
   return {
-    user: data,
+    user: data?.data,
     isLoading,
   } as ReturnType<Strict>;
 };

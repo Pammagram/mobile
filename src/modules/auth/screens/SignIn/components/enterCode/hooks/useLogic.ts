@@ -43,9 +43,9 @@ export const useLogic = () => {
     });
 
     if (response?.data.username) {
-      router.push('/');
+      router.replace('/(app)/chats');
     } else {
-      router.push('/update-me');
+      router.replace('/update-me');
     }
   });
 

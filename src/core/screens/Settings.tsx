@@ -21,7 +21,7 @@ export const SettingsScreen: FC = () => {
   const handleLogout = async () => {
     await logout.request({});
 
-    router.navigate('/(auth)/sign-in');
+    router.replace('/(auth)/sign-in');
 
     // TODO clear user variable here and unsubscribe from events
   };
@@ -32,7 +32,7 @@ export const SettingsScreen: FC = () => {
         <Text>This is main screen!</Text>
         <Text>Phone number: {getMe.data?.data?.phoneNumber}</Text>
         <Text>Username: {getMe.data?.data?.username}</Text>
-        <ScrollView>
+        <ScrollView h={300}>
           {getMySessions.data?.data.map((session) => {
             const { device } = session;
 

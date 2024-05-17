@@ -181,7 +181,6 @@ export const MessagesContainer = memo(
             ListFooterComponent={<Spacer />}
             showsVerticalScrollIndicator={false}
             data={messages}
-            keyExtractor={(item) => item.id.toString()}
             initialNumToRender={15}
             renderItem={({ item: message, index }) => {
               const RenderedMessage = () => (

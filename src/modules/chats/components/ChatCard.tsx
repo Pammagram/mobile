@@ -1,4 +1,4 @@
-import { Href, router } from 'expo-router';
+import { router } from 'expo-router';
 import moment from 'moment';
 import { FC } from 'react';
 import { PressableProps } from 'react-native';
@@ -23,7 +23,7 @@ export const ChatCard: FC<Props> = (props) => {
   const { user } = useCurrentUser();
 
   const onPress = (chatId: number) => {
-    router.push(`chat/${chatId}` as Href<string>);
+    router.push(`chat/${chatId}`);
   };
 
   const chatTitle =

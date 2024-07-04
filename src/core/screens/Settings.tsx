@@ -9,12 +9,15 @@ import { ScrollView, Text, XStack, YGroup, YStack } from 'tamagui';
 import { Button } from '$core/components';
 import { useMe, useMySessions, useRemoveSession } from '$modules';
 import { useLogout } from '$modules/auth/graphql';
+import { getMessagingToken } from '$modules/notifications/utils/getMessagingToken';
+import { requestPermissionForNotification } from '$modules/notifications/utils/requestPermissionForNotification';
+import { useSetMessagingToken } from '$modules/session/graphql/mutations/setMessagingToken';
 
 export const SettingsScreen: FC = () => {
   const { getMe } = useMe({});
-
   const { getMySessions } = useMySessions();
   const { removeSession } = useRemoveSession();
+  const { setMessagingToken } = useSetMessagingToken();
 
   const { logout } = useLogout();
 
@@ -24,6 +27,24 @@ export const SettingsScreen: FC = () => {
     router.replace('/(auth)/sign-in');
 
     // TODO clear user variable here and unsubscribe from events
+  };
+
+  // TODO to hook
+  const requestMessagingToken = async () => {
+    await requestPermissionForNotification();
+    const token = await getMessagingToken();
+
+    if (!token) {
+      return;
+    }
+
+    const response = await setMessagingToken.request({
+      input: { messagingToken: token },
+    });
+
+    if (!response?.data) {
+      console.error('Error when updating messaging token');
+    }
   };
 
   return (
@@ -84,6 +105,9 @@ export const SettingsScreen: FC = () => {
             );
           })}
         </ScrollView>
+        <Button onPress={requestMessagingToken}>
+          Request Notification Permission
+        </Button>
         <Button onPress={handleLogout}>Logout</Button>
       </YGroup>
     </SafeAreaView>

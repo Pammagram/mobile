@@ -155,6 +155,7 @@ export type Mutation = {
   removeMember: RemoveMemberOutput;
   removeSession: RemoveSessionOutput;
   sendSms: SendSmsOutput;
+  setMessagingToken: SetMessagingTokenOutput;
   updateMe: UpdateUserOutput;
   verifySms: VerifySmsOutput;
 };
@@ -202,6 +203,11 @@ export type MutationRemoveSessionArgs = {
 
 export type MutationSendSmsArgs = {
   input: SendSmsInput;
+};
+
+
+export type MutationSetMessagingTokenArgs = {
+  input: SetMessagingTokenInput;
 };
 
 
@@ -299,6 +305,16 @@ export type SessionDto = {
   id: Scalars['Int']['output'];
   ip: Scalars['String']['output'];
   lastVisitInMs: Scalars['DateTime']['output'];
+  messagingToken?: Maybe<Scalars['String']['output']>;
+};
+
+export type SetMessagingTokenInput = {
+  messagingToken: Scalars['String']['input'];
+};
+
+export type SetMessagingTokenOutput = {
+  __typename?: 'SetMessagingTokenOutput';
+  data: Scalars['Boolean']['output'];
 };
 
 export type Subscription = {
@@ -343,6 +359,7 @@ export type UsersOutput = {
 export type VerifySmsInput = {
   code: Scalars['String']['input'];
   device: Scalars['String']['input'];
+  messagingToken?: InputMaybe<Scalars['String']['input']>;
   phoneNumber: Scalars['String']['input'];
 };
 

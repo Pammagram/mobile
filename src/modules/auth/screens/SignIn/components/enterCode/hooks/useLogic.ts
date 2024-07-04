@@ -1,13 +1,14 @@
 import { useReactiveVar } from '@apollo/client';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as Device from 'expo-device';
 import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 
 import { phoneVar } from '../../../phone';
 import { defaultValues, EnterCodeForm, schema } from '../form';
 
+import { getDeviceName } from '$core/utils/getDeviceName';
 import { useVerifySms } from '$modules/auth/graphql';
+import { getMessagingToken } from '$modules/notifications/utils/getMessagingToken';
 
 export const useLogic = () => {
   const {
@@ -29,16 +30,14 @@ export const useLogic = () => {
   });
 
   const onVerifySmsHandler = handleSubmit(async (data: EnterCodeForm) => {
+    const messagingToken = await getMessagingToken();
+
     const response = await request({
       input: {
         phoneNumber,
         code: data.code,
-        device:
-          Device.modelName ||
-          Device.deviceName ||
-          Device.brand ||
-          Device.deviceType?.toString() ||
-          'Unknown device',
+        device: getDeviceName(),
+        messagingToken,
       },
     });
 

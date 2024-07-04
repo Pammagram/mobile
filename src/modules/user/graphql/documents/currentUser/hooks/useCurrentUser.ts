@@ -11,14 +11,19 @@ type ReturnType<Strict extends StrictType = StrictType.NOT_STRICT> = {
     : UserDto | null;
 };
 
+type UseCurrentUserParams = Parameters<typeof useMe>;
+
 export const useCurrentUser = <
   Strict extends StrictType = StrictType.NOT_STRICT,
->(): ReturnType<Strict> => {
+>(
+  params?: UseCurrentUserParams,
+): ReturnType<Strict> => {
   const {
     getMe: { data, loading: isLoading },
   } = useMe({
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
+    ...params,
   });
 
   return {

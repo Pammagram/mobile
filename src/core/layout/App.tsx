@@ -1,33 +1,17 @@
-import { useApolloClient } from '@apollo/client';
-import {
-  MessageCircle,
-  MessageSquarePlus,
-  Settings,
-  UserCircle2,
-} from '@tamagui/lucide-icons';
-import { router, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { FC, useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
 
 import { ChatDto } from '$core/graphql';
-import { tabBarIcon } from '$core/utils';
+import { tabs } from '$core/routes/tabs';
 import {
   CHAT_CREATED_SUBSCRIPTION,
   useChatMessageAdded,
   useChatRemoved,
+  useCurrentUser,
   useMyChats,
 } from '$modules';
-
-const CreateChatButton: FC = () => {
-  return (
-    <TouchableOpacity
-      onPress={() => router.push('/(app)/chats/create')}
-      style={{ padding: 10 }}
-    >
-      <MessageSquarePlus color="black" />
-    </TouchableOpacity>
-  );
-};
+import { getMessagingToken } from '$modules/notifications/utils/getMessagingToken';
+import { useSetMessagingToken } from '$modules/session/graphql/mutations/setMessagingToken';
 
 export const AppLayout: FC = () => {
   // TODO unsubscribe on logout
@@ -41,6 +25,33 @@ export const AppLayout: FC = () => {
       input: {},
     },
   });
+
+  const { user, isLoading } = useCurrentUser();
+  const { setMessagingToken } = useSetMessagingToken();
+
+  useEffect(() => {
+    if (isLoading || !user) {
+      return;
+    }
+
+    void (async () => {
+      const token = await getMessagingToken();
+
+      if (!token) {
+        return;
+      }
+
+      try {
+        await setMessagingToken.request({
+          input: {
+            messagingToken: token,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [isLoading, user]);
 
   useEffect(() => {
     const chatCreatedCleanup = getMyChats.subscribeToMore({
@@ -75,7 +86,6 @@ export const AppLayout: FC = () => {
       chatCreatedCleanup();
     };
   }, []);
-  const client = useApolloClient();
 
   return (
     <Tabs
@@ -83,30 +93,9 @@ export const AppLayout: FC = () => {
         unmountOnBlur: false,
       }}
     >
-      <Tabs.Screen
-        name="contacts"
-        options={{
-          title: 'Contacts',
-          tabBarIcon: tabBarIcon(UserCircle2),
-        }}
-      />
-      <Tabs.Screen
-        name="chats"
-        options={{
-          title: 'Chats',
-          tabBarIcon: tabBarIcon(MessageCircle),
-          headerRight: CreateChatButton.bind(null, {
-            apolloClient: client,
-          }),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: tabBarIcon(Settings),
-        }}
-      />
+      {tabs.map((tab) => {
+        return <Tabs.Screen key={tab.name} {...tab} />;
+      })}
     </Tabs>
   );
 };

@@ -26,6 +26,7 @@ const PostProvider = () => {
     <Stack
       screenOptions={{
         headerShown: false,
+        animation: 'none',
       }}
     />
   );

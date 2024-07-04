@@ -356,6 +356,7 @@ const override = {
       'scripts/*.ts',
       'src/theme/**/*.ts',
       'src/components/styled/**/*.ts',
+      'app.config.ts'
     ],
     rules: {
       '@typescript-eslint/naming-convention': 'off',

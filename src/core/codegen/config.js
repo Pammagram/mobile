@@ -5,10 +5,11 @@ configDotenv();
 
 /**
  * @type {import('@graphql-codegen/cli').CodegenConfig}
+ * @type {import('../../../env')}
  */
 const config = {
   overwrite: true,
-  schema: process.env.API_URL,
+  schema: process.env.EXPO_PUBLIC_API_URL,
   watch: true,
   generates: {
     [CODEGEN_PATH]: {

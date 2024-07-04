@@ -10,7 +10,8 @@
       "dom",
       "es2019"
     ],
-    "allowJs": false,
+    "allowJs": true,
+    "checkJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -58,7 +59,7 @@
       ],
       "$modules/*": [
         "modules/*"
-      ],
+      ]
     }
   },
   "extends": "expo/tsconfig.base",

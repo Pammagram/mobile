@@ -1,4 +1,3 @@
-import { API_URL, NODE_ENV } from '@env';
 import { mixed, object, string } from 'yup';
 
 import { NodeEnv } from './constants';
@@ -12,6 +11,6 @@ const schema = object({
 });
 
 export const envVariables = schema.validateSync({
-  API_URL,
-  NODE_ENV,
+  API_URL: process.env.EXPO_PUBLIC_API_URL,
+  NODE_ENV: process.env.NODE_ENV,
 });

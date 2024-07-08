@@ -1,3 +1,4 @@
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 // eslint-disable-next-line react-native/split-platform-components -- cross-platform function
 import { PermissionsAndroid, Platform } from 'react-native';
@@ -22,4 +23,13 @@ export const requestPermissionForNotification = async () => {
       console.error("Couldn't get permission");
     }
   }
+
+  await notifee.requestPermission();
+
+  // Create a channel (required for Android)
+  await notifee.createChannel({
+    id: 'default',
+    name: 'Default Channel',
+    importance: AndroidImportance.HIGH,
+  });
 };

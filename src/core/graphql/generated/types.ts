@@ -146,6 +146,7 @@ export type MessagesOutput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addMembers: AddMembersOutput;
+  /** @deprecated Use sendMessage instead */
   addMessage: AddMessageOutput;
   createChat: CreateChatOutput;
   createUser: CreateUserOutput;
@@ -154,6 +155,7 @@ export type Mutation = {
   removeChat: RemoveChatOutput;
   removeMember: RemoveMemberOutput;
   removeSession: RemoveSessionOutput;
+  sendMessage: SendMessageOutput;
   sendSms: SendSmsOutput;
   setMessagingToken: SetMessagingTokenOutput;
   updateMe: UpdateUserOutput;
@@ -198,6 +200,11 @@ export type MutationRemoveMemberArgs = {
 
 export type MutationRemoveSessionArgs = {
   input: RemoveSessionInput;
+};
+
+
+export type MutationSendMessageArgs = {
+  input: SendMessageInput;
 };
 
 
@@ -288,6 +295,16 @@ export type RemoveSessionInput = {
 export type RemoveSessionOutput = {
   __typename?: 'RemoveSessionOutput';
   data: SessionDto;
+};
+
+export type SendMessageInput = {
+  chatId: Scalars['Int']['input'];
+  text: Scalars['String']['input'];
+};
+
+export type SendMessageOutput = {
+  __typename?: 'SendMessageOutput';
+  data: MessageDto;
 };
 
 export type SendSmsInput = {

@@ -146,7 +146,7 @@ const reactRules = {
   'react/display-name': 'off',
   'react/prop-types': 'off',
   'react/no-array-index-key': 'off',
-  'react-hooks/exhaustive-deps': 'off',
+  'react-hooks/exhaustive-deps': 'error',
   'react/style-prop-object': 'off', // we allow to use string as prop
   'react/require-default-props': 'off',
   'react/jsx-props-no-spreading': 'off',

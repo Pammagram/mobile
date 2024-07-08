@@ -11,22 +11,33 @@ import { Spinner } from 'tamagui';
 
 import { initializeApolloClient } from '$core/apollo';
 import { usePreloadedAssets } from '$core/assets';
+import { ToastContainer } from '$core/notifications/components/ToastContainer';
+import { requestPermissionForNotification } from '$core/notifications/utils/requestPermissionForNotification';
 import { combineProviders } from '$core/providers';
 
 void SplashScreen.preventAutoHideAsync();
 const manager = combineProviders();
 const MasterProvider = manager.master();
 
+// manager.push(ToastProvider);
+
 const PostProvider = () => {
   const client = useApolloClient() as ApolloClient<NormalizedCacheObject>;
 
   useApolloClientDevTools(client);
 
+  useEffect(() => {
+    // Request permissions (required for iOS)
+
+    void (async () => {
+      await requestPermissionForNotification();
+    })();
+  }, []);
+
   return (
     <Stack
       screenOptions={{
         headerShown: false,
-        animation: 'none',
       }}
     />
   );
@@ -70,5 +81,6 @@ const PreProviderApp: FC = () => {
 export const RootLayout: FC = () => (
   <MasterProvider>
     <PreProviderApp />
+    <ToastContainer />
   </MasterProvider>
 );

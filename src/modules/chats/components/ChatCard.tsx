@@ -4,9 +4,9 @@ import { FC } from 'react';
 import { PressableProps } from 'react-native';
 import { Avatar, XStack, YStack } from 'tamagui';
 
+import { Pressable } from '$core/components/Pressable';
+import { Text } from '$core/components/Text';
 import { ChatDto, ChatType, Maybe, MessageDto } from '$core/graphql';
-import { Pressable } from '$modules/common/components/Pressable';
-import { Text } from '$modules/common/components/Text';
 import { useCurrentUser } from '$modules/user';
 
 type LastMessage = Pick<MessageDto, 'text' | 'createdAt'> & {

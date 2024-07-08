@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router';
 import { FC, useEffect } from 'react';
 
 import { ChatDto } from '$core/graphql';
+import { useRequestNotificationPermission } from '$core/notifications/hooks/useRequestNotificationPermission';
 import { tabs } from '$core/routes/tabs';
 import {
   CHAT_CREATED_SUBSCRIPTION,
@@ -10,8 +11,6 @@ import {
   useCurrentUser,
   useMyChats,
 } from '$modules';
-import { getMessagingToken } from '$modules/notifications/utils/getMessagingToken';
-import { useSetMessagingToken } from '$modules/session/graphql/mutations/setMessagingToken';
 
 export const AppLayout: FC = () => {
   // TODO unsubscribe on logout
@@ -27,31 +26,15 @@ export const AppLayout: FC = () => {
   });
 
   const { user, isLoading } = useCurrentUser();
-  const { setMessagingToken } = useSetMessagingToken();
+  const { requestNotificationPermission } = useRequestNotificationPermission();
 
   useEffect(() => {
     if (isLoading || !user) {
       return;
     }
 
-    void (async () => {
-      const token = await getMessagingToken();
-
-      if (!token) {
-        return;
-      }
-
-      try {
-        await setMessagingToken.request({
-          input: {
-            messagingToken: token,
-          },
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [isLoading, user]);
+    void requestNotificationPermission();
+  }, [isLoading, user, requestNotificationPermission]);
 
   useEffect(() => {
     const chatCreatedCleanup = getMyChats.subscribeToMore({
@@ -85,7 +68,15 @@ export const AppLayout: FC = () => {
     return () => {
       chatCreatedCleanup();
     };
-  }, []);
+  }, [getMyChats]);
+
+  // useEffect(() => {
+  //   Toast.show({
+  //     type: 'message',
+  //     text1: 'Max Adventure',
+  //     text2: 'Hi there!',
+  //   });
+  // }, []);
 
   return (
     <Tabs

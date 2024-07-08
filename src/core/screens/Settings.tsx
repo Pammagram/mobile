@@ -1,3 +1,4 @@
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { Smartphone } from '@tamagui/lucide-icons';
 import { router } from 'expo-router';
 import moment from 'moment';
@@ -7,18 +8,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, Text, XStack, YGroup, YStack } from 'tamagui';
 
 import { Button } from '$core/components';
+import { useRequestNotificationPermission } from '$core/notifications/hooks/useRequestNotificationPermission';
 import { useMe, useMySessions, useRemoveSession } from '$modules';
 import { useLogout } from '$modules/auth/graphql';
-import { getMessagingToken } from '$modules/notifications/utils/getMessagingToken';
-import { requestPermissionForNotification } from '$modules/notifications/utils/requestPermissionForNotification';
-import { useSetMessagingToken } from '$modules/session/graphql/mutations/setMessagingToken';
 
 export const SettingsScreen: FC = () => {
   const { getMe } = useMe({});
   const { getMySessions } = useMySessions();
   const { removeSession } = useRemoveSession();
-  const { setMessagingToken } = useSetMessagingToken();
-
+  const { requestNotificationPermission } = useRequestNotificationPermission();
   const { logout } = useLogout();
 
   const handleLogout = async () => {
@@ -30,22 +28,6 @@ export const SettingsScreen: FC = () => {
   };
 
   // TODO to hook
-  const requestMessagingToken = async () => {
-    await requestPermissionForNotification();
-    const token = await getMessagingToken();
-
-    if (!token) {
-      return;
-    }
-
-    const response = await setMessagingToken.request({
-      input: { messagingToken: token },
-    });
-
-    if (!response?.data) {
-      console.error('Error when updating messaging token');
-    }
-  };
 
   return (
     <SafeAreaView>
@@ -105,8 +87,50 @@ export const SettingsScreen: FC = () => {
             );
           })}
         </ScrollView>
-        <Button onPress={requestMessagingToken}>
+        <Button onPress={requestNotificationPermission}>
           Request Notification Permission
+        </Button>
+        <Button
+          onPress={async () => {
+            // Request permissions (required for iOS)
+
+            // Create a channel (required for Android)
+            const channelId = await notifee.createChannel({
+              id: 'default',
+              name: 'Default Channel',
+            });
+
+            // Display a notification
+            const notificationId = await notifee.displayNotification({
+              title: 'Notification Title',
+              body: 'Main body content of the notification',
+              android: {
+                channelId,
+                importance: AndroidImportance.HIGH,
+                // pressAction is needed if you want the notification to open the app when pressed
+                pressAction: {
+                  id: 'post',
+                },
+                sound: '',
+                actions: [
+                  {
+                    title: 'Open',
+                    icon: 'https://my-cdn.com/icons/open-chat.png',
+                    pressAction: {
+                      id: 'open-chat',
+                      launchActivity: 'default',
+                    },
+                    input: true,
+                  },
+                ],
+              },
+              ios: {
+                categoryId: 'post',
+              },
+            });
+          }}
+        >
+          Send Notification
         </Button>
         <Button onPress={handleLogout}>Logout</Button>
       </YGroup>

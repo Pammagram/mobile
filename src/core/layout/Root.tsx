@@ -5,78 +5,20 @@ import {
   useApolloClient,
 } from '@apollo/client';
 import { useApolloClientDevTools } from '@dev-plugins/apollo-client/build/useApolloClientDevTools';
+import messaging from '@react-native-firebase/messaging';
 import { SplashScreen, Stack } from 'expo-router';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { Spinner } from 'tamagui';
 
-import { initializeApolloClient } from '$core/apollo';
-import { usePreloadedAssets } from '$core/assets';
-import { ToastContainer } from '$core/notifications/components/ToastContainer';
-import { requestPermissionForNotification } from '$core/notifications/utils/requestPermissionForNotification';
+import { ToastContainer } from '$core/components/organisms/Toast/ToastContainer';
+import { useInitializeApp } from '$core/hooks/useInitializeApp';
 import { combineProviders } from '$core/providers';
+import { useForegroundNotification } from '$modules/notification/hooks/useForegroundNotification';
+import { requestPermissionForNotification } from '$modules/notification/utils/requestPermissionForNotification';
 
 void SplashScreen.preventAutoHideAsync();
 const manager = combineProviders();
 const MasterProvider = manager.master();
-
-// manager.push(ToastProvider);
-
-const PostProvider = () => {
-  const client = useApolloClient() as ApolloClient<NormalizedCacheObject>;
-
-  useApolloClientDevTools(client);
-
-  useEffect(() => {
-    // Request permissions (required for iOS)
-
-    void (async () => {
-      await requestPermissionForNotification();
-    })();
-  }, []);
-
-  return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
-  );
-};
-
-const PreProviderApp: FC = () => {
-  const [client, setClient] = useState<
-    ApolloClient<NormalizedCacheObject> | undefined
-  >();
-
-  const { areAssetsLoaded } = usePreloadedAssets();
-
-  // TODO to hook
-  useEffect(() => {
-    async function init() {
-      const apolloClient = await initializeApolloClient();
-
-      setClient(apolloClient);
-    }
-
-    init().catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    if (areAssetsLoaded) {
-      void SplashScreen.hideAsync();
-    }
-  }, [areAssetsLoaded]);
-
-  if (!areAssetsLoaded || !client) {
-    return <Spinner />;
-  }
-
-  return (
-    <ApolloProvider client={client}>
-      <PostProvider />
-    </ApolloProvider>
-  );
-};
 
 export const RootLayout: FC = () => (
   <MasterProvider>
@@ -84,3 +26,55 @@ export const RootLayout: FC = () => (
     <ToastContainer />
   </MasterProvider>
 );
+
+const PreProviderApp: FC = () => {
+  const { client, isAppReady } = useInitializeApp();
+
+  useEffect(() => {
+    void requestPermissionForNotification();
+  }, []);
+
+  useEffect(() => {
+    if (isAppReady) {
+      void SplashScreen.hideAsync();
+    }
+  }, [isAppReady]);
+
+  if (!isAppReady) {
+    return <Spinner />;
+  }
+
+  return (
+    <ApolloProvider client={client}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+      <ApolloDevTools />
+      <ForegroundNotifications />
+    </ApolloProvider>
+  );
+};
+
+const ForegroundNotifications = () => {
+  const { handleForegroundNotification } = useForegroundNotification();
+
+  useEffect(() => {
+    const cleanup = messaging().onMessage(handleForegroundNotification);
+
+    return () => {
+      cleanup();
+    };
+  }, [handleForegroundNotification]);
+
+  return null;
+};
+
+const ApolloDevTools = () => {
+  const client = useApolloClient() as ApolloClient<NormalizedCacheObject>;
+
+  useApolloClientDevTools(client);
+
+  return null;
+};

@@ -36,7 +36,7 @@ const Header: FC = () => {
 
   const handlePopToTop = useCallback(() => {
     router.back();
-  }, [router]);
+  }, []);
 
   return (
     <YStack paddingTop={top} backgroundColor={Colors.PRIMARY_RED}>

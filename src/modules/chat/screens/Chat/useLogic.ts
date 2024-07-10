@@ -1,32 +1,36 @@
 import { useLocalSearchParams } from 'expo-router';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
+import { FlatList } from 'react-native';
 
-import { useAddMessage } from '$modules/chats';
+import { SendMessageParams } from './types';
 
-type SendMessageParams = {
-  text: string;
-};
+import { useSendMessage } from '$modules/chat/hooks';
 
 export const useLogic = () => {
   const { chatId } = useLocalSearchParams<{ chatId: string }>();
+  const flatListRef = useRef<FlatList>(null);
 
-  const { addMessage } = useAddMessage();
+  const { sendMessage } = useSendMessage();
 
-  const sendMessage = useCallback(
-    (params: SendMessageParams) => {
+  const sendMessageHandler = useCallback(
+    async (params: SendMessageParams) => {
       const { text } = params;
 
-      void addMessage.request({
-        input: {
-          chatId: Number(chatId),
-          text,
-        },
+      await sendMessage({
+        chatId: Number(chatId),
+        text,
+      });
+
+      flatListRef.current?.scrollToOffset({
+        offset: 0,
+        animated: true,
       });
     },
-    [addMessage],
+    [chatId, sendMessage],
   );
 
   return {
-    sendMessage,
+    sendMessage: sendMessageHandler,
+    flatListRef,
   };
 };

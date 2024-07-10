@@ -6,9 +6,9 @@ import { useForm } from 'react-hook-form';
 import { phoneVar } from '../../../phone';
 import { defaultValues, EnterCodeForm, schema } from '../form';
 
-import { getMessagingToken } from '$core/notifications/utils/getMessagingToken';
 import { getDeviceName } from '$core/utils/getDeviceName';
 import { useVerifySms } from '$modules/auth/graphql';
+import { getMessagingToken } from '$modules/notification/utils/getMessagingToken';
 
 export const useLogic = () => {
   const {

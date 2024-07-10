@@ -1,7 +1,8 @@
 import { MessageCircle, Settings, UserCircle2 } from '@tamagui/lucide-icons';
 import { Tabs } from 'expo-router';
 
-import { CreateChatButton } from '$core/components/CreateChatButton';
+import { CreateChatButton } from './components/CreateChatButton';
+
 import { tabBarIcon } from '$core/utils';
 
 export const tabs: Parameters<typeof Tabs.Screen>[0][] = [

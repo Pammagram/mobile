@@ -22,6 +22,7 @@ const finalExcludeRegex = `${excludeNamesNamingConventionRegexpsRegex}|${undersc
 
 const initialRules = {
   'consistent-return': 'off',
+  "class-methods-use-this":"off",
   'eslint-comments/disable-enable-pair': 'off',
   'eslint-comments/require-description': [
     'warn',
@@ -278,7 +279,7 @@ const namingConventionRule = {
     },
     {
       selector: 'enumMember',
-      format: ['UPPER_CASE'],
+      format: ['StrictPascalCase'],
     },
     {
       selector: 'parameter',

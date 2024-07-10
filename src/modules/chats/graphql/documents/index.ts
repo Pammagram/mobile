@@ -1,7 +1,6 @@
 export * from './chat';
 export * from './chatMessages';
 export * from './myChats';
-export * from './sendMessage';
 export * from './messageAdded';
 export * from './createChat';
 export * from './removeChat';

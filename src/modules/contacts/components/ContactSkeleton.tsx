@@ -1,7 +1,7 @@
 import { TouchableOpacity } from 'react-native';
 import { XStack, YStack } from 'tamagui';
 
-import { TextPlaceholder } from '$core/components/TextPlaceholder';
+import { TextPlaceholder } from '$core/components';
 import { Icon } from '$modules/chats/view';
 
 export const ContactSkeleton = () => {

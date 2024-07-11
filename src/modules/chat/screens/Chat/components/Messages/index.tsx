@@ -1,13 +1,14 @@
-import moment from 'moment';
 import { forwardRef, memo, Ref, useCallback } from 'react';
 import { FlatList, FlatListProps } from 'react-native';
-import { Spinner, XStack } from 'tamagui';
+import { Spinner } from 'tamagui';
 
 import { Message } from './components/Message';
 import { Spacer } from './components/Spacer';
+import { TimeStamp } from './components/TimeStamp';
 import { useLogic } from './useLogic';
+import { getShouldShowTimeStamp } from './utils';
 
-import { Text, View } from '$core/components';
+import { View } from '$core/components';
 import { ChatMessage } from '$modules/chats/graphql/documents';
 
 export const Messages = memo(
@@ -17,29 +18,10 @@ export const Messages = memo(
     // eslint-disable-next-line react-hooks/exhaustive-deps -- memoized messages
     const renderItemHandler = useCallback(
       (({ item: message, index }) => {
-        const hasNextMessage = index + 1 < messages.length;
-        const currentTimestamp = moment(messages[index].createdAt);
-
-        if (!hasNextMessage) {
-          return (
-            <>
-              <Message
-                isFromMe={message.sender.id === user?.data?.id}
-                showAvatar={
-                  messages[index - 1]?.sender.id !== message.sender.id
-                }
-                message={message}
-              />
-              <XStack justifyContent="center" flex={1}>
-                <Text bg="beige">{currentTimestamp.format('MMM, D')}</Text>
-              </XStack>
-            </>
-          );
-        }
-
-        const nextTimestamp = moment(messages[index + 1].createdAt);
-
-        const isSameDay = moment(currentTimestamp).isSame(nextTimestamp, 'day');
+        const showTimeStamp = getShouldShowTimeStamp(
+          message,
+          messages[index + 1],
+        );
 
         return (
           <>
@@ -48,11 +30,7 @@ export const Messages = memo(
               showAvatar={messages[index - 1]?.sender.id !== message.sender.id}
               message={message}
             />
-            {!isSameDay && (
-              <XStack justifyContent="center" flex={1}>
-                <Text bg="beige">{currentTimestamp.format('MMM, D')}</Text>
-              </XStack>
-            )}
+            {showTimeStamp && <TimeStamp date={messages[index].createdAt} />}
           </>
         );
       }) satisfies FlatListProps<ChatMessage>['renderItem'],

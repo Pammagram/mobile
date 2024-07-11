@@ -1,7 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 
-import { useChat } from '$modules/chats';
+import { useChat } from '$modules/chats/graphql';
 
 export const useLogic = () => {
   const { chatId } = useLocalSearchParams<{ chatId: string }>();
@@ -18,7 +18,7 @@ export const useLogic = () => {
     if (!getChat.loading && !getChat.data?.data) {
       router.push('/(app)/chats');
     }
-  }, [getChat.data]);
+  }, [getChat.data, getChat.loading]);
 
   return {
     getChat,

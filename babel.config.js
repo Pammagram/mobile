@@ -8,8 +8,9 @@ module.exports = function(api) {
         {
           components: ['tamagui'],
           config: './src/core/theme/config.ts',
+          disableExtraction: process.env.NODE_ENV === 'development',
         },
-      ]
+      ],
     ],
-  };
+  }
 };

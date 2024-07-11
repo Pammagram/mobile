@@ -6,13 +6,20 @@ import {
 } from '@apollo/client';
 import { useApolloClientDevTools } from '@dev-plugins/apollo-client/build/useApolloClientDevTools';
 import messaging from '@react-native-firebase/messaging';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from '@react-navigation/native';
 import { SplashScreen, Stack } from 'expo-router';
 import { FC, useEffect } from 'react';
-import { Spinner } from 'tamagui';
+import { useColorScheme } from 'react-native';
+import { Spinner, TamaguiProvider } from 'tamagui';
 
 import { ToastContainer } from '$core/components/organisms/Toast/ToastContainer';
 import { useInitializeApp } from '$core/hooks/useInitializeApp';
 import { combineProviders } from '$core/providers';
+import tamaguiConfig from '$core/theme/config';
 import { useForegroundNotification } from '$modules/notification/hooks/useForegroundNotification';
 import { requestPermissionForNotification } from '$modules/notification/utils/requestPermissionForNotification';
 
@@ -29,6 +36,7 @@ export const RootLayout: FC = () => (
 
 const PreProviderApp: FC = () => {
   const { client, isAppReady } = useInitializeApp();
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     void requestPermissionForNotification();
@@ -45,15 +53,19 @@ const PreProviderApp: FC = () => {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
-      <ApolloDevTools />
-      <ForegroundNotifications />
-    </ApolloProvider>
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <ApolloProvider client={client}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
+          <ApolloDevTools />
+          <ForegroundNotifications />
+        </ApolloProvider>
+      </ThemeProvider>
+    </TamaguiProvider>
   );
 };
 

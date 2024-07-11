@@ -2,7 +2,8 @@ import { Tabs } from 'expo-router';
 import { FC, useEffect } from 'react';
 
 import { tabs } from '$core/routes/tabs';
-import { useChatMessageAdded, useChatRemoved, useCurrentUser } from '$modules';
+import { useCurrentUser } from '$modules';
+import { useChatMessageAdded, useChatRemoved } from '$modules/chats/graphql';
 import { useWatchChatAdded } from '$modules/chats/hooks/useWatchChatAdded';
 import { useInitialNotification } from '$modules/notification/hooks/useInitialNotification';
 import { useRequestNotificationPermission } from '$modules/notification/hooks/useRequestNotificationPermission';

@@ -25,6 +25,7 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "forceConsistentCasingInFileNames": false,
+    "noErrorTruncation": true,
     "baseUrl": "./src",
     "paths": {
       "$core": [

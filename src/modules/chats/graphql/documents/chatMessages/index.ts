@@ -4,7 +4,7 @@ import {
   ChatMessagesData,
 } from './query';
 
-import { useCustomQuery, UseQueryWrapper } from '$core/apollo';
+import { GraphQlInput, useCustomQuery, UseQueryWrapper } from '$core/apollo';
 import { MessagesInput } from '$core/graphql';
 
 export * from './query';
@@ -12,7 +12,7 @@ export * from './query';
 export type UseChatMessages = UseQueryWrapper<
   typeof CHAT_MESSAGES_PREFIX,
   ChatMessagesData,
-  { input: MessagesInput }
+  GraphQlInput<MessagesInput>
 >;
 
 export const useChatMessages: UseChatMessages = (...args) =>

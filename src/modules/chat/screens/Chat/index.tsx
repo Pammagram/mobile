@@ -1,25 +1,26 @@
 import { FC } from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 
-import { InputToolbar } from './components/InputToolbar';
+import { MessageInput } from './components/MessageInput';
 import { Messages } from './components/Messages';
 import { useLogic } from './useLogic';
 
+const KEYBOARD_OFFSET = 60;
+
 export const ChatScreen: FC = () => {
   const { sendMessage, flatListRef } = useLogic();
-  const { bottom } = useSafeAreaInsets();
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      contentContainerStyle={{ flex: 1 }}
-      // eslint-disable-next-line no-magic-numbers
-      keyboardVerticalOffset={bottom * 2.3}
+      style={styles.container}
+      contentContainerStyle={styles.container}
+      keyboardVerticalOffset={KEYBOARD_OFFSET}
       behavior={Platform.OS === 'ios' ? 'position' : undefined}
     >
       <Messages ref={flatListRef} />
-      <InputToolbar onSendMessage={sendMessage} />
+      <MessageInput onSendMessage={sendMessage} />
     </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({ container: { flex: 1 } });

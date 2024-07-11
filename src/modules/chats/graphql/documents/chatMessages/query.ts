@@ -2,6 +2,8 @@ import { InferSelection } from 'gql-ts-builder';
 
 import { createChatMessages } from '../../builders';
 
+import { Flatten } from '$core/utils';
+
 export const CHAT_MESSAGES_PREFIX = 'chatMessages';
 
 export const MESSAGES_OUTPUT_TYPE_NAME = 'MessagesOutput';
@@ -23,6 +25,8 @@ export const CHAT_MESSAGES_QUERY = createChatMessages({
   },
 });
 
-export type ChatMessagesData = InferSelection<typeof CHAT_MESSAGES_QUERY>;
+export type ChatMessagesData = Flatten<
+  InferSelection<typeof CHAT_MESSAGES_QUERY>
+>;
 
-export type ChatMessage = ChatMessagesData['data'][0];
+export type ChatMessage = Flatten<ChatMessagesData['data'][0]>;

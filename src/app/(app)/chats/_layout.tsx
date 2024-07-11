@@ -1,1 +1,1 @@
-export { ChatsLayout as default } from '$modules';
+export { ChatsLayout as default } from '$modules/chats/layout';

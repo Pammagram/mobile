@@ -75,7 +75,7 @@ export const chatsTypePolicy: TypePolicies = {
             // * The problem is that incoming data is already cached and arrives as ref, we need to extract this whole object to update query
 
             const message = {
-              id: readField('id', messageRef) as number,
+              id: readField('id', messageRef) as string,
               chat: {
                 id: readField('id', readField('chat', messageRef)) as number,
               },

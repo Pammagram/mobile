@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention -- legacy */
 export enum ValidationHints {
   PHONE_NUMBER = 'Invalid phone number',
   REQUIRED = 'This field is required',

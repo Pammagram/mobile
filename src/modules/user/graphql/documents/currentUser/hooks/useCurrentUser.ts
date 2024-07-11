@@ -5,9 +5,9 @@ import { useMe } from '../graphql';
 import { StrictType, UserDto } from '$core/graphql';
 import { Simplify } from '$core/utils';
 
-type ReturnType<Strict extends StrictType = StrictType.NOT_STRICT> = {
+type ReturnType<Strict extends StrictType = StrictType.NotStrict> = {
   isLoading: boolean;
-  user: Strict extends StrictType.STRICT
+  user: Strict extends StrictType.Strict
     ? Simplify<DeepNonNullable<UserDto>>
     : UserDto | null;
 };
@@ -15,7 +15,7 @@ type ReturnType<Strict extends StrictType = StrictType.NOT_STRICT> = {
 type UseCurrentUserParams = Parameters<typeof useMe>;
 
 export const useCurrentUser = <
-  Strict extends StrictType = StrictType.NOT_STRICT,
+  Strict extends StrictType = StrictType.NotStrict,
 >(
   params?: UseCurrentUserParams,
 ): ReturnType<Strict> => {

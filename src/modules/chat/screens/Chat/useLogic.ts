@@ -19,7 +19,7 @@ import { useCurrentUser } from '$modules/user';
 export const useLogic = () => {
   const { chatId } = useLocalSearchParams<{ chatId: string }>();
   const flatListRef = useRef<FlatList<ChatMessage>>(null);
-  const { user } = useCurrentUser<StrictType.STRICT>();
+  const { user } = useCurrentUser<StrictType.Strict>();
   const { sendMessage } = useSendMessage();
   const { cache } = useApolloClient();
 

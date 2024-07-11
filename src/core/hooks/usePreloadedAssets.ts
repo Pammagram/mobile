@@ -1,5 +1,5 @@
-/* eslint-disable global-require */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable global-require -- font loading */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment -- font loading */
 import { useFonts } from 'expo-font';
 
 type ReturnType = {

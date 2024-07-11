@@ -50,6 +50,7 @@ export const useContacts = () => {
         setAreContactsLoading(false);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- request triggers updates
   }, []);
 
   return {

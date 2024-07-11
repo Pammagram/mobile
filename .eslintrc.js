@@ -448,6 +448,7 @@ module.exports = {
     'android',
     'ios',
     '**/codegen/*.js',
+    'apollo.config.js',
     CODEGEN_PATH,
   ],
   rules: {

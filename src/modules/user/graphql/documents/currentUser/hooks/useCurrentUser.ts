@@ -3,11 +3,12 @@ import { DeepNonNullable } from 'utility-types';
 import { useMe } from '../graphql';
 
 import { StrictType, UserDto } from '$core/graphql';
+import { Simplify } from '$core/utils';
 
 type ReturnType<Strict extends StrictType = StrictType.NOT_STRICT> = {
   isLoading: boolean;
   user: Strict extends StrictType.STRICT
-    ? DeepNonNullable<UserDto>
+    ? Simplify<DeepNonNullable<UserDto>>
     : UserDto | null;
 };
 

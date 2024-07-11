@@ -1,5 +1,4 @@
 import { useLocalSearchParams } from 'expo-router';
-import { useMemo } from 'react';
 
 import { useChatMessages } from '$modules/chat/hooks';
 import { useMe } from '$modules/user';
@@ -17,13 +16,5 @@ export const useLogic = () => {
     chatId: Number(chatId),
   });
 
-  const messagesSorted = useMemo(() => {
-    if (areMessagesLoading) {
-      return [];
-    }
-
-    return [...messages].sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-  }, [areMessagesLoading, messages]);
-
-  return { messages: messagesSorted, user, areMessagesLoading };
+  return { messages, user, areMessagesLoading };
 };

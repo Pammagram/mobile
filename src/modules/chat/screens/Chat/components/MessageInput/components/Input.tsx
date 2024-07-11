@@ -33,7 +33,9 @@ export const Input = forwardRef<TextInput, Props>((props, inputRef) => {
       }}
       borderRadius={borderRadius}
       numberOfLines={5}
-      style={{ minHeight: MIN_INPUT_HEIGHT, maxHeight: MAX_INPUT_HEIGHT }}
+      lineHeight={16}
+      minHeight={MIN_INPUT_HEIGHT}
+      maxHeight={MAX_INPUT_HEIGHT}
       flex={1}
       ref={inputRef}
       onChangeText={onChangeText}
@@ -41,9 +43,8 @@ export const Input = forwardRef<TextInput, Props>((props, inputRef) => {
       autoCorrect={false}
       autoCapitalize="none"
       returnKeyType="default"
-      minHeight={24}
-      paddingHorizontal={8}
-      paddingVertical={5}
+      paddingHorizontal={6}
+      paddingVertical={8}
       justifyContent="center"
       m={0}
     />

@@ -13,5 +13,5 @@ export const AttachButton: FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { height: 29, justifyContent: 'center' },
+  container: { height: 33, justifyContent: 'center' },
 });

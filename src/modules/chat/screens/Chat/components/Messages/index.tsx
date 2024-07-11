@@ -20,23 +20,24 @@ export const Messages = memo(
       (({ item: message, index }) => {
         const showTimeStamp = getShouldShowTimeStamp(
           message,
-          messages[index + 1],
+          messages![index + 1],
         );
 
         return (
-          <>
+          <View key={message.id}>
+            {showTimeStamp && <TimeStamp date={messages![index].createdAt} />}
             <Message
               isFromMe={message.sender.id === user?.data?.id}
-              showAvatar={messages[index - 1]?.sender.id !== message.sender.id}
+              showAvatar={messages![index - 1]?.sender.id !== message.sender.id}
               message={message}
             />
-            {showTimeStamp && <TimeStamp date={messages[index].createdAt} />}
-          </>
+          </View>
         );
       }) satisfies FlatListProps<ChatMessage>['renderItem'],
-      [messages],
+      [messages?.length],
     );
 
+    // TODO use section list
     return (
       <View height="100%" flex={1}>
         {areMessagesLoading && (
@@ -46,14 +47,18 @@ export const Messages = memo(
         )}
         {!areMessagesLoading && messages && (
           <FlatList
-            maxToRenderPerBatch={30}
             renderItem={renderItemHandler}
             ref={ref}
             inverted
             ListFooterComponent={<Spacer />}
             showsVerticalScrollIndicator={false}
             data={messages}
-            initialNumToRender={15}
+            initialNumToRender={16}
+            maxToRenderPerBatch={20}
+            removeClippedSubviews
+            updateCellsBatchingPeriod={50}
+            keyExtractor={(item) => item.id}
+            windowSize={11}
           />
         )}
       </View>

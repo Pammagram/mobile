@@ -1,5 +1,5 @@
 import { Colors } from 'configs/constants';
-import { FC, memo, useCallback, useRef } from 'react';
+import { FC, memo, useCallback, useRef, useState } from 'react';
 import { GestureResponderEvent, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { XStack } from 'tamagui';
@@ -19,7 +19,7 @@ export const MessageInput: FC<InputToolbarProps> = memo((props) => {
 
   const inputRef = useRef<TextInput>(null);
   const { bottom } = useSafeAreaInsets();
-  const textRef = useRef<string>('');
+  const [text, setText] = useState('');
 
   const pressHandler = useCallback(
     async (
@@ -28,14 +28,10 @@ export const MessageInput: FC<InputToolbarProps> = memo((props) => {
       event.preventDefault();
       inputRef.current?.clear();
       inputRef.current?.focus();
-      await onSendMessage({ text: textRef.current });
+      await onSendMessage({ text });
     },
-    [onSendMessage],
+    [onSendMessage, text],
   );
-
-  const changeTextHandler = useCallback((text: string) => {
-    textRef.current = text;
-  }, []);
 
   return (
     <XStack
@@ -48,8 +44,8 @@ export const MessageInput: FC<InputToolbarProps> = memo((props) => {
       paddingBottom={bottom}
     >
       <AttachButton />
-      <Input onChangeText={changeTextHandler} ref={inputRef} />
-      <SendButton onPress={pressHandler} />
+      <Input onChangeText={setText} ref={inputRef} />
+      <SendButton disabled={!text} onPress={pressHandler} />
     </XStack>
   );
 });

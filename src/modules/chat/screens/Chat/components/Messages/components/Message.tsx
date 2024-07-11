@@ -1,11 +1,13 @@
+import { CheckCheck, Clock } from '@tamagui/lucide-icons';
 import { Colors } from 'configs/constants';
 import moment from 'moment';
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { XStack } from 'tamagui';
 
 import { UserAvatar } from './UserAvatar';
 
-import { Text } from '$core/components';
+import { Text, View } from '$core/components';
+import { MessageStatus } from '$modules/chat/types';
 import { ChatMessage } from '$modules/chats/graphql/documents';
 
 type Props = {
@@ -15,13 +17,18 @@ type Props = {
 };
 
 // TODO add avatar and etc.
-export const Message: FC<Props> = (props) => {
+export const Message: FC<Props> = memo((props) => {
   const { message, showAvatar = true, isFromMe = true } = props;
+  const { status } = message;
 
+  const isPending = status === MessageStatus.Pending;
+  const isSent = status === MessageStatus.Sent;
+
+  // TODO extract status to a separate component to avoid rerendering the whole message on status change
   return (
     <XStack
-      paddingHorizontal={10}
-      paddingVertical={5}
+      paddingHorizontal={6}
+      paddingVertical={3}
       gap={5}
       justifyContent={isFromMe ? 'flex-end' : 'flex-start'}
       marginLeft={isFromMe ? '$6' : 0}
@@ -38,23 +45,34 @@ export const Message: FC<Props> = (props) => {
         backgroundColor={isFromMe ? Colors.PRIMARY_BLUE : Colors.TERNARY_BLUE}
         borderRadius={10}
         padding={10}
-        gap={5}
-        flexWrap="wrap"
         alignItems="flex-end"
+        flexWrap="wrap"
       >
-        <Text textBreakStrategy="highQuality">{message.text}</Text>
-        <XStack gap={2} marginLeft="auto" flexWrap="wrap">
-          {/* <Text fontSize={8} color="white">
-            edited
-          </Text> */}
-          <Text fontSize={8} color="white">
+        <Text>{message.text}</Text>
+        <XStack
+          marginLeft="auto"
+          marginTop="auto"
+          alignItems="center"
+          transform={[
             {
-              moment(message.createdAt).format('HH:mm')
-              // TODO to utils in one place
-            }
-          </Text>
+              translateY: 6,
+            },
+            {
+              translateX: 6,
+            },
+          ]}
+        >
+          {isSent && (
+            <View>
+              <Text fontSize={8} color="white">
+                {moment(message.createdAt).format('HH:mm')}
+              </Text>
+            </View>
+          )}
+          {isPending && <Clock color={Colors.WHITE_PRIMARY} size={8} />}
+          <CheckCheck size={14} color={Colors.WHITE_PRIMARY} />
         </XStack>
       </XStack>
     </XStack>
   );
-};
+});

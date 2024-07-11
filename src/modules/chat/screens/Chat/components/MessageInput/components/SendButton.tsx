@@ -4,13 +4,11 @@ import { StyleSheet } from 'react-native';
 
 import { TouchableOpacity, TouchableOpacityProps } from '$core/components';
 
-type Props = Pick<TouchableOpacityProps, 'onPress'>;
+type Props = Pick<TouchableOpacityProps, 'onPress' | 'disabled'>;
 
 export const SendButton: FC<Props> = (props) => {
-  const { onPress } = props;
-
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={styles.button} {...props}>
       <Send
         style={{ transform: [{ translateX: -1 }] }}
         size={20}
@@ -26,5 +24,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     padding: 8,
     borderRadius: 100,
+    height: 33,
   },
 });

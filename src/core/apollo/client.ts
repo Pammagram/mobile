@@ -13,6 +13,7 @@ export const initializeApolloClient = async () => {
   });
 
   // * enable storing only in production to speed up development
+  // TODO fix persisting
   if (process.env.NODE_ENV === 'production') {
     await persistCache({
       cache,

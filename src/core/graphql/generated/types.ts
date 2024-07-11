@@ -25,16 +25,6 @@ export type AddMembersOutput = {
   data: Scalars['Boolean']['output'];
 };
 
-export type AddMessageInput = {
-  chatId: Scalars['Int']['input'];
-  text: Scalars['String']['input'];
-};
-
-export type AddMessageOutput = {
-  __typename?: 'AddMessageOutput';
-  data: MessageDto;
-};
-
 export type ChatCreatedOutput = {
   __typename?: 'ChatCreatedOutput';
   data: ChatDto;
@@ -127,7 +117,7 @@ export type MessageDto = {
   __typename?: 'MessageDto';
   chat: ChatDto;
   createdAt: Scalars['DateTime']['output'];
-  id: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
   sender: UserDto;
   text: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
@@ -146,8 +136,6 @@ export type MessagesOutput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addMembers: AddMembersOutput;
-  /** @deprecated Use sendMessage instead */
-  addMessage: AddMessageOutput;
   createChat: CreateChatOutput;
   createUser: CreateUserOutput;
   editChat: EditChatOutput;
@@ -165,11 +153,6 @@ export type Mutation = {
 
 export type MutationAddMembersArgs = {
   input: AddMembersInput;
-};
-
-
-export type MutationAddMessageArgs = {
-  input: AddMessageInput;
 };
 
 
@@ -299,6 +282,7 @@ export type RemoveSessionOutput = {
 
 export type SendMessageInput = {
   chatId: Scalars['Int']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
   text: Scalars['String']['input'];
 };
 

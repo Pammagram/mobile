@@ -13,10 +13,12 @@ import {
   ChatDto,
   ChatInput,
   ChatOutput,
+  MessageDto,
   MessagesInput,
   MessagesOutput,
 } from '$core/graphql';
 import { logPrettied } from '$core/utils';
+import { MessageStatus } from '$modules/chat/types';
 
 export const chatsTypePolicy: TypePolicies = {
   // TODO move to chats feature
@@ -41,6 +43,16 @@ export const chatsTypePolicy: TypePolicies = {
             __typename: CHAT_OUTPUT_TYPE_NAME,
             data: chatReference,
           } satisfies ChatOutput;
+        },
+      },
+    },
+  },
+
+  MessageDto: {
+    fields: {
+      status: {
+        read: (_existing: MessageDto) => {
+          return MessageStatus.Sent;
         },
       },
     },
